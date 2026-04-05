@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.20)
+project(Whichbot CXX)
+set(CMAKE_CXX_STANDSRD 23)
+add_subdirectory(bot)
+add_subdirectory(pathematics)
+
+file(GLOB conf "${CMAKE_CURRENT_SOURCE_DIR}/bot/conf/*")
+file(GLOB_RECURSE data "${CMAKE_CURRENT_SOURCE_DIR}/bot/data/waypoints/*")
+#file(GLOB_RECURSE docs "${CMAKE_CURRENT_SOURCE_DIR}/bot/docs")
+# 1. Define the installation path for the DLL
+#install(FILES   ${conf} DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/addons/whichbot/conf")
+#install(FILES   ${data} DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/addons/whichbot/data")
+#install(FILES  "${CMAKE_CURRENT_SOURCE_DIR}/bot/docs/WhichbotWaypointingGuide.doc" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/addons/whichbot/docs/")
+#install(FILES  "${CMAKE_CURRENT_SOURCE_DIR}/bot/docs/WhichbotWaypointingGuide.pdf" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/addons/whichbot/docs/")
+#install(FILES  "${CMAKE_CURRENT_SOURCE_DIR}/bot/docs/bundled/README.txt" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/addons/whichbot/docs/")
+#install(FILES  "${CMAKE_CURRENT_SOURCE_DIR}/bot/docs/bundled/INSTALL.txt" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/addons/whichbot/docs/")
+#install(TARGETS whichbot LIBRARY DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/addons/whichbot/dlls")

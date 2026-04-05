@@ -1,0 +1,29 @@
+All significant changes in this build are courtesy of masked_carrot (thanks for all the hard work!).
+
+* Tweaked weapon settings.  Added charge and web.
+
+* Improved cloak support.
+
+* Added sanity check to shouldUseMelee, stop onos from stomping at jp and stop lerk from sporing heavy armor.
+
+* Fixed bug in parsing hive update message.
+
+* Tweaked movement to cope with charging, cloaking.  Hopefully ladder movement is also improved.
+
+* Don't bother listening to marines that are being eaten.
+
+* Tweaked build plan slightly.
+
+* Switched from hardcoded combat upgrades to getting them from config file.
+
+* Fixed bug where builder (gorge) options weren't being read in from config file properly.
+
+* Added config file option for onos in combat maps.
+
+* Updated message handling and use slightly more sane method to detect map start.
+
+* Changed kickLastBot so it kicks last bot added. 
+
+* Fixed memory leak.
+
+* Fixed config impulse values for sof and focus.
