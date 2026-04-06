@@ -16,4 +16,5 @@ To compile under linux:
 Open a terminal in the whichbot-r folder.
 
 `cmake -S . -B build -DCMAKE_BUILD_TYPE=Release`
+
 `cmake --build build`
