@@ -7,6 +7,7 @@ This version removes the dependencies on STL_port, upgrades the getpot library a
 To compile with cmake under windows:
 Open cmd or powershell in the whichbot-r directory and issue the following commands:
 `cmake -A Win32 -B build`
+
 `cmake --build --config Release`
 
 The whichbot.dll will be in the build/bot/Release folder.
