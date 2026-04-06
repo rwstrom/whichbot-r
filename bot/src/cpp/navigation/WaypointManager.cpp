@@ -81,7 +81,7 @@ std::string buildFileName(const std::string& dir, const std::string& filename)
 
 #ifndef __linux
 	// TODO - work out the real way to do this
-	string tmp;
+	std::string tmp;
 	for (int ii = 0; ii < (int)returnVal.length(); ii++) {
 		if (returnVal[ii] == '/') {
 			tmp += '\\';

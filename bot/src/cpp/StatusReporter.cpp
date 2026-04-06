@@ -118,7 +118,7 @@ void StatusReporter::generateStatusReport(Bot& bot)
 
 		sort(collectedRewards.begin(), collectedRewards.end(), RewardSorter());
 
-		int numRewardsToDisplay = std::min(3, (int)collectedRewards.size());
+		int numRewardsToDisplay = (std::min)(3, (int)collectedRewards.size());
 		for (int ii = 0; ii < numRewardsToDisplay; ii++) {
 			status << collectedRewards[ii].getDescription();
 			status << "(";

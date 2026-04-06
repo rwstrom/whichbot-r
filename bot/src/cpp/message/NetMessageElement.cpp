@@ -72,7 +72,7 @@ type(newType)
     case kCString:
 		// add 1 to the strlen so we copy the null byte too
 		if (newRock != NULL) {
-			strLength = std::min(255, (int)strlen((char*)newRock) + 1);
+			strLength = (std::min)(255, (int)strlen((char*)newRock) + 1);
 			rock = (char*)new char[strLength];
 			std::strncpy((char*)rock, (const char*)newRock, strLength);
 

@@ -79,9 +79,11 @@ target_sources(whichbot PRIVATE src/cpp/worldstate/AreaInfo.cpp
 
 if(MSVC)
     target_sources(whichbot PRIVATE src/cpp/linkage/bot.def)
-endif()
+    target_link_libraries(whichbot PRIVATE pathematics)
+else()
 
 target_link_libraries(whichbot PRIVATE pathematics stdc++)
+endif()
 
 if(MAKE_ZIP)
 add_custom_command(
