@@ -139,11 +139,18 @@ Hive 3
 
 ****/
 const int START_OF_HIVE_DATA_OFFSET = 1;
-const int HIVE_DATA_SIZE = 6;
+//const int HIVE_DATA_SIZE = 6;
 const int HIVE_POSITION_OFFSET = 1;
 const int HIVE_HEALTH_OFFSET = 4;
 void parseInitialHiveStatusData (const NetMessage& msg)
 {
+	//  The 3.3 version at https://github.com/ENSL/NS uses the preamble byte for each hive,
+	// resulting in a HIVE_DATA_SIZE of 7 instead of 6 bytes as in the 
+	// last version released by unknown worlds.
+	// 3.3 sets a sv_version cvar that we use to differentiate between the two. 
+	static cvar_t* nsversion = CVAR_GET_POINTER("sv_nsversion");
+	static const int HIVE_DATA_SIZE = nsversion ? 7:6;
+
 	int numHives = gpBotManager->inCombatMode() ? 1 : 3;
 	assert(numHives >= 1);
 

@@ -37,11 +37,11 @@
 // Description of plugin
 plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,	// ifvers
-	"whichbot",	// name
+	"whichbot-r",	// name
 	WHICHBOT_VERSION_STR,	// version
-	"__DATE__",	// date
-	"clamatius|Mike Cooper",// author
-	"",	// url
+	__DATE__,	// date
+	"Rich Strom originally by Mike Cooper",// author
+	"https://github.com/rwstrom/whichbot-r",	// url
 	"WB",	// logtag, all caps please
 	PT_STARTUP,	// (when) loadable
 	PT_STARTUP,	// (when) unloadable

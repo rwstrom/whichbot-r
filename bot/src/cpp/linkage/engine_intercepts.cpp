@@ -123,7 +123,7 @@ int interceptClientConnect(edict_t* pClientEdict, const char* pszName, const cha
     CLIENT_PRINTF(pClientEdict, print_console, "WhichBot MetaMod plugin (version ");
     CLIENT_PRINTF(pClientEdict, print_console, WHICHBOT_VERSION_STR);
     CLIENT_PRINTF(pClientEdict, print_console, ")\n");
-    CLIENT_PRINTF(pClientEdict, print_console, "See whichbot.com for more details.\n");
+    CLIENT_PRINTF(pClientEdict, print_console, "See https://github.com/rwstrom/whichbot-r for more details.\n");
     RETURN_META_VALUE(MRES_HANDLED, true);
 
     RETURN_META_VALUE(MRES_HANDLED, TRUE);
