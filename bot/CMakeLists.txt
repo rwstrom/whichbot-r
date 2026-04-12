@@ -1,5 +1,5 @@
 add_library(whichbot SHARED)
-set_property(TARGET whichbot PROPERTY CXX_STANDARD 23)
+set_property(TARGET whichbot PROPERTY CXX_STANDARD 17)
 if(MSVC)
     target_compile_options(whichbot PRIVATE /W4)
 else()
