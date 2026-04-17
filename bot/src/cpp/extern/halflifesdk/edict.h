@@ -1,14 +1,9 @@
-//========= Copyright 1996-2002, Valve LLC, All rights reserved. ============
-//
-// Purpose: 
-//
-// $NoKeywords: $
-//=============================================================================
-
 #if !defined EDICT_H
 #define EDICT_H
 #ifdef _WIN32
+#ifndef __MINGW32__
 #pragma once
+#endif /* not __MINGW32__ */
 #endif
 #define	MAX_ENT_LEAFS	48
 

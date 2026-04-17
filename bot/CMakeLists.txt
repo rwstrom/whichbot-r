@@ -23,12 +23,12 @@ target_sources(whichbot PRIVATE src/cpp/config/Config.cpp
                                 src/cpp/config/TranslationManager.cpp
                                 )
 
-target_sources(whichbot PRIVATE src/cpp/extern/metamod/h_export.cpp
-                                src/cpp/extern/halflifesdk/util.cpp)
+target_sources(whichbot PRIVATE src/cpp/extern/halflifesdk/util.cpp)
 
 target_sources(whichbot PRIVATE src/cpp/framework/Log.cpp)
 
-target_sources(whichbot PRIVATE src/cpp/linkage/dllapi.cpp
+target_sources(whichbot PRIVATE src/cpp/linkage/h_export.cpp
+                                src/cpp/linkage/dllapi.cpp
                                 src/cpp/linkage/engine_api.cpp
                                 src/cpp/linkage/engine_intercepts.cpp
                                 src/cpp/linkage/meta_api.cpp

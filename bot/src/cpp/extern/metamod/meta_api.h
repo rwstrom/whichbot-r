@@ -4,7 +4,7 @@
 // meta_api.h - description of metamod's DLL interface
 
 /*
- * Copyright (c) 2001-2003 Will Day <willday@hpgx.net>
+ * Copyright (c) 2001-2006 Will Day <willday@hpgx.net>
  *
  *    This file is part of Metamod.
  *
@@ -37,11 +37,12 @@
 #ifndef META_API_H
 #define META_API_H
 
+#include "comp_dep.h"
 #include "dllapi.h"				// GETENTITYAPI_FN, etc
 #include "engine_api.h"			// GET_ENGINE_FUNCTIONS_FN, etc
 #include "plinfo.h"				// plugin_info_t, etc
-#include "mutil.h"				// mutil_funcs_t, etc
 #include "osdep.h"				// DLLEXPORT, etc
+#include "mutil.h"
 
 // Version consists of "major:minor", two separate integer numbers.
 // Version 1	original
@@ -59,22 +60,10 @@
 // Version 5:8	added GetPluginPath [v1.11]
 // Version 5:9	added GetGameInfo [v1.14]
 // Version 5:10 added GINFO_REALDLL_FULLPATH for GetGameInfo [v1.17]
-#define META_INTERFACE_VERSION "5:10"
-
-#ifdef UNFINISHED
-// Version 5:99	added event hook utility functions [v.???]
-#define META_INTERFACE_VERSION "5:99"
-#endif /* UNFINISHED */
-
-// Flags to indicate why the plugin is being unloaded.
-typedef enum {
-	PNL_NULL = 0,
-	PNL_INI_DELETED,		// was deleted from plugins.ini
-	PNL_FILE_NEWER,			// file on disk is newer than last load
-	PNL_COMMAND,			// requested by server/console command
-	PNL_CMD_FORCED,			// forced by server/console command
-	PNL_DELAYED,			// delayed from previous request; can't tell origin
-} PL_UNLOAD_REASON;
+// Version 5:11 added plugin loading and unloading API [v1.18]
+// Version 5:12 added IS_QUERYING_CLIENT_CVAR to mutils [v1.18]
+// Version 5:13 added MAKE_REQUESTID and GET_HOOK_TABLES to mutils [v1.19]
+#define META_INTERFACE_VERSION "5:13"
 
 // Flags returned by a plugin's api function.
 // NOTE: order is crucial, as greater/less comparisons are made.
@@ -95,7 +84,7 @@ typedef struct meta_globals_s {
 	void *override_ret;		// readable; return value from overriding/superceding plugin
 } meta_globals_t;
 
-extern meta_globals_t *gpMetaGlobals;
+extern meta_globals_t *gpMetaGlobals DLLHIDDEN;
 #define SET_META_RESULT(result)			gpMetaGlobals->mres=result
 #define RETURN_META(result) \
 	do { gpMetaGlobals->mres=result; return; } while(0)
@@ -125,8 +114,8 @@ typedef struct {
 } gamedll_funcs_t;
 
 // Declared in plugin; referenced in macros.
-extern gamedll_funcs_t *gpGamedllFuncs;
-extern mutil_funcs_t *gpMetaUtilFuncs;
+extern gamedll_funcs_t *gpGamedllFuncs DLLHIDDEN;
+extern mutil_funcs_t *gpMetaUtilFuncs DLLHIDDEN;
 
 // Tell the dll that we'll be loading it as a metamod plugin, in case it
 // needs to do something special prior to the standard query/attach
@@ -238,5 +227,6 @@ C_DLLEXPORT int GetEngineFunctions_Post(enginefuncs_t *pengfuncsFromEngine,
 #define MNEW_OnFreeEntPrivateData		MNEW_FUNC->pfnOnFreeEntPrivateData
 #define MNEW_GameShutdown				MNEW_FUNC->pfnGameShutdown
 #define MNEW_ShouldCollide				MNEW_FUNC->pfnShouldCollide
+#define MNEW_CvarValue                                  MNEW_FUNC->pfnCvarValue
 
 #endif /* META_API_H */

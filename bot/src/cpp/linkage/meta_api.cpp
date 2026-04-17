@@ -32,7 +32,7 @@
 
 #include "extern/halflifesdk/extdll.h"			// always
 
-#include "linkage/dllapi.h"				// GETENTITYAPI_FN, etc
+#include "extern/metamod/dllapi.h"				// GETENTITYAPI_FN, etc
 #include "extern/metamod/engine_api.h"			// GET_ENGINE_FUNCTIONS_FN, etc
 #include "extern/metamod/plinfo.h"				// plugin_info_t, etc
 #include "extern/metamod/mutil.h"				// mutil_funcs_t, etc

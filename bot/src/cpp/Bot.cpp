@@ -838,9 +838,9 @@ void Bot::checkPackEvolution()
 void Bot::handleDamage(byte armourDamage, byte healthDamage, const Vector& dmgOrigin)
 {
 	/* Apparently this gets called even when the bots is in the middle of a tick().
-	/* Since this adds to the botSensor vector<target>, bad things happen if the
-	/* bot happens to be iterating through that vector at the time.
-	/* Disable this call by commenting out registerHandle call in NetMessageHandlers.
+	* Since this adds to the botSensor vector<target>, bad things happen if the
+	* bot happens to be iterating through that vector at the time.
+	* Disable this call by commenting out registerHandle call in NetMessageHandlers.
 	*/
 
 	_log.Debug("Handling damage [armour=%d, health=%d]", armourDamage, healthDamage);

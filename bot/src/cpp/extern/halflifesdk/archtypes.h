@@ -9,7 +9,7 @@
 #define X64BITS
 #endif
 
-#if defined( _WIN32 )
+#if defined( _WIN32 ) && (! defined( __MINGW32__ ))
 
 typedef __int16 int16;
 typedef unsigned __int16 uint16;
@@ -20,7 +20,7 @@ typedef unsigned __int64 uint64;
 typedef __int32 intp;				// intp is an integer that can accomodate a pointer
 typedef unsigned __int32 uintp;		// (ie, sizeof(intp) >= sizeof(int) && sizeof(intp) >= sizeof(void *)
 
-#else // _WIN32
+#else /* _WIN32 */
 
 typedef short int16;
 typedef unsigned short uint16;
@@ -36,6 +36,6 @@ typedef int intp;
 typedef unsigned int uintp;
 #endif
 
-#endif // else _WIN32
+#endif /* else _WIN32 */
 
-#endif // ARCHTYPES_H
+#endif /* ARCHTYPES_H */

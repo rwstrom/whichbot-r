@@ -1,6 +1,6 @@
 /***
 *
-*	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
+*	Copyright (c) 1999, Valve LLC. All rights reserved.
 *	
 *	This product contains software technology licensed from Id 
 *	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
@@ -14,12 +14,11 @@
 ****/
 #ifndef ENGINECALLBACK_H
 #define ENGINECALLBACK_H
-
-#ifdef WIN32
-#if _MSC_VER > 1000
+#ifdef _WIN32
+#ifndef __MINGW32__
 #pragma once
-#endif // _MSC_VER > 1000
-#endif // WIN32
+#endif /* not __MINGW32__ */
+#endif
 
 #include "event_flags.h"
 
@@ -72,7 +71,7 @@ extern enginefuncs_t g_engfuncs;
 #define CRC32_FINAL          (*g_engfuncs.pfnCRC32_Final)
 #define RANDOM_LONG		(*g_engfuncs.pfnRandomLong)
 #define RANDOM_FLOAT	(*g_engfuncs.pfnRandomFloat)
-#define GETPLAYERAUTHID	(*g_engfuncs.pfnGetPlayerAuthId)
+#define GETPLAYERWONID	(*g_engfuncs.pfnGetPlayerWONId)
 
 inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL ) {
 	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ed);
@@ -95,12 +94,13 @@ inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin = NU
 #define ALERT			(*g_engfuncs.pfnAlertMessage)
 #define ENGINE_FPRINTF	(*g_engfuncs.pfnEngineFprintf)
 #define ALLOC_PRIVATE	(*g_engfuncs.pfnPvAllocEntPrivateData)
-inline void *GET_PRIVATE( edict_t *pent )
+#define GET_PRIVATE(pent) ((void*)(pent!=NULL?pent->pvPrivateData:NULL))
+/*inline void *GET_PRIVATE( edict_t *pent )
 {
 	if ( pent )
 		return pent->pvPrivateData;
 	return NULL;
-}
+}*/
 
 #define FREE_PRIVATE	(*g_engfuncs.pfnFreeEntPrivateData)
 //#define STRING			(*g_engfuncs.pfnSzFromIndex)

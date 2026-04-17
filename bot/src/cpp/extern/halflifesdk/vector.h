@@ -102,7 +102,7 @@ public:
 	}
 	inline float Length2D(void) const					{ return sqrt(x*x + y*y); }
 
-	inline Vector& operator *= (float fl) { x *= fl; y*= fl; z*= fl; return *this; }
+	inline void operator *= (float fl) { x *= fl; y*= fl; z*= fl; return; }
 
 	// Members
 	vec_t x, y, z;

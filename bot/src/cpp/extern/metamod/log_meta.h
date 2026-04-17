@@ -4,7 +4,7 @@
 // log_meta.h - functions & macros for logging
 
 /*
- * Copyright (c) 2001-2003 Will Day <willday@hpgx.net>
+ * Copyright (c) 2001-2006 Will Day <willday@hpgx.net>
  *
  *    This file is part of Metamod.
  *
@@ -37,8 +37,8 @@
 #ifndef LOG_META_H
 #define LOG_META_H
 
-#include <extern/halflifesdk/enginecallback.h>		// ALERT, etc
-#include "extern/halflifesdk/util.h"			// UTIL_VarArgs, etc
+#include "comp_dep.h"
+#include "osdep.h"	//unlikely, OPEN_ARGS
 
 // Debug logging.  
 //
@@ -66,9 +66,23 @@
 // else (or other flow control).
 //
 // Yes, it's all a bit of a hack.
+//
+// Using meta_debug_value instead of meta_debug.value.
+// meta_debug_value is preconverted int-value of meta_debug.value.
+// Reason for this optimization: Integer compare is much faster than float compare.
+// i686 has fast float compare, but since we want to have i386 binary, we use this.
 
-#define META_DEBUG(level, args) \
-	do { if(meta_debug.value >= level) ALERT(at_logged, "[META] (debug:%d) %s\n", level, UTIL_VarArgs args ); } while(0)
+#ifdef __BUILD_FAST_METAMOD__
+	#define META_DEBUG(level, args) do { break; } while(0)
+#else
+	#define META_DEBUG(level, args) \
+		do { \
+			if(unlikely(meta_debug_value >= level)) { \
+				META_DEBUG_SET_LEVEL(level); \
+				META_DO_DEBUG args; \
+			} \
+		} while(0)
+#endif
 
 // max buffer size for printed messages
 #define MAX_LOGMSG_LEN	1024
@@ -76,7 +90,8 @@
 // max buffer size for client messages
 #define MAX_CLIENTMSG_LEN 128
 
-extern cvar_t meta_debug;
+extern cvar_t meta_debug DLLHIDDEN;
+extern int meta_debug_value DLLHIDDEN;
 
 // META_DEV provides debug logging via the cvar "developer" (when set to 1)
 // and uses a function call rather than a macro as it's really intended to
@@ -84,10 +99,18 @@ extern cvar_t meta_debug;
 // server.cfg.
 // NOTE: META_DEV has now been mostly obsoleted in the code.
 
-void META_CONS(char *fmt, ...);
-void META_DEV(char *fmt, ...);
-void META_ERROR(char *fmt, ...);
-void META_LOG(char *fmt, ...);
-void META_CLIENT(edict_t *pEntity, char *fmt, ...);
+void DLLINTERNAL META_CONS(const char *fmt, ...);
+void DLLINTERNAL META_DEV(const char *fmt, ...);
+void DLLINTERNAL META_INFO(const char *fmt, ...);
+void DLLINTERNAL META_WARNING(const char *fmt, ...);
+void DLLINTERNAL META_ERROR(const char *fmt, ...);
+void DLLINTERNAL META_LOG(const char *fmt, ...);
+void DLLINTERNAL META_CLIENT(edict_t *pEntity, const char *fmt, ...);
+#ifndef __BUILD_FAST_METAMOD__
+	void DLLINTERNAL META_DEBUG_SET_LEVEL(int level);
+	void DLLINTERNAL META_DO_DEBUG(const char *fmt, ...);
+#endif
+
+void DLLINTERNAL flush_ALERT_buffer(void);
 
 #endif /* LOG_META_H */
