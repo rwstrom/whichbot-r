@@ -130,13 +130,13 @@ void AttackStrategy::addReward(std::vector<Reward>& rewards, tNodeId nearestWayp
 }
 
 
-void AttackStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
+void AttackStrategy::visitedWaypoint(tNodeId /*wptId*/, tEvolution /*evolution*/)
 {
 	//NOP
 }
 
 
-void AttackStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void AttackStrategy::waitedAtWaypoint(tNodeId /*wptId*/, tEvolution /*evolution*/)
 {
 	//NOP
 }

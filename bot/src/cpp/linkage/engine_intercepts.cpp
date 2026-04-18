@@ -44,7 +44,7 @@
 Bot* pCurrentThinkingBot = NULL;
 Log _log(__FILE__);
 
-void interceptMessageBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* pEdict)
+void interceptMessageBegin([[maybe_unused]] int msg_dest, int msg_type, [[maybe_unused]] const float* pOrigin, edict_t* pEdict)
 {
     gpBotManager->getMessageDispatcher().handleMessageStart(msg_type, pEdict);
   	RETURN_META(MRES_HANDLED);
@@ -117,7 +117,7 @@ void interceptStartFrame()
   	RETURN_META(MRES_HANDLED);
 }
 
-int interceptClientConnect(edict_t* pClientEdict, const char* pszName, const char* pszAddress, char szRejectReason[128])
+int interceptClientConnect(edict_t* pClientEdict, [[maybe_unused]] const char* pszName, [[maybe_unused]] const char* pszAddress, [[maybe_unused]] char szRejectReason[128])
 {
     CLIENT_PRINTF(pClientEdict, print_console, "\n");
     CLIENT_PRINTF(pClientEdict, print_console, "WhichBot MetaMod plugin (version ");
@@ -272,7 +272,7 @@ void doBlink(edict_t* pEdict)
 }
 
 
-void interceptCommandStart(const edict_t* pPlayer, const struct usercmd_s* pCmd, unsigned int seed)
+void interceptCommandStart(const edict_t* pPlayer, const struct usercmd_s* pCmd, [[maybe_unused]] unsigned int seed)
 {
     if (pCmd != NULL) {
         edict_t* pEdict = (edict_t*)pPlayer;

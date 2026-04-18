@@ -69,7 +69,7 @@ FleeStrategy::~FleeStrategy()
 }
 
 
-void FleeStrategy::getRewards(std::vector<Reward>& rewards, tEvolution evolution)
+void FleeStrategy::getRewards(std::vector<Reward>& rewards, [[maybe_unused]] tEvolution evolution)
 {
     if (_bot.getEdict() != NULL) {
         if (botIsScared(_bot)) {
@@ -107,12 +107,12 @@ void FleeStrategy::addReward(std::vector<Reward>& rewards, tNodeId wptId, float 
 	}
 }
 
-void FleeStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
+void FleeStrategy::visitedWaypoint(tNodeId /*wptId*/, tEvolution /*evolution*/)
 {
 }
 
 
-void FleeStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void FleeStrategy::waitedAtWaypoint(tNodeId /*wptId*/, tEvolution /*evolution*/)
 {
 }
 

@@ -105,12 +105,12 @@ void ScoutStrategy::addRewards(std::vector<Reward>& rewards, const char* classna
 }
 
 
-void ScoutStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
+void ScoutStrategy::visitedWaypoint(tNodeId /*wptId*/, tEvolution /*evolution*/)
 {
 	//NOP
 }
 
-void ScoutStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void ScoutStrategy::waitedAtWaypoint(tNodeId /*wptId*/, tEvolution /*evolution*/)
 {
 	//NOP
 }

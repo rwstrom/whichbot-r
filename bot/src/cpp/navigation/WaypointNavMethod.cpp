@@ -458,7 +458,7 @@ void WaypointNavMethod::moveBetweenWaypoints()
 }
 
 
-bool WaypointNavMethod::didWeHitWaypoint(Vector& vecToWpt)
+bool WaypointNavMethod::didWeHitWaypoint([[maybe_unused]] Vector& vecToWpt)
 {
     bool hitWaypoint = false;
      

@@ -50,7 +50,7 @@ CombatStrategy::~CombatStrategy()
 }
 
 
-void CombatStrategy::getRewards(std::vector<Reward>& rewards, tEvolution evolution)
+void CombatStrategy::getRewards(std::vector<Reward>& rewards, [[maybe_unused]] tEvolution evolution)
 {
 	if (!FleeStrategy::botIsScared(_bot)) {
 		Target* pTarget = _bot.getTarget();
@@ -80,7 +80,7 @@ void CombatStrategy::calculateTargetWaypoint()
 }
 
 
-void CombatStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
+void CombatStrategy::visitedWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 	if (wptId == _targetWptId) {
 		_log.Debug("Reached target waypoint");
@@ -88,6 +88,6 @@ void CombatStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
 }
 
 
-void CombatStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void CombatStrategy::waitedAtWaypoint([[maybe_unused]] tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 }

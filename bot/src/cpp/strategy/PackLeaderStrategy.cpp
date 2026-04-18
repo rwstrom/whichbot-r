@@ -63,7 +63,7 @@ PackLeaderStrategy::~PackLeaderStrategy()
 }
 
 
-void PackLeaderStrategy::getRewards (std::vector<Reward>& rewards, tEvolution evolution)
+void PackLeaderStrategy::getRewards (std::vector<Reward>& rewards, [[maybe_unused]] tEvolution evolution)
 {
     if (!FleeStrategy::botIsScared(_leader)) {
         switch (_wolfPack.getSlaveMode()) {
@@ -101,7 +101,7 @@ tNodeId PackLeaderStrategy::getMasterPlayerWaypointId()
 }
 
 
-void PackLeaderStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
+void PackLeaderStrategy::visitedWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
     tNodeId masterWaypointId = INVALID_NODE_ID;
     switch (_wolfPack.getSlaveMode()) {
@@ -131,7 +131,7 @@ void PackLeaderStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
 }
 
 
-void PackLeaderStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void PackLeaderStrategy::waitedAtWaypoint([[maybe_unused]] tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
     bool resume = false;
     tNodeId masterWaypointId = INVALID_NODE_ID;

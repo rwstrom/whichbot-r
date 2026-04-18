@@ -90,7 +90,7 @@ void Log::FileLog(const char* buf)
 }
 
 
-void Log::Debug(const char* msg, ...)
+void Log::Debug([[maybe_unused]] const char* msg, ...)
 {
     // Only debug if debug is enabled
 #ifdef _DEBUG

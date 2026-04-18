@@ -59,7 +59,7 @@ RescueStrategy::~RescueStrategy()
 }
 
 // Reward the bot for rescuing entities.
-void RescueStrategy::getRewards(std::vector<Reward>& rewards, tEvolution evolution)
+void RescueStrategy::getRewards(std::vector<Reward>& rewards, [[maybe_unused]] tEvolution evolution)
 {
     if (!_currentRescueTarget.isNull()) {
 		if (HiveMind::isEntityUnderAttack(_currentRescueTarget.getEdict())) {
@@ -116,12 +116,12 @@ void RescueStrategy::rewardBot(std::vector<Reward>& rewards)
 }
 
 
-void RescueStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
+void RescueStrategy::visitedWaypoint(tNodeId /*wptId*/, tEvolution /*evolution*/)
 {
 	// NOP
 }
 
-void RescueStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void RescueStrategy::waitedAtWaypoint(tNodeId /*wptId*/, tEvolution /*evolution*/)
 {
 	// NOP
 }
@@ -129,7 +129,7 @@ void RescueStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
 // TODO:  Read this from a config file.
 // Make the rescue target really really (did I mention really?) shiney in the reward tree.
 static const tReward DEFAULT_REWARD = 1000.0f;
-static tReward getConfiguredReward(const char* entityClassName)
+static tReward getConfiguredReward([[maybe_unused]] const char* entityClassName)
 {
 	return DEFAULT_REWARD;
 }

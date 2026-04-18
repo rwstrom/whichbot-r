@@ -615,7 +615,7 @@ bool BuilderStrategy::locationIsBuildable(tNodeId wptId)
 }
 
 
-bool BuilderStrategy::otherChamberTooClose(tNodeId wptId)
+bool BuilderStrategy::otherChamberTooClose([[maybe_unused]] tNodeId wptId)
 {
     edict_t* pClosestChamber = NULL;
     float allowedRange = 10000.0;

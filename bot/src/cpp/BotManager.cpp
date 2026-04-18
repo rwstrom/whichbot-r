@@ -378,7 +378,7 @@ void BotManager::enableTeamBalance(bool enable)
 }
 
 
-void BotManager::terrainUpdated(tEvolution forEvolution, int startWptId, int endWptId, float costDiff)
+void BotManager::terrainUpdated(tEvolution forEvolution, int /*startWptId*/, int /*endWptId*/, float costDiff)
 {
     for (std::vector<Bot*>::iterator ii = _bots.begin(); ii != _bots.end(); ii++) {
         Bot* thisBot = *ii;

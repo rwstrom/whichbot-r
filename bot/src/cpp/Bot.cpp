@@ -835,7 +835,7 @@ void Bot::checkPackEvolution()
 }
 
 
-void Bot::handleDamage(byte armourDamage, byte healthDamage, const Vector& dmgOrigin)
+void Bot::handleDamage(byte armourDamage, byte healthDamage, [[maybe_unused]] const Vector& dmgOrigin)
 {
 	/* Apparently this gets called even when the bots is in the middle of a tick().
 	* Since this adds to the botSensor vector<target>, bad things happen if the

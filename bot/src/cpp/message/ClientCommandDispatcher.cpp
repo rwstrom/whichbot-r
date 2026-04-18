@@ -132,7 +132,7 @@ void ClientCommandDispatcher::interceptClientCommand(edict_t* pClientEdict)
 
 void handleClientCommands()
 {
-	static int prefixLen = strlen(gpBotManager->getCommandPrefix());
+	//static int prefixLen = strlen(gpBotManager->getCommandPrefix());
 
 	int argc  = CMD_ARGC();
 	if (argc > 1) {

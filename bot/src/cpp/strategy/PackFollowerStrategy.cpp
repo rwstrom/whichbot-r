@@ -53,7 +53,7 @@ PackFollowerStrategy::~PackFollowerStrategy()
 }
 
 // Reward the bot for trying to go to the pack leader's current closest waypoint.
-void PackFollowerStrategy::getRewards (std::vector<Reward>& rewards, tEvolution evolution)
+void PackFollowerStrategy::getRewards (std::vector<Reward>& rewards, [[maybe_unused]] tEvolution evolution)
 {
 	tNodeId leaderNearestWptId = _wolfPack.getLeaderNearestWaypointId();
 
@@ -67,7 +67,7 @@ void PackFollowerStrategy::getRewards (std::vector<Reward>& rewards, tEvolution 
 	}
 }
 
-void PackFollowerStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
+void PackFollowerStrategy::visitedWaypoint([[maybe_unused]] tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 	if (_wolfPack.isLeaderCloseBy(_bot)) {
 		_log.Debug("We're right next to the leader.");
@@ -77,7 +77,7 @@ void PackFollowerStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
 	}
 }
 
-void PackFollowerStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void PackFollowerStrategy::waitedAtWaypoint([[maybe_unused]] tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 	if (!_wolfPack.isLeaderCloseBy(_bot)) {
 		_log.Debug("Leader's moving again.  Resuming navigation.");

@@ -905,7 +905,7 @@ float BotMovement::getDistanceToTarget (const Vector& targetVector, tEvolution e
 }
 
 
-float BotMovement::get2DDistanceToTarget (const Vector& targetVector, tEvolution evolution) const
+float BotMovement::get2DDistanceToTarget (const Vector& targetVector, [[maybe_unused]] tEvolution evolution) const
 {
 	return (targetVector - _bot.getEdict()->v.origin).Length2D();
 }

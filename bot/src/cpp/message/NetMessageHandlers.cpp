@@ -181,7 +181,7 @@ void parseInitialHiveStatusData (const NetMessage& msg)
 }
 
 
-void parseHiveStatusUpdateData (const NetMessage& msg, int expectedHiveCount)
+void parseHiveStatusUpdateData (const NetMessage& msg, [[maybe_unused]] int expectedHiveCount)
 {
 	int sz = msg.size();
 	int hiveId = 0;
@@ -334,7 +334,7 @@ void handleBlipMsg(const NetMessage& msg)
         byte blipType = msg.getByteAt(idx++);
         // some blip messages only have the type and no colour byte
         if (idx < msg.size() && msg.getTypeAt(idx) == kByte) {
-            byte blipColor = msg.getByteAt(idx++);
+            /*byte blipColor =*/ msg.getByteAt(idx++);
             if (blipType == BLIP_TYPE_CHAMBER) {
                 // We only get blip messages for chambers if they're under attack
                 HiveMind::entityUnderAttack(loc);

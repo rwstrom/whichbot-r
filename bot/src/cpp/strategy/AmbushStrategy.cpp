@@ -72,7 +72,7 @@ void AmbushStrategy::initializeAmbushWaypoints()
 }
 
 
-void AmbushStrategy::getRewards(std::vector<Reward>& rewards, tEvolution evolution)
+void AmbushStrategy::getRewards(std::vector<Reward>& rewards, [[maybe_unused]] tEvolution evolution)
 {
     if (isAmbushModeActive()) {
         for (std::vector<tNodeId>::iterator ii = _ambushWaypoints.begin(); ii != _ambushWaypoints.end(); ii++) {
@@ -84,7 +84,7 @@ void AmbushStrategy::getRewards(std::vector<Reward>& rewards, tEvolution evoluti
 }
 
 
-void AmbushStrategy::visitedWaypoint(tNodeId wptId, tEvolution evolution)
+void AmbushStrategy::visitedWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
     if (isAmbushModeActive()) {
         std::vector<tNodeId>::iterator found = find(_ambushWaypoints.begin(), _ambushWaypoints.end(), wptId);
@@ -123,7 +123,7 @@ bool AmbushStrategy::isAmbushModeActive()
 }
 
 
-bool AmbushStrategy::shouldAmbushHere(tNodeId wptId)
+bool AmbushStrategy::shouldAmbushHere([[maybe_unused]] tNodeId wptId)
 {
     bool ambushHere = !FleeStrategy::botIsScared(_bot) && !_bot.getSensor()->threatSeen();
 	if (ambushHere) {
@@ -138,7 +138,7 @@ bool AmbushStrategy::shouldAmbushHere(tNodeId wptId)
 }
 
 
-void AmbushStrategy::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void AmbushStrategy::waitedAtWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 	// if it's an ambush waypoint, assume we're ambushing
 	if ((gpBotManager->getWaypointManager().getFlags(wptId) & W_FL_AMBUSH) != 0) {

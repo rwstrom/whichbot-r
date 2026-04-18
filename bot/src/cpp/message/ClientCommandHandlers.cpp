@@ -39,19 +39,19 @@
 
 static Log _log(__FILE__);
 
-void handleBotAdd(edict_t* pEdict, std::vector<std::string>& args)
+void handleBotAdd([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
 	gpBotManager->addBot();
 }
 
 
-void handleBotRemove(edict_t* pEdict, std::vector<std::string>& args)
+void handleBotRemove([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     gpBotManager->kickLastBot();
 }
 
 
-void handlePlayerInfo(edict_t* pEdict, std::vector<std::string>& args)
+void handlePlayerInfo([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
 	CBaseEntity* pPlayer = UTIL_PlayerByIndex(1);
 
@@ -64,7 +64,7 @@ void handlePlayerInfo(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleTeamBalance(edict_t* pEdict, std::vector<std::string>& args)
+void handleTeamBalance([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     if (args.size() == 2) {
 		std::string enableArg = args[1];
@@ -77,7 +77,7 @@ void handleTeamBalance(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleLogMessage(edict_t* pEdict, std::vector<std::string>& args)
+void handleLogMessage([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     if (args.size() == 2) {
         std::string msg = args[1];
@@ -86,7 +86,7 @@ void handleLogMessage(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleDisableNetMessage(edict_t* pEdict, std::vector<std::string>& args)
+void handleDisableNetMessage([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     if (args.size() == 2) {
         int msgType = atoi(args[1].c_str());
@@ -95,7 +95,7 @@ void handleDisableNetMessage(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleEnableNetMessage(edict_t* pEdict, std::vector<std::string>& args)
+void handleEnableNetMessage([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     if (args.size() == 2) {
         int msgType = atoi(args[1].c_str());
@@ -104,19 +104,19 @@ void handleEnableNetMessage(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleWaypointDebug(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointDebug([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     gpBotManager->getWaypointManager().toggleDebugger();
 }
 
 
-void handleWaypointSave(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointSave([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     gpBotManager->getWaypointManager().saveWaypoints(STRING(gpGlobals->mapname));
 }
 
 
-void handleWaypointAdd(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointAdd([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     edict_t* pPlayerEdict = WaypointDebugger::getEditingPlayer();
     if (pPlayerEdict != NULL) {
@@ -129,7 +129,7 @@ void handleWaypointAdd(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleWaypointPathStartAdd(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointPathStartAdd([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     edict_t* pPlayerEdict = WaypointDebugger::getEditingPlayer();
     if (pPlayerEdict != NULL) {
@@ -143,7 +143,7 @@ void handleWaypointPathStartAdd(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleWaypointPathEndAdd(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointPathEndAdd([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     edict_t* pPlayerEdict = WaypointDebugger::getEditingPlayer();
     if (pPlayerEdict != NULL) {
@@ -157,7 +157,7 @@ void handleWaypointPathEndAdd(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleWaypointPathStartDelete(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointPathStartDelete([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     edict_t* pPlayerEdict = WaypointDebugger::getEditingPlayer();
     if (pPlayerEdict != NULL) {
@@ -171,7 +171,7 @@ void handleWaypointPathStartDelete(edict_t* pEdict, std::vector<std::string>& ar
 }
 
 
-void handleWaypointPathEndDelete(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointPathEndDelete([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     edict_t* pPlayerEdict = WaypointDebugger::getEditingPlayer();
     if (pPlayerEdict != NULL) {
@@ -185,7 +185,7 @@ void handleWaypointPathEndDelete(edict_t* pEdict, std::vector<std::string>& args
 }
 
 
-void handleWaypointDelete(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointDelete([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     edict_t* pPlayerEdict = WaypointDebugger::getEditingPlayer();
     if (pPlayerEdict != NULL) {
@@ -212,74 +212,74 @@ void toggleWaypointFlag(int flag)
 }
 
 
-void handleWaypointDoor(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointDoor([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_DOOR);
 }
 
 
-void handleWaypointLadder(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointLadder([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_LADDER);
 }
 
 
-void handleWaypointLift(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointLift([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_LIFT);
 }
 
 
-void handleWaypointLiftSwitch(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointLiftSwitch([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_LIFT_SWITCH);
 }
 
 
-void handleWaypointLiftWait(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointLiftWait([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_LIFT_WAIT);
 }
 
 
-void handleWaypointForcedWalkable(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointForcedWalkable([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_FORCED_WALKABLE);
 }
 
 
-void handleWaypointJump(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointJump([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_JUMP);
 }
 
 
-void handleWaypointAmbush(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointAmbush([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_AMBUSH);
 }
 
 
-void handleWaypointPathDropStart(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointPathDropStart([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_DROP_TOP);
 }
 
 
 
-void handleWaypointPathDropEnd(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointPathDropEnd([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_DROP_BOTTOM);
 }
 
 
-void handleNetDebug(edict_t* pEdict, std::vector<std::string>& args)
+void handleNetDebug([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     gpBotManager->getMessageDispatcher().toggleDebug();
 }
 
 
-void handleEntityScan(edict_t* pEdict, std::vector<std::string>& args)
+void handleEntityScan([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     edict_t* pPlayerEdict = WaypointDebugger::getEditingPlayer();
 	if (pPlayerEdict != NULL) {
@@ -292,7 +292,7 @@ void handleEntityScan(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleWaypointWalkability(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointWalkability([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     edict_t* pPlayerEdict = WaypointDebugger::getEditingPlayer();
 	if (pPlayerEdict != NULL) {
@@ -337,7 +337,7 @@ int waypointCheck(const char* classname, float minRange)
 }
 
 
-void handleWaypointCheck(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointCheck([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     LOG_CONSOLE(PLID, "Checking walkability of hives and resource nozzles");
 
@@ -350,7 +350,7 @@ void handleWaypointCheck(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleNoAutoDefenses(edict_t* pEdict, std::vector<std::string>& args)
+void handleNoAutoDefenses([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     if ((args.size() == 3) && (strncmp(args[1].c_str(), "on", 2) == 0)) {
         gpBotManager->setNoAutoDefenses(true);
@@ -363,13 +363,13 @@ void handleNoAutoDefenses(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleStatus(edict_t* pEdict, std::vector<std::string>& args)
+void handleStatus([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     gpBotManager->triggerStatusReports();
 }
 
 
-void handleLead(edict_t* pEdict, std::vector<std::string>& args)
+void handleLead(edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     if (pEdict != NULL) {
         HiveMind::getPackManager().enslavePacksToPlayer(pEdict);
@@ -377,13 +377,13 @@ void handleLead(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleResume(edict_t* pEdict, std::vector<std::string>& args)
+void handleResume([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
 	HiveMind::getPackManager().enslavePacksToPlayer(NULL);
 }
 
 
-void handleBoost(edict_t* pEdict, std::vector<std::string>& args)
+void handleBoost([[maybe_unused]] edict_t* pEdict, std::vector<std::string>& args)
 {
     bool boosted = false;
     if (args.size() == 2) {
@@ -417,7 +417,7 @@ void handleBoost(edict_t* pEdict, std::vector<std::string>& args)
 }
 
 
-void handleEvolveOverride(edict_t* pEdict, std::vector<std::string>& args)
+void handleEvolveOverride([[maybe_unused]] edict_t* pEdict, std::vector<std::string>& args)
 {
     if (args.size() == 2) {
         std::string specifiedLifeform(args[1]);
@@ -433,7 +433,7 @@ void handleEvolveOverride(edict_t* pEdict, std::vector<std::string>& args)
     }
 }
 
-void handleWaypointCrouch(edict_t* pEdict, std::vector<std::string>& args)
+void handleWaypointCrouch([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
     toggleWaypointFlag(W_FL_CROUCH);
 }
