@@ -42,7 +42,7 @@ public:
 
 	inline const std::string& getType() const { return _type; } 
 
-	inline const float getWeight() const { return _weight; } 
+	inline float getWeight() const { return _weight; } 
 
 protected:
 

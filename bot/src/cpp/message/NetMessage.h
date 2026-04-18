@@ -51,7 +51,7 @@ public:
 	
     int size() const;
 
-	const bool isEmpty() const;
+	bool isEmpty() const;
 
     const NetMessageElement* getElementAt(int ii) const;
 

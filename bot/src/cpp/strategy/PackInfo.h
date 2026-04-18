@@ -76,9 +76,9 @@ public:
 
 	void clear();
 
-	inline const byte getPackId() const { return _packId; }
+	inline byte getPackId() const { return _packId; }
 
-	inline const int getNumBots() const { return _bots.size(); }
+	inline int getNumBots() const { return _bots.size(); }
 
     bool isPackFull() const;
 

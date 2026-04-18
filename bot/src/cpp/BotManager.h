@@ -88,7 +88,7 @@ public:
 
     inline WaypointManager& getWaypointManager() { return _waypointManager; }
 
-    inline const int getNumBots () const { return _bots.size(); }
+    inline int getNumBots () const { return _bots.size(); }
 
     void terrainUpdated(tEvolution forEvolution, int startWptId, int endWptId, float costDiff);
 

@@ -813,7 +813,8 @@ void BotMovement::move(tEvolution evolution)
 	_bot.getEdict()->v.angles.z = 0;
 	_bot.getEdict()->v.v_angle.z = 0;
 
-	drawViewDebugBeam();
+	//TODO: make this toggleable for debugging purposes
+	//drawViewDebugBeam();
 
 	_lastTargetVector = _targetVector;
  	_lastBotOrigin = _bot.getEdict()->v.origin;
@@ -926,12 +927,12 @@ void BotMovement::drawViewDebugBeam () const
 	viewVector *= 200.0;
 	Vector eyeLevelVector = _bot.getEdict()->v.origin + _bot.getEdict()->v.view_ofs;
 	Vector viewVectorTarget =  eyeLevelVector + viewVector;
-	//WaypointDebugger::drawDebugBeam(eyeLevelVector, viewVectorTarget, 100, 100, 100);
-	//WaypointDebugger::drawDebugBeam(_bot.getEdict()->v.origin, _targetVector, 100, 100, 0);
+	WaypointDebugger::drawDebugBeam(eyeLevelVector, viewVectorTarget, 100, 100, 100);
+	WaypointDebugger::drawDebugBeam(_bot.getEdict()->v.origin, _targetVector, 100, 100, 0);
 }
 
 
-void BotMovement::stop(tEvolution evolution)
+void BotMovement::stop([[maybe_unused]] tEvolution evolution)
 {
 	_speed = Vector(0.0, 0.0, 0.0);
 	_targetVector = _bot.getEdict()->v.origin;

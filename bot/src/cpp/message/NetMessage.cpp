@@ -77,7 +77,7 @@ int NetMessage::size() const
 }
 
 
-const bool NetMessage::isEmpty() const
+bool NetMessage::isEmpty() const
 {
 	return ((_msgType == 0) && (size() == 0));
 }
