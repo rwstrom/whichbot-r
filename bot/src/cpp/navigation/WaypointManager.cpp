@@ -396,7 +396,7 @@ WaypointManager::tWaypointQueue WaypointManager::getNearestWaypoints(tEvolution 
                 case kLerk:
                 case kFade:
                 case kOnos:
-					reachable = (distanceSquare < 400.0 * 400.0) && (((getFlags(ii) & W_FL_LADDER | W_FL_FORCED_WALKABLE) != 0) || 
+					reachable = (distanceSquare < 400.0 * 400.0) && (((getFlags(ii) & (W_FL_LADDER | W_FL_FORCED_WALKABLE)) != 0) || 
 								isPathWalkable(fromPoint, toPoint));
 					break;
 				default:

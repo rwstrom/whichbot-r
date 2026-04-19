@@ -779,8 +779,8 @@ void Bot::setTarget(Target* newTarget)
 bool Bot::needsHealing()
 {
     return (!_entity.isNull() && 
-            (_entity.getEdict()->v.health < _entity.getEdict()->v.max_health) ||
-            (_entity.getEdict()->v.armorvalue < WorldStateUtil::getMaxArmour(_entity.getEdict())));
+            (_entity.getEdict()->v.health < _entity.getEdict()->v.max_health ||
+            _entity.getEdict()->v.armorvalue < WorldStateUtil::getMaxArmour(_entity.getEdict())));
 }
 
 

@@ -722,10 +722,10 @@ void BotMovement::checkForPassives(tEvolution evolution)
 		
 		}
 		
-		// Healspray doesn't seem to work anymore (for human or bot)
-        //if (_bot.isInjured() && _bot.selectWeapon(WEAPON_HEALINGSPRAY)) {
-           // _bot.fireWeapon();
-        //}
+		
+        if (_bot.isInjured() && _bot.selectWeapon(WEAPON_HEALINGSPRAY)) {
+        	_bot.fireWeapon();
+        }
     }
 }
 
