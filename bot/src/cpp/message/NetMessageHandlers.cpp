@@ -381,7 +381,7 @@ void NetMessageDispatcher::registerHandlers()
     if (_handlers.size() == 0) {
         registerHandler(handleHiveInfoMsg, "AlienInfo");
 		/* Disabling damage handler because it causes crashing.*/
-		//registerHandler(handleDamage, "Damage");
+		registerHandler(handleDamage, "Damage");
         registerHandler(handleNetAreaInfoMsg, "SetupMap");
         //registerHandler(handleTextDisplayMsg, "HudText");
         registerHandler(handleBlipMsg, "BlipList");

@@ -74,7 +74,7 @@ public:
 				 bool isBuilding, int attackValue = 0);
 
     EntityInfo(const EntityInfo& other);
-
+    EntityInfo& operator=(const EntityInfo&) = default;
     inline int getTeam() const { return _team; }
 
     int getTeam(edict_t* pEdict) const;

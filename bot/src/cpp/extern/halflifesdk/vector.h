@@ -68,6 +68,7 @@ public:
 	inline Vector(float rgfl[3])					{ x = rgfl[0]; y = rgfl[1]; z = rgfl[2];	}
 
 	// Operators
+	constexpr Vector& operator=(const Vector&) = default;
 	inline Vector operator-(void) const				{ return Vector(-x,-y,-z);				}
 	inline bool operator==(const Vector& v) const	{ return x==v.x && y==v.y && z==v.z;	}
 	inline bool operator!=(const Vector& v) const	{ return !(*this==v);					}
