@@ -210,7 +210,7 @@ Vector NetMessage::getVectorAt(int ii) const
 const char* NetMessage::getCStringAt(int ii) const
 {
     assert(ii >= 0 && ii < size());
-    assert(_elements[ii]->type = kCString);
+    assert(_elements[ii]->type == kCString);
     if (ii < 0 || ii >= size())
 	{
 		_log.Warn("Invalid index in NetMessage::getCString");

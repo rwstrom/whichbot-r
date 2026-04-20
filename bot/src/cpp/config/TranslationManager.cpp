@@ -64,7 +64,22 @@ void TranslationManager::loadTranslations(const std::string& filename)
     if (configFile != NULL) {
         std::vector<std::string> variables = configFile->get_variable_names();
 
-        for (std::vector<std::string>::iterator ii = variables.begin(); ii != variables.end(); ii++) {
+        for(auto & var : variables)
+        {
+            auto endDelimPos = var.find_last_of("/");
+            if(endDelimPos == std::string::npos)
+            {
+                std::string translation((*configFile)(var.c_str(),UNKNOWN_VAL.c_str()));
+                translation.erase(std::remove_if(translation.begin(),translation.end(),[](unsigned char c){return !std::isprint(c);}),translation.end());
+                _translations[var] = translation;
+            }else{
+
+                std::string sourceName(var.substr(endDelimPos+1, var.length() - endDelimPos + 1));
+                _translations[sourceName] = (*configFile)(var.c_str(), UNKNOWN_VAL.c_str());
+            }
+        }
+       /*
+       for (std::vector<std::string>::iterator ii = variables.begin(); ii != variables.end(); ii++) {
             int endDelimPos = ii->find_last_of("/");
             if (endDelimPos < 0) {
                 endDelimPos = 0;
@@ -72,7 +87,8 @@ void TranslationManager::loadTranslations(const std::string& filename)
 
             std::string sourceName(ii->substr(endDelimPos+1, ii->length() - endDelimPos + 1));
             _translations[sourceName] = (*configFile)(ii->c_str(), UNKNOWN_VAL.c_str());
-        }
+        }*/
+
 
     } else {
         _log.Warn("Failed to open translation config file %s", fullPathname.c_str());
