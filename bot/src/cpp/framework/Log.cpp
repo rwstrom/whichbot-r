@@ -80,11 +80,12 @@ void Log::ConsoleLog(const char* buf)
 void Log::FileLog(const char* buf)
 {
     FILE* fp = fopen(LOGFILE,"a");
+    
     if (gpCurrentThinkingBot != NULL && gpCurrentThinkingBot->getName() != NULL) {
-        fprintf(fp, "%s: %s: %s\n", _name, gpCurrentThinkingBot->getName()->c_str(), buf);
+        fprintf(fp, "%f: %s: %s: %s\n", gpGlobals->time, _name, gpCurrentThinkingBot->getName()->c_str(), buf);
         
     } else {
-        fprintf(fp, "%s: %s\n", _name, buf);
+        fprintf(fp, "%f: %s: %s\n",gpGlobals->time, _name, buf);
     }
     fclose(fp);
 }
@@ -93,7 +94,7 @@ void Log::FileLog(const char* buf)
 void Log::Debug([[maybe_unused]] const char* msg, ...)
 {
     // Only debug if debug is enabled
-#ifdef _DEBUG
+#ifdef WB_DEBUG || _DEBUG
     char buf[BUF_LEN];
 
     // write the message to BUF

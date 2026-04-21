@@ -35,7 +35,7 @@
 
 const float TARGET_REWARD = 100.0;
 
-Log CombatStrategy::_log(__FILE__);
+Log CombatStrategy::_log("CombatStrategy.cpp");
 
 CombatStrategy::CombatStrategy(Bot& bot) :
 	_bot(bot),

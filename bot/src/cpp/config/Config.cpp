@@ -38,7 +38,7 @@
 #include "extern/metamod/meta_api.h"
 #include "BotManager.h"
 
-Log configMsgLog(__FILE__);
+Log configMsgLog("Config.cpp");
 
 
 static std::unique_ptr<Config> _singleton;

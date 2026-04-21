@@ -6,7 +6,7 @@ else()
     target_compile_options(whichbot PRIVATE -m32 -fPIC)
     target_link_options(whichbot PRIVATE -m32)
 endif()
-
+target_compile_definitions(whichbot PRIVATE "$<$<CONFIG:Debug>:WB_DEBUG>")
 target_include_directories(whichbot PRIVATE src/cpp)
 target_include_directories(whichbot PRIVATE "${CMAKE_CURRENT_LIST_DIR}/../pathematics/src/cpp")
 

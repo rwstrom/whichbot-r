@@ -41,7 +41,7 @@
 #include "worldstate/AreaManager.h"
 
 
-Log RescueStrategy::_log(__FILE__);
+Log RescueStrategy::_log("strategy/RescueStrategy.cpp");
 
 static tReward getConfiguredReward(const char* entityClassName);
 

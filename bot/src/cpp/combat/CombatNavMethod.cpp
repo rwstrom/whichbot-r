@@ -56,7 +56,7 @@ const float MELEE_RANGE = 100.0;
 
 const float AIM_TIME = 0.1;
 
-Log CombatNavMethod::_log(__FILE__);
+Log CombatNavMethod::_log("CombatNavMethod.cpp");
 
 CombatNavMethod::CombatNavMethod(Bot& bot) :
     _bot(bot),

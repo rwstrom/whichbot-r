@@ -37,7 +37,7 @@
 #include "worldstate/AreaManager.h"
 #include "strategy/HiveMind.h"
 
-static Log _log(__FILE__);
+static Log _log("ClientCommandDispatcher.cpp");
 
 void handleBotAdd([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {

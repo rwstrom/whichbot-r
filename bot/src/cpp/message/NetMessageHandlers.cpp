@@ -36,7 +36,7 @@
 #include "strategy/HiveMind.h"
 #include "BotManager.h"
 
-Log netMsgLog(__FILE__);
+Log netMsgLog("NetMessageDispatcher.cpp");
 
 
 void parseInitialHiveStatusData (const NetMessage& msg);

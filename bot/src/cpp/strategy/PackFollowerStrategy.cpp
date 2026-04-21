@@ -38,7 +38,7 @@
 #include "BotManager.h"
 
 
-Log PackFollowerStrategy::_log(__FILE__);
+Log PackFollowerStrategy::_log( "strategy/PackFollowerStrategy.cpp");
 
 
 PackFollowerStrategy::PackFollowerStrategy(PackInfo& wolfPack, Bot& bot) :

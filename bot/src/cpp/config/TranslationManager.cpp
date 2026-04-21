@@ -33,7 +33,7 @@
 #include "extern/getpot/GetPot.h"
 #include "extern/metamod/meta_api.h"
 
-Log TranslationManager::_log(__FILE__);
+Log TranslationManager::_log("TranslationManager.cpp");
 std::unordered_map<std::string, std::string> TranslationManager::_translations;
 
 const std::string UNKNOWN_VAL = "{unknown}";

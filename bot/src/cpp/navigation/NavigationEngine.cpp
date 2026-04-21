@@ -36,7 +36,7 @@ const float MOVEMENT_DIFFERENCE = 100.0;
 // let's kill ourselves after 90 seconds if we didn't move
 const float MOVEMENT_TIMEOUT = 90.0;
 
-Log NavigationEngine::_log(__FILE__);
+Log NavigationEngine::_log("NavigationEngine.cpp");
 
 NavigationEngine::NavigationEngine(Bot& bot) :
 	_method(NULL),

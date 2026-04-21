@@ -42,7 +42,7 @@
 #include "strategy/FleeStrategy.h"
 #include "worldstate/HiveManager.h"
 
-Log BotMovement::_log(__FILE__);
+Log BotMovement::_log("BotMovement.cpp");
 
 const float JUMP_DISTANCE = 50.0;
 const float LATERAL_LOOKAHEAD_DISTANCE = 70.0;

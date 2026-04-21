@@ -42,7 +42,7 @@
 #include <sstream>
 
 Bot* pCurrentThinkingBot = NULL;
-Log _log(__FILE__);
+Log _log("engine_intercepts.cpp");
 
 void interceptMessageBegin([[maybe_unused]] int msg_dest, int msg_type, [[maybe_unused]] const float* pOrigin, edict_t* pEdict)
 {

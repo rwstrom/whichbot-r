@@ -32,7 +32,7 @@
 #include "BotManager.h"
 #include "strategy/PackInfo.h"
 
-Log PackInfo::_log(__FILE__);
+Log PackInfo::_log("strategy/PackInfo.cpp");
 
 PackInfo::PackInfo(int packId) :
     _packId(packId),

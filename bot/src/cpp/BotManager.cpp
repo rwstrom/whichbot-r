@@ -49,7 +49,7 @@
 BotManager* gpBotManager = NULL;
 Bot* gpCurrentThinkingBot = NULL;
 
-Log BotManager::s_log(__FILE__);
+Log BotManager::s_log("BotManager.cpp");
 int gLightningSpriteTexture;
 
 const char* lifeformNames[] = { "skulk", "lerk", "gorge", "fade", "onos" };

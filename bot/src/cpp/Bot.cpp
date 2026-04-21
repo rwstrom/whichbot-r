@@ -47,7 +47,7 @@
 #include "strategy/FleeStrategy.h"
 
 
-Log Bot::_log(__FILE__);
+Log Bot::_log("Bot.cpp");
 
 const float DEFAULT_REWARD_FACTOR = 1.0;
 

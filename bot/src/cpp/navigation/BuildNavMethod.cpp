@@ -44,7 +44,7 @@ const float CLOSE_ENOUGH_TO_HIVE = 1000.0;
 const float BUILDABLE_CHECK_UPDATE = 0.2;
 const Vector NOT_FOUND(-100000, -100000, -10000);
 
-Log BuildNavMethod::_log(__FILE__);
+Log BuildNavMethod::_log("BuildNavMethod.cpp");
 
 BuildNavMethod::BuildNavMethod(Bot& bot, eEntityType entityTypeToBuild) :
 	_entityTypeToBuild(entityTypeToBuild),

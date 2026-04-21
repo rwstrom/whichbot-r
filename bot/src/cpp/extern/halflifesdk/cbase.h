@@ -283,6 +283,9 @@ public:
 
 
 	// Ugly code to lookup all functions to make sure they are exported when set.
+	//comment out debug section since it wont compile and we dont use it. 
+	//but we still needd _DEBUG to be defined elsewher. rstrom
+	/*
 #ifdef _DEBUG
 	void FunctionCheck( void *pFunction, char *name ) 
 	{ 
@@ -316,7 +319,7 @@ public:
 	}
 
 #endif
-
+*/
 
 	// virtual functions used by a few classes
 	

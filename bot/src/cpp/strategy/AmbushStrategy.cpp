@@ -39,7 +39,7 @@
 
 bool AmbushStrategy::_ambushWaypointsInitialized = false;
 std::vector<tNodeId> AmbushStrategy::_ambushWaypoints;
-Log AmbushStrategy::_log(__FILE__);
+Log AmbushStrategy::_log("AmbushStrategy.cpp");
 
 
 AmbushStrategy::AmbushStrategy(Bot& bot) :

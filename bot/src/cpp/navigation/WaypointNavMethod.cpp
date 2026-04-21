@@ -38,7 +38,7 @@
 #include "worldstate/WorldStateUtil.h"
 #include "extern/metamod/meta_api.h" //tmc - for MDLL_Use
 
-Log WaypointNavMethod::_log(__FILE__);
+Log WaypointNavMethod::_log("WaypointNavMethod.cpp");
 
 const float WAYPOINT_HEIGHT_OFFSET = -10.0;
 const float LAST_USED_SWITCH_TIME = 2.5;

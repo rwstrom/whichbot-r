@@ -42,7 +42,7 @@
 #include "strategy/PackManager.h"
 #include "strategy/PackInfo.h"
 
-Log PackManager::_log(__FILE__);
+Log PackManager::_log("strategy/PackManager.cpp");
 
 PackManager::PackManager ()
 {

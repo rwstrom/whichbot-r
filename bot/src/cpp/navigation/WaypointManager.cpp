@@ -41,7 +41,7 @@
 const float DEFAULT_REWARD_FACTOR = 1.0;
 const int WAYPOINT_VERSION = 4;
 
-Log WaypointManager::_log(__FILE__);
+Log WaypointManager::_log("WaypointManager.cpp");
 const Vector NOWHERE(-16000, -16000, -16000);
 const Vector3D NOWHERE3D(-16000, -16000, -16000);
 

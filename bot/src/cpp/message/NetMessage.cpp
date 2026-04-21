@@ -32,7 +32,7 @@
 #include "NetMessage.h"
 #include <sstream>
 #include "../extern/metamod/meta_api.h"
-Log NetMessage::_log(__FILE__);
+Log NetMessage::_log("NetMessage.cpp");
 
 
 NetMessage::NetMessage(int msgType, edict_t* pEdict) :

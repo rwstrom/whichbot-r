@@ -41,7 +41,7 @@
 #include "strategy/FleeStrategy.h"
 
 
-Log PackLeaderStrategy::_log(__FILE__);
+Log PackLeaderStrategy::_log("strategy/PackLeaderStrategy.cpp");
 static float CFG_PAUSE_PERIOD = 30.0f;
 static float CFG_PAUSE_LENGTH = 5.0f;
 

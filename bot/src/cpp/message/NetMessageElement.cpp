@@ -34,7 +34,7 @@
 #include <iomanip>
 #include <sstream>
 
-Log NetMessageElement::_log(__FILE__);
+Log NetMessageElement::_log("NetMessageElement.cpp");
 
 NetMessageElement::NetMessageElement(void* newRock, eNetMessageType newType) :
 type(newType)

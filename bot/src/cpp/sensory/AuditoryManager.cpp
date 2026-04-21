@@ -39,7 +39,7 @@ static const float TRACE_TIMEOUT = 50.0; // listen traces time out after this
 
 AuditoryManager AuditoryManager::_singleton;
 
-Log AuditoryManager::_log(__FILE__);
+Log AuditoryManager::_log("AuditoryManager.cpp");
 
 
 AuditoryManager::AuditoryManager() :
