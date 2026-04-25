@@ -94,7 +94,7 @@ void Log::FileLog(const char* buf)
 void Log::Debug([[maybe_unused]] const char* msg, ...)
 {
     // Only debug if debug is enabled
-#ifdef WB_DEBUG || _DEBUG
+#if defined(WB_DEBUG) || defined(_DEBUG)
     char buf[BUF_LEN];
 
     // write the message to BUF
