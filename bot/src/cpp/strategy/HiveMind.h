@@ -38,7 +38,6 @@
 #include <map>
 #include "Bot.h"
 #include "strategy/PackManager.h"
-#include "framework/Log.h"
 #include "worldstate/EntityRegistry.h"
 
 // HiveMind keeps track of where all the bots are and what they should be doing.
@@ -119,7 +118,6 @@ protected:
     static std::vector<float> _visitTimes;
 	static EntityRegistry _entities;
 	static PackManager _wolfPackMgr;
-    static Log _log;
     static tEvolution _lifeformOverride;
 };
 

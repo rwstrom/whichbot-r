@@ -208,7 +208,6 @@ protected:
 	
 	bool _dead;
 
-    static Log _log;
 };
 
 extern Bot* gpCurrentThinkingBot;

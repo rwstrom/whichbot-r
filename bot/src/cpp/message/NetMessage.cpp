@@ -32,7 +32,7 @@
 #include "NetMessage.h"
 #include <sstream>
 #include "../extern/metamod/meta_api.h"
-Log NetMessage::_log("NetMessage.cpp");
+#include "framework/Log.h"
 
 
 NetMessage::NetMessage(int msgType, edict_t* pEdict) :
@@ -63,7 +63,7 @@ void NetMessage::reset(int msgType, edict_t* pEdict)
 void NetMessage::addElement(void* rock, eNetMessageType type)
 {
 	if (type < 0 || type > kCString){
-		_log.Warn("Invalid type in NetMEssage::addElement %d",type);;
+		WB_LOG_WARN("Invalid type in NetMEssage::addElement {}",(int)type);;
 		return;
 	}//tmc
     NetMessageElement* element = new NetMessageElement(rock, type);
@@ -100,12 +100,12 @@ byte NetMessage::getByteAt(int ii) const
     assert(_elements[ii]->type == kByte);
     if (ii < 0 || ii >= size())
 	{
-		_log.Warn("Invalid index for NetMessage::getByteAt");
+		WB_LOG_ERROR("Invalid index for NetMessage::getByteAt");
 		return 0;
 	}
 	if (_elements[ii]->type != kByte)
 	{
-		_log.Warn("Wrong type requested in NetMessage::getByteAt");
+		WB_LOG_ERROR("Wrong type requested in NetMessage::getByteAt");
 		return 0;
 	}
     return *(byte*)_elements[ii]->rock;
@@ -118,12 +118,12 @@ int NetMessage::getIntAt(int ii) const
     assert(_elements[ii]->type == kInt);
     if (ii < 0 || ii >= size())
 	{
-		_log.Warn("Invalid index requested in NetMessage::getIntAt");
+		WB_LOG_ERROR("Invalid index requested in NetMessage::getIntAt");
 		return 0;
 	}
 	if (_elements[ii]->type != kInt)
 	{
-		_log.Warn("Wrong type requested in NetMessage::getIntAt");
+		WB_LOG_ERROR("Wrong type requested in NetMessage::getIntAt");
 		return 0;
 	}
     return *(int*)_elements[ii]->rock;
@@ -136,12 +136,12 @@ long NetMessage::getLongAt(int ii) const
     assert(_elements[ii]->type == kLong);
     if (ii < 0 || ii >= size())
 	{
-		_log.Warn("Invalid index for NetMessage::getLongAt");
+		WB_LOG_ERROR("Invalid index for NetMessage::getLongAt");
 		return 0;
 	}
 	if (_elements[ii]->type != kLong)
 	{
-		_log.Warn("Wrong type requested in NetMessage::getLongAt");
+		WB_LOG_ERROR("Wrong type requested in NetMessage::getLongAt");
 		return 0;
 	}
     return *(long*)_elements[ii]->rock;
@@ -154,12 +154,12 @@ short NetMessage::getShortAt(int ii) const
     assert(_elements[ii]->type == kShort);
     if (ii < 0 || ii >= size())
 	{
-		_log.Warn("Invalid index for NetMessage::getShortAt");
+		WB_LOG_ERROR("Invalid index for NetMessage::getShortAt");
 		return 0;
 	}
 	if (_elements[ii]->type != kShort)
 	{
-		_log.Warn("Wrong type requested in NetMessage::getShortAt");
+		WB_LOG_ERROR("Wrong type requested in NetMessage::getShortAt");
 		return 0;
 	}
     return *(short*)_elements[ii]->rock;
@@ -172,12 +172,12 @@ float NetMessage::getFloatAt(int ii) const
     assert(_elements[ii]->type == kFloat);
     if (ii < 0 || ii >= size())
 	{
-		_log.Warn("Invalid index for NetMessage::getFloatAt");
+		WB_LOG_WARN("Invalid index for NetMessage::getFloatAt");
 		return 0;
 	}
 	if (_elements[ii]->type != kFloat)
 	{
-		_log.Warn("Wrong type requested in NetMessage::getFloatAt");
+		WB_LOG_WARN("Wrong type requested in NetMessage::getFloatAt");
 		return 0;
 	}
     return *(short*)_elements[ii]->rock;
@@ -192,12 +192,12 @@ Vector NetMessage::getVectorAt(int ii) const
     assert(_elements[ii+2]->type == kFloat);
     if (ii < 0 || ii+2 >= size())
 	{
-		_log.Warn("Invalid index for NetMessage::getVectorAt");
+		WB_LOG_WARN("Invalid index for NetMessage::getVectorAt");
 		return Vector(0,0,0);
 	}
 	if (_elements[ii]->type != kFloat || _elements[ii+1]->type != kFloat ||_elements[ii+2]->type != kFloat)
 	{
-		_log.Warn("Wrong type requested in NetMessage::getVectorAt");
+		WB_LOG_WARN("Wrong type requested in NetMessage::getVectorAt");
 		return Vector(0,0,0);
 	}
     float xPos = *(float*)_elements[ii]->rock;
@@ -213,12 +213,12 @@ const char* NetMessage::getCStringAt(int ii) const
     assert(_elements[ii]->type == kCString);
     if (ii < 0 || ii >= size())
 	{
-		_log.Warn("Invalid index in NetMessage::getCString");
+		WB_LOG_WARN("Invalid index in NetMessage::getCString");
 		return NULL;
 	}
 	if (_elements[ii]->type != kCString)
 	{
-		_log.Warn("Wrong type requested in NetMessage::getCStringAt");
+		WB_LOG_WARN("Wrong type requested in NetMessage::getCStringAt");
 		return NULL;
 	}
     return (const char*)_elements[ii]->rock;
@@ -240,7 +240,7 @@ eNetMessageType NetMessage::getTypeAt(int ii) const
     if (ii >= 0 && ii < size()) {
         return _elements[ii]->type;
     }
-	_log.Warn("Unknown type in getTypeAt");
+	WB_LOG_WARN("Unknown type in getTypeAt");
     return kUnknownType;
 }
 
@@ -256,11 +256,11 @@ void NetMessage::log()
 	const char* className = FNullEnt(_pEdict) ? "No Entity" : STRING(_pEdict->v.classname);
 	int sz;
 	const char* msgName = GET_USER_MSG_NAME(PLID,_msgType,&sz);//tmc
-	if (msgName != NULL) _log.FileLog(msgName);
-	_log.FileLog(className);
-	_log.Debug("Starting message %s for edict 0x%x (%s)", msgName, _pEdict, className);
+	if (msgName != NULL) WB_LOG_DEBUG("{}",msgName);
+	WB_LOG_DEBUG("{}",className);
+	WB_LOG_INFO("Starting message {} for edict {} ({})", msgName, static_cast<const void*>(_pEdict), className);
 	for (std::vector<NetMessageElement*>::iterator ii = _elements.begin(); ii != _elements.end(); ii++) {
-		_log.FileLog((*ii)->toString().c_str());
+		WB_LOG_DEBUG("{}",(*ii)->toString());
 	}
-	_log.Debug("Ending message %s for edict 0x%x (%s)", msgName, _pEdict, className);
+	WB_LOG_INFO("Ending message {} for edict {} ({})", msgName, static_cast<const void*>(_pEdict), className);
 }

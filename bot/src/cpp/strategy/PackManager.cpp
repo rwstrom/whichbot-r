@@ -41,8 +41,7 @@
 #include "strategy/ScoutStrategy.h"
 #include "strategy/PackManager.h"
 #include "strategy/PackInfo.h"
-
-Log PackManager::_log("strategy/PackManager.cpp");
+#include "framework/Log.h"
 
 PackManager::PackManager ()
 {
@@ -62,11 +61,11 @@ void PackManager::setPackStrategies(Bot& bot)
 {
     PackInfo* pWolfPack = getPackInfo(bot, true);
 	if (pWolfPack->isLeader(bot)) {
-		_log.Debug("[%s] is the wolf pack leader", bot.getName()->c_str());
+		WB_LOG_INFO("[{}] is the wolf pack leader", bot.getName()->c_str());
 		setLeaderStrategies(bot);
 
 	} else {
-		_log.Debug("[%s] is a wolf pack follower", bot.getName()->c_str());
+		WB_LOG_INFO("[{}] is a wolf pack follower", bot.getName()->c_str());
 		setFollowerStrategies(bot);
 	}
 	bot.getStrategyManager().addStrategy(new CombatStrategy(bot), 100.0);
@@ -133,13 +132,13 @@ void PackManager::unsetPackStrategies(Bot& bot)
 	    if (pWolfPack->isLeader(bot)) {
 		    // Promote the next bot in line to the leadership position.
 		    if (pWolfPack->getNumBots() > 1) {
-			    _log.Debug("Wolf pack leader [%s] is now leaving the wolf pack", bot.getName()->c_str());
+			    WB_LOG_INFO("Wolf pack leader [{}] is now leaving the wolf pack", bot.getName()->c_str());
 			    pWolfPack->removeBot(bot);
 
 			    Bot* pNewPackLeader = pWolfPack->getLeader();
                 if (pNewPackLeader != NULL) {
                     setLeaderStrategies(*pNewPackLeader);
-                    _log.Debug("[%s] is now the new wolf pack leader", pNewPackLeader->getName()->c_str());
+                    WB_LOG_INFO("[{}] is now the new wolf pack leader", pNewPackLeader->getName()->c_str());
 				    //if (gpBotManager->isBotChatEnabled()) {
 					   // pNewPackLeader->sayToTeam(TranslationManager::getTranslation("leading_pack"));
 				    //}

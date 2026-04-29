@@ -32,8 +32,8 @@
 #include "config/TranslationManager.h"
 #include "extern/getpot/GetPot.h"
 #include "extern/metamod/meta_api.h"
+#include "framework/Log.h"
 
-Log TranslationManager::_log("TranslationManager.cpp");
 std::unordered_map<std::string, std::string> TranslationManager::_translations;
 
 const std::string UNKNOWN_VAL = "{unknown}";
@@ -91,7 +91,7 @@ void TranslationManager::loadTranslations(const std::string& filename)
 
 
     } else {
-        _log.Warn("Failed to open translation config file %s", fullPathname.c_str());
+        WB_LOG_WARN("Failed to open translation config file {}", fullPathname);
     }
 
     delete configFile;

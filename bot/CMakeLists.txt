@@ -1,5 +1,5 @@
 add_library(whichbot SHARED)
-set_property(TARGET whichbot PROPERTY CXX_STANDARD 20)
+set_property(TARGET whichbot PROPERTY CXX_STANDARD 23)
 if(MSVC)
     target_compile_options(whichbot PRIVATE /W4)
 else()
@@ -25,7 +25,7 @@ target_sources(whichbot PRIVATE src/cpp/config/Config.cpp
 
 target_sources(whichbot PRIVATE src/cpp/extern/halflifesdk/util.cpp)
 
-target_sources(whichbot PRIVATE src/cpp/framework/Log.cpp)
+#target_sources(whichbot PRIVATE src/cpp/framework/Log.cpp)
 
 target_sources(whichbot PRIVATE src/cpp/linkage/h_export.cpp
                                 src/cpp/linkage/dllapi.cpp

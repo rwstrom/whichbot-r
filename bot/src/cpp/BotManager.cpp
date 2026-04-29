@@ -45,11 +45,11 @@
 #include "worldstate/WorldStateUtil.h"
 #include "sensory/AuditoryManager.h"
 #include "strategy/AmbushStrategy.h"
+#include "framework/Log.h"
 
 BotManager* gpBotManager = NULL;
 Bot* gpCurrentThinkingBot = NULL;
 
-Log BotManager::s_log("BotManager.cpp");
 int gLightningSpriteTexture;
 
 const char* lifeformNames[] = { "skulk", "lerk", "gorge", "fade", "onos" };
@@ -103,7 +103,7 @@ void BotManager::init()
 //
 void BotManager::newLevel()
 {
-    s_log.Debug("Starting new level");
+    WB_LOG_INFO("Starting new level");
 	_levelInitialised = false;
     const char* mapName = STRING(gpGlobals->mapname);
     std::string mapNameStr(mapName);
@@ -219,7 +219,7 @@ void BotManager::checkBotsToAdd()
 
             if (!newBot || !newBot->create())
 			{
-				s_log.ConsoleLog("Creation of a new bot failed!!!");
+				WB_LOG_ERROR("Creation of a new bot failed!!!");
 				delete newBot;
 				return;
 			}

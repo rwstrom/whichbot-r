@@ -38,7 +38,6 @@
 #include "extern/metamod/meta_api.h"
 #include "BotManager.h"
 
-Log configMsgLog("Config.cpp");
 
 
 static std::unique_ptr<Config> _singleton;
@@ -156,12 +155,12 @@ GetPot* Config::parseConfigFile (std::string configFileName)
         LOG_ERROR(PLID, "Failed to load config file %s: %s (error code %d)", 
                   configFileName.c_str(), strerror(errno), errno);
 
-		configMsgLog.Debug("Failed to instantiate GetPot for file %s", configFileName.c_str());
+		WB_LOG_DEBUG("Failed to instantiate GetPot for file {}", configFileName);
 
 	} else {
-        LOG_CONSOLE(PLID, "Loading WhichBot config file %s", 
-                    configFileName.c_str());
-		configMsgLog.Debug("Parsing configuration file %s", configFileName.c_str());
+        LOG_CONSOLE(PLID, "Loading WhichBot config file {}", 
+                    configFileName);
+		WB_LOG_DEBUG("Parsing configuration file {}", configFileName.c_str());
 		std::vector<std::string> sections = configFile->get_section_names();
         int numSectionsFound = 0;
 		for (std::vector<std::string>::iterator ii = sections.begin(); ii != sections.end(); ++ii)
@@ -186,8 +185,8 @@ GetPot* Config::parseConfigFile (std::string configFileName)
 					bool isBuilding = ((*configFile)(isBuildingVarName.c_str(), 1) != 0);
 					int attackValue = (*configFile)(attackValueVarName.c_str(), 0);
 					
-					configMsgLog.Debug("Read entity=%s, type=%d, team=%d, className=%s, defaultInfluence=%d, "
-						"isBuilding=%d, attackValue=%d", className.c_str(), entityType, team, className.c_str(), defaultInfluence,
+					WB_LOG_DEBUG("Read entity={}, type={}, team={}, className={}, defaultInfluence={}, "
+						"isBuilding={}, attackValue={}", className, (int)entityType, team, className.c_str(), defaultInfluence,
 						isBuilding, attackValue);
 					setValue(className, EntityInfo(entityType, team, className, defaultInfluence, isBuilding, attackValue));
 				}

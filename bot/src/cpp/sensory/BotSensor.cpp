@@ -39,9 +39,10 @@
 #include "config/Config.h"
 #include "worldstate/WorldStateUtil.h"
 #include "sensory/AuditoryManager.h"
+#include "framework/Log.h"
 
 const float LISTEN_RANGE = 1000.0;
-Log BotSensor::_log("BotSensor.cpp");
+
 
 float BotSensor::_lastGlobalScanTime = 0.0f;
 
@@ -187,7 +188,7 @@ void BotSensor::forceScanEntity(edict_t* pEntity)
 			if (pInfo->isBuilding() && looksBuildable(pEntity)) {
 				Target target(pEntity, pInfo);
 				_buildables.push_back(target);
-				_log.Debug("Saw buildable target %s", pInfo->getClassname().c_str());
+				WB_LOG_INFO("Saw buildable target {}", pInfo->getClassname());
 
 			} else if (_bot.getEvolution() == kGorge && !pInfo->isBuilding() && 
 				((pEntity->v.health < pEntity->v.max_health) || 
@@ -195,7 +196,7 @@ void BotSensor::forceScanEntity(edict_t* pEntity)
 			{
 				Target target(pEntity, pInfo);
 				_targets.push_back(target);
-				_log.Debug("Saw healable target");
+				WB_LOG_INFO("Saw healable target");
 				_healableSeen = true;
 			}
 		}

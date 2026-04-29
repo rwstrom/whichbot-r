@@ -36,10 +36,10 @@
 #include "sensory/AuditoryManager.h"
 #include "strategy/FleeStrategy.h"
 #include "strategy/HiveMind.h"
+#include "framework/Log.h"
 
 bool AmbushStrategy::_ambushWaypointsInitialized = false;
 std::vector<tNodeId> AmbushStrategy::_ambushWaypoints;
-Log AmbushStrategy::_log("AmbushStrategy.cpp");
 
 
 AmbushStrategy::AmbushStrategy(Bot& bot) :
@@ -89,10 +89,10 @@ void AmbushStrategy::visitedWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution 
     if (isAmbushModeActive()) {
         std::vector<tNodeId>::iterator found = find(_ambushWaypoints.begin(), _ambushWaypoints.end(), wptId);
         if (found != _ambushWaypoints.end()) {
-			_log.Debug("Visited ambush waypoint %d", wptId);
+			WB_LOG_INFO("Visited ambush waypoint {}", wptId);
             // we're at an ambush waypoint
             if (shouldAmbushHere(wptId)) {
-                _log.Debug("Bot ambushing at waypoint %d", wptId);
+                WB_LOG_INFO("Bot ambushing at waypoint {}", wptId);
                 _bot.getNavigationEngine()->pause();
 				_bot.setProperty(Bot::kAmbushStartTime);
             }
@@ -130,7 +130,7 @@ bool AmbushStrategy::shouldAmbushHere([[maybe_unused]] tNodeId wptId)
 		bool heardPlayerNearby = AuditoryManager::getInstance().isHeardPlayerNearby(
 			_bot.getEdict()->v.origin, 2.0 * AuditoryManager::getInstance().getHearingRadius());
 		if (!heardPlayerNearby) {
-			_log.Debug("Didn't hear a player nearby, not ambushing");
+			WB_LOG_INFO("Didn't hear a player nearby, not ambushing");
 		}
 		return heardPlayerNearby;
 	}
@@ -144,14 +144,14 @@ void AmbushStrategy::waitedAtWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution
 	if ((gpBotManager->getWaypointManager().getFlags(wptId) & W_FL_AMBUSH) != 0) {
 		float ambushTimeElapsed = gpGlobals->time - _bot.getProperty(Bot::kAmbushStartTime);
 		if (ambushTimeElapsed > _maxAmbushWait) {
-			_log.Debug("Timed out.  Giving up ambush, moving again");
+			WB_LOG_INFO("Timed out.  Giving up ambush, moving again");
 			_bot.getNavigationEngine()->resume();
 
 		} else {
 			if (!AuditoryManager::getInstance().isHeardPlayerNearby(
 				_bot.getEdict()->v.origin, 2.0 * AuditoryManager::getInstance().getHearingRadius()))
 			{
-				_log.Debug("Don't hear anyone round here.  Giving up ambush");
+				WB_LOG_INFO("Don't hear anyone round here.  Giving up ambush");
 				_bot.getNavigationEngine()->resume();
 			}
 		}

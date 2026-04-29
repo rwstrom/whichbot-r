@@ -33,14 +33,13 @@
 #include<cstring>
 #include <iomanip>
 #include <sstream>
-
-Log NetMessageElement::_log("NetMessageElement.cpp");
+#include "framework/Log.h"
 
 NetMessageElement::NetMessageElement(void* newRock, eNetMessageType newType) :
 type(newType)
 {
 	if (newRock == NULL) {
-		_log.Warn("Warning: null network message intercepted, game DLL may be broken [msg type=%d]", newType);
+		WB_LOG_ERROR("Warning: null network message intercepted, game DLL may be broken [msg type={}]", (int)newType);
 	}
 
 	int strLength = 0;

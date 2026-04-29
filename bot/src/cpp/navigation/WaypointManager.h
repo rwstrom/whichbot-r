@@ -35,7 +35,6 @@
 #include "BotTypedefs.h"
 #include "engine/PathManager.h"
 #include "model/TerrainData.h"
-#include "framework/Log.h"
 #include "extern/halflifesdk/extdll.h"
 #include "extern/halflifesdk/vector.h"
 #include "navigation/WaypointDebugger.h"
@@ -180,7 +179,6 @@ protected:
 
 private:
 
-    static Log _log;
 };
 
 #endif // __NAVIGATION_WAYPOINTMANAGER_H

@@ -35,23 +35,48 @@
 #ifndef __FRAMEWORK_LOG_H
 #define __FRAMEWORK_LOG_H
 
-class Log
+#include <format>
+#include <print>
+#include <source_location>
+#include <string>
+#include <string_view>
+
+namespace wb_log
 {
-public:
-    
-    Log(const char* name);
+constexpr std::string getFileName(const std::source_location& path)
+{
+    std::string fname(path.file_name());
+    auto last = fname.find_last_of("/");
+    if(last == std::string::npos) return fname;
+    return fname.substr(last+1);
+}
+enum class LogLevel { Info, Warn, Error, Debug, All };
 
-	void Warn(const char* msg, ...);
+std::array<bool, static_cast<size_t>(LogLevel::All)+1> enabled{{true,true,true,false,false}};
 
-    void Debug(const char* msg, ...);
+template <typename... Args>
+void log_impl(LogLevel level, 
+              const std::source_location loc, 
+              std::format_string<Args...> fmt, 
+              Args&&... args) 
+{
+    std::string_view level_str;
+    switch (level) {
+        case LogLevel::Info:  level_str = "INFO";  break;
+        case LogLevel::Warn:  level_str = "WARN";  break;
+        case LogLevel::Error: level_str = "ERROR"; break;
+        case LogLevel::Debug: level_str = "DEBUG"; break;
+    }
 
-    void ConsoleLog(const char* msg);
-
-    void FileLog(const char* msg);
-
-protected:
-
-    const char* _name;
-};
-
+    std::println("[{}] {}:{}: {}", 
+                 level_str, 
+                 getFileName(loc), 
+                 loc.line(), 
+                 std::format(fmt, std::forward<Args>(args)...));
+}
+};// End namespace wb
+#define WB_LOG_INFO(fmt, ...)  wb_log::log_impl(wb_log::LogLevel::Info,  std::source_location::current(), fmt, ##__VA_ARGS__)
+#define WB_LOG_WARN(fmt, ...)  wb_log::log_impl(wb_log::LogLevel::Warn,  std::source_location::current(), fmt, ##__VA_ARGS__)
+#define WB_LOG_ERROR(fmt, ...) wb_log::log_impl(wb_log::LogLevel::Error, std::source_location::current(), fmt, ##__VA_ARGS__)
+#define WB_LOG_DEBUG(fmt, ...) wb_log::log_impl(wb_log::LogLevel::Debug, std::source_location::current(), fmt, ##__VA_ARGS__)
 #endif // __FRAMEWORK_LOG_H

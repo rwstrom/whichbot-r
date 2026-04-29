@@ -45,9 +45,8 @@
 #include "config/Config.h"
 #include "config/TranslationManager.h"
 #include "strategy/FleeStrategy.h"
+#include "framework/Log.h"
 
-
-Log Bot::_log("Bot.cpp");
 
 const float DEFAULT_REWARD_FACTOR = 1.0;
 
@@ -631,7 +630,7 @@ bool Bot::selectWeapon(Target* pTarget, float range, bool shouldUseMeleeAttack)
                     if (gpGlobals->time > lastTimeWeaponFired + wpn.min_fire_delay) {
                         float currentEnergy = getEnergy();
                         if (currentEnergy >= wpn.min_energy) {
-                            //_log.Debug("Using weapon %s", wpn.weapon_name);
+                            //WB_LOG_INFO("Using weapon %s", wpn.weapon_name);
         					selectThisWpn = true;
                         }
                     }
@@ -671,7 +670,7 @@ bool Bot::selectWeapon(int wpnId)
 
     if (gpGlobals->time > getProperty(kLastWeaponChangeTime) + WEAPON_CHANGE_TIME)
     {
-        //_log.Debug("Selected weapon %s", wpn.weapon_name);
+        //WB_LOG_INFO("Selected weapon %s", wpn.weapon_name);
         selectItem(wpn.weapon_name);
         _currentWeaponId = wpn.iId;
         setProperty(kLastWeaponChangeTime);
@@ -828,7 +827,7 @@ void Bot::checkPackEvolution()
 	if (pInfo != NULL) {
 		Bot* pLeader = pInfo->getLeader();
 		if (pLeader != NULL && this != pLeader && _evolution > pLeader->getEvolution()) {
-			_log.Debug("Bot evolving into pack leader");
+			WB_LOG_INFO("Bot evolving into pack leader");
 			HiveMind::getPackManager().promoteBot(*this);
 		}
 	}
@@ -843,7 +842,7 @@ void Bot::handleDamage(byte armourDamage, byte healthDamage, [[maybe_unused]] co
 	* Disable this call by commenting out registerHandle call in NetMessageHandlers.
 	*/
 
-	_log.Debug("Handling damage [armour=%d, health=%d]", armourDamage, healthDamage);
+	WB_LOG_INFO("Handling damage [armour={}, health={}]", armourDamage, healthDamage);
 	// ok, let's see if we can find the damage dealer
 	if(_entity.getEdict()->v.dmg_inflictor && _entity.getEdict()->v.dmg_inflictor->v.owner)
 	{

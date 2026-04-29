@@ -33,13 +33,13 @@
 #include "BotManager.h"
 #include "worldstate/WorldStateUtil.h"
 #include "config/Config.h"
+#include "framework/Log.h"
 
 static const float WALK_SPEED = 100;
 static const float TRACE_TIMEOUT = 50.0; // listen traces time out after this
 
 AuditoryManager AuditoryManager::_singleton;
 
-Log AuditoryManager::_log("AuditoryManager.cpp");
 
 
 AuditoryManager::AuditoryManager() :
@@ -76,7 +76,7 @@ void AuditoryManager::listenForSounds(const Vector& origin, float range)
             
             if (WorldStateUtil::isPlayerPresent(pPlayerEdict) && pPlayerEdict->v.team == MARINE_TEAM && pPlayerEdict->v.deadflag == DEAD_NO) {
                 Vector relativeVector = pPlayerEdict->v.origin - origin;
-				//_log.Debug("Player is at range %f", relativeVector.Length());
+				//WB_LOG_INFO("Player is at range %f", relativeVector.Length());
                 if (relativeVector.Length() <= range) {
                     checkIfPlayerNoisy(pPlayerEdict);
                 }
@@ -107,7 +107,7 @@ void AuditoryManager::markAllMarinesHeard()
 void AuditoryManager::checkIfPlayerNoisy(edict_t* pPlayerEdict)
 {
     if (isPlayerNoisy(pPlayerEdict)) {
-        _log.Debug("Heard player");
+        WB_LOG_INFO("Heard player");
         addTrace(pPlayerEdict);
     }
 }
@@ -119,7 +119,7 @@ bool AuditoryManager::botIsInRange(edict_t* pTargetEdict, float range)
 		Bot* pBot = *ii;
 		if (pBot->getEdict() != NULL) {
 			Vector relativeVec(pBot->getEdict()->v.origin - pTargetEdict->v.origin);
-			//_log.Debug("Player is at range %f", relativeVec.Length());
+			//WB_LOG_INFO("Player is at range %f", relativeVec.Length());
 			if (relativeVec.Length() <= range) {
 				return true;
 			}
@@ -173,12 +173,12 @@ bool AuditoryManager::wasPlayerHeard(edict_t* pPlayerEdict)
 
 bool AuditoryManager::isHeardPlayerNearby(const Vector& origin, float range)
 {
-	_log.Debug("Checking for heard players [numTraces=%d, range=%f]", _traces.size(), range);
+	WB_LOG_INFO("Checking for heard players [numTraces={}, range={}]", _traces.size(), range);
     for (tTraceMap::iterator ii = _traces.begin(); ii != _traces.end(); ii++) {
         AuditoryTrace* pTrace = ii->second;
         if (pTrace->getEdict() != NULL) {
             Vector relativeVector = origin - pTrace->getPosition();
-			_log.Debug("Range to heard player is %f", relativeVector.Length());
+			WB_LOG_INFO("Range to heard player is {}", relativeVector.Length());
             if (range >= relativeVector.Length()) {
 				return true;
             }

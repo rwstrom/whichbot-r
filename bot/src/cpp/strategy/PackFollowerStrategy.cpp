@@ -36,9 +36,8 @@
 #include "strategy/PackFollowerStrategy.h"
 #include "strategy/FleeStrategy.h"
 #include "BotManager.h"
+#include "framework/Log.h"
 
-
-Log PackFollowerStrategy::_log( "strategy/PackFollowerStrategy.cpp");
 
 
 PackFollowerStrategy::PackFollowerStrategy(PackInfo& wolfPack, Bot& bot) :
@@ -70,7 +69,7 @@ void PackFollowerStrategy::getRewards (std::vector<Reward>& rewards, [[maybe_unu
 void PackFollowerStrategy::visitedWaypoint([[maybe_unused]] tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 	if (_wolfPack.isLeaderCloseBy(_bot)) {
-		_log.Debug("We're right next to the leader.");
+		WB_LOG_INFO("We're right next to the leader.");
         if ((_bot.getNavigationEngine() != NULL) && !FleeStrategy::botIsScared(_bot)) {
             _bot.getNavigationEngine()->pause();
         }
@@ -80,7 +79,7 @@ void PackFollowerStrategy::visitedWaypoint([[maybe_unused]] tNodeId wptId, [[may
 void PackFollowerStrategy::waitedAtWaypoint([[maybe_unused]] tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 	if (!_wolfPack.isLeaderCloseBy(_bot)) {
-		_log.Debug("Leader's moving again.  Resuming navigation.");
+		WB_LOG_INFO("Leader's moving again.  Resuming navigation.");
         if (_bot.getNavigationEngine() != NULL) {
             _bot.getNavigationEngine()->resume();
         }

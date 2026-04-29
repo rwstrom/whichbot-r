@@ -37,6 +37,7 @@
 #include "sensory/Target.h"
 #include "strategy/HiveMind.h"
 #include "worldstate/WorldStateUtil.h"
+#include "framework/Log.h"
 
 const float CLOSE_ENOUGH_TO_BUILD = 80.0;
 const float CLOSE_ENOUGH_TO_MOVE_TO = 500.0;
@@ -44,7 +45,6 @@ const float CLOSE_ENOUGH_TO_HIVE = 1000.0;
 const float BUILDABLE_CHECK_UPDATE = 0.2;
 const Vector NOT_FOUND(-100000, -100000, -10000);
 
-Log BuildNavMethod::_log("BuildNavMethod.cpp");
 
 BuildNavMethod::BuildNavMethod(Bot& bot, eEntityType entityTypeToBuild) :
 	_entityTypeToBuild(entityTypeToBuild),
@@ -109,7 +109,7 @@ NavigationMethod* BuildNavMethod::navigate()
         if (!_buildingPlanted && _entityTypeToBuild != kHive) {
             tNodeId nearestWaypointId = gpBotManager->getWaypointManager().getNearestWaypoint(
                 kGorge, _bot.getEdict()->v.origin, _bot.getEdict());
-            _log.Debug("Marking waypoint %d as blacklisted for building", nearestWaypointId);
+            WB_LOG_INFO("Marking waypoint {} as blacklisted for building", nearestWaypointId);
             _bot.failedToBuildAt(nearestWaypointId);
         }
     	return new WaypointNavMethod(_bot, false);

@@ -37,7 +37,6 @@
 #include "strategy/PackInfo.h"
 #include "strategy/Strategy.h"
 #include "extern/halflifesdk/extdll.h"
-#include "framework/Log.h"
 using namespace wb_pathematics;
 
 class PackFollowerStrategy : public Strategy
@@ -63,7 +62,6 @@ protected:
 
 	Bot& _bot;
 
-	static Log _log;
 };
 
 #endif // __STRATEGY_PACKFOLLOWERSTRATEGY_H

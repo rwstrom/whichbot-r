@@ -33,7 +33,6 @@
 #define __CONFIG_TRANSLATIONMANAGER_H
 
 #include "BotTypedefs.h"
-#include "framework/Log.h"
 #include <unordered_map>
 
 class TranslationManager
@@ -54,7 +53,6 @@ protected:
 
 private:
 
-    static Log _log;
 };
 
 #endif // __CONFIG_TRANSLATIONMANAGER_H

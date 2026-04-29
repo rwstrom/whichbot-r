@@ -36,7 +36,7 @@
 #include "strategy/HiveMind.h"
 #include "BotManager.h"
 
-Log netMsgLog("NetMessageDispatcher.cpp");
+
 
 
 void parseInitialHiveStatusData (const NetMessage& msg);
@@ -55,7 +55,7 @@ void handleNetAreaInfoMsg(const NetMessage& msg)
 				Vector topRight(msg.getFloatAt(4), msg.getFloatAt(5), 100000);
 				AreaInfo info(areaName, bottomLeft, topRight);
 		    	AreaManager::addArea(info);
-				netMsgLog.Debug("Added area %s", areaName);
+				WB_LOG_DEBUG("Added area {}", areaName);
     		}
         }
     }
@@ -73,7 +73,7 @@ void handleTraitsAvailableMsg(const NetMessage& msg)
 
     	for (int ii = 0; ii < numUpgradesAvail; ii++) {
 	    	byte traitId = msg.getByteAt(2 + ii);
-		    netMsgLog.Debug("Trait %d available", traitId);
+		    WB_LOG_DEBUG("Trait {} available", traitId);
 
             HiveManager::addTraitLevel(traitId);
 	    }
@@ -89,17 +89,17 @@ void handleHiveStatusMsg(const NetMessage& msg)
 		if (msg.getByteAt(1) == 7)
 		{
 			parseInitialHiveStatusData(msg);
-			netMsgLog.Debug("Handling initial hive status message");
+			WB_LOG_DEBUG("Handling initial hive status message");
 		}
 		else
 		{
 			parseHiveStatusUpdateData(msg,maxHives);
-			netMsgLog.Debug("Handling hive status message");
+			WB_LOG_DEBUG("Handling hive status message");
 		}
 	}
 	else
 	{
-		netMsgLog.ConsoleLog("WARNING: Unexpected hive count in hive status message");
+		WB_LOG_ERROR("WARNING: Unexpected hive count in hive status message");
 	}
 	
 	//netMsgLog.Debug(msg.toString().c_str());
@@ -170,9 +170,9 @@ void parseInitialHiveStatusData (const NetMessage& msg)
                 HiveInfo info(ii, pEntity);
                 info.updateHealth(health);
                 HiveManager::addHive(info);
-                netMsgLog.Debug("parseInitialHiveStatusData:  Added hiveId=%d", ii);
+                WB_LOG_DEBUG("parseInitialHiveStatusData:  Added hiveId={}", ii);
 				if (health > 0) {
-					netMsgLog.Debug("parseInitialHiveStatusData:  Initial alien hive is %d", ii);
+					WB_LOG_DEBUG("parseInitialHiveStatusData:  Initial alien hive is {}", ii);
 				}
                 // TODO:  The rest of the hive data is being dropped on the floor for the time being.
             }
@@ -220,17 +220,17 @@ void parseHiveStatusUpdateData (const NetMessage& msg, [[maybe_unused]] int expe
 				if (hiveState == 0)
 				{
 					
-					netMsgLog.Debug("Hive %d is dead.",hiveId);
+					WB_LOG_DEBUG("Hive {} is dead.",hiveId);
 				}
 				else if (hiveState < 6)
 				{
 					
-					netMsgLog.Debug("Hive %d Gestating.",hiveId);
+					WB_LOG_DEBUG("Hive {} Gestating.",hiveId);
 				}
 				else
 				{
 					
-					netMsgLog.Debug("Hive %d Complete.",hiveId);
+					WB_LOG_DEBUG("Hive {} Complete.",hiveId);
 				}
 			}
 			hiveId++;
@@ -262,7 +262,7 @@ void parseHiveStatusUpdateData (const NetMessage& msg, [[maybe_unused]] int expe
 			}
 		default:
 			ii++;
-			netMsgLog.Debug("WARNING:Unknown Hive message type %d.",msgType);
+			WB_LOG_DEBUG("WARNING:Unknown Hive message type {}.",msgType);
 			break;
 		}
 	}
@@ -280,7 +280,7 @@ edict_t* getHiveEntity (Vector& position)
 				return pEntity->edict();
 		}
 	}
-	netMsgLog.ConsoleLog ("ERROR: no hive found at given position");
+	WB_LOG_ERROR("ERROR: no hive found at given position");
 	return NULL;
 }
 
@@ -303,7 +303,7 @@ void handleHiveInfoMsg(const NetMessage& msg)
 		break;
 
 	default:
-		netMsgLog.Debug("WARNING:Unknown hive info type message %d", hiveInfoType);
+		WB_LOG_DEBUG("WARNING:Unknown hive info type message {}", hiveInfoType);
 		break;
 	}
 }
@@ -358,12 +358,12 @@ void handleDamage(const NetMessage& msg)
 				pBot->handleDamage(msg.getByteAt(0), msg.getByteAt(1), damageOrigin);
 
 			} else {
-				netMsgLog.Debug("Took damage, but don't care due to type");
+				WB_LOG_DEBUG("Took damage, but don't care due to type");
 			}
 
 
 		} else {
-			netMsgLog.Warn("Unexpected message size for damage");
+			WB_LOG_ERROR("Unexpected message size for damage");
 		}
 	}
 }

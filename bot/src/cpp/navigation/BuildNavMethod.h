@@ -36,7 +36,6 @@
 #include "Bot.h"
 #include "navigation/NavigationMethod.h"
 #include "navigation/BotMovement.h"
-#include "framework/Log.h"
 #include "config/EntityInfo.h"
 
 class BuildNavMethod : public NavigationMethod
@@ -80,7 +79,6 @@ protected:
 
 private:
 
-    static Log _log;
 };
 
 #endif

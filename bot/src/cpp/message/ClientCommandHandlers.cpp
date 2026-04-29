@@ -37,7 +37,7 @@
 #include "worldstate/AreaManager.h"
 #include "strategy/HiveMind.h"
 
-static Log _log("ClientCommandDispatcher.cpp");
+
 
 void handleBotAdd([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
 {
@@ -81,7 +81,7 @@ void handleLogMessage([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::ve
 {
     if (args.size() == 2) {
         std::string msg = args[1];
-		_log.FileLog(msg.c_str());
+		WB_LOG_DEBUG("{}",msg);
     }
 }
 

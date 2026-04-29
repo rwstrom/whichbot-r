@@ -34,7 +34,6 @@
 
 #include "BotTypedefs.h"
 #include "Bot.h"
-#include "framework/Log.h"
 #include "strategy/PackInfo.h"
 
 class PackManager
@@ -69,7 +68,6 @@ protected:
 
 	std::vector<PackInfo*> _wolfPacks;
 
-	static Log _log;
 };
 
 #endif // __STRATEGY_PACKMANAGER_H

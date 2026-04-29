@@ -32,10 +32,10 @@
 #include "combat/CombatStrategy.h"
 #include "BotManager.h"
 #include "strategy/FleeStrategy.h"
+#include "framework/Log.h"
 
 const float TARGET_REWARD = 100.0;
 
-Log CombatStrategy::_log("CombatStrategy.cpp");
 
 CombatStrategy::CombatStrategy(Bot& bot) :
 	_bot(bot),
@@ -83,7 +83,7 @@ void CombatStrategy::calculateTargetWaypoint()
 void CombatStrategy::visitedWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 	if (wptId == _targetWptId) {
-		_log.Debug("Reached target waypoint");
+		WB_LOG_INFO("Reached target waypoint");
 	}
 }
 

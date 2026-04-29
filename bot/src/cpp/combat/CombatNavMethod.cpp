@@ -41,6 +41,7 @@
 #include "config/TranslationManager.h"
 #include "worldstate/AreaManager.h"
 #include "worldstate/WorldStateUtil.h"
+#include "framework/Log.h"
 
 const float MIN_MINE_RANGE = 256.0;
 
@@ -56,7 +57,7 @@ const float MELEE_RANGE = 100.0;
 
 const float AIM_TIME = 0.1;
 
-Log CombatNavMethod::_log("CombatNavMethod.cpp");
+
 
 CombatNavMethod::CombatNavMethod(Bot& bot) :
     _bot(bot),
@@ -153,7 +154,7 @@ NavigationMethod* CombatNavMethod::navigate()
     }
 	
     if ((gpGlobals->time - _lastTargetSeenTime) > 5.0) {
-        _log.Debug("Timing out target");
+        WB_LOG_INFO("Timing out target");
         setTarget(NULL);
     }
 	
@@ -238,7 +239,7 @@ void CombatNavMethod::attack()
             }
 
         } else {
-            _log.Debug("Not attacking, cloaked");
+            WB_LOG_INFO("Not attacking, cloaked");
         }
 
         if (range < nearTargetDistance && (_bot.getEvolution() == kFade || _bot.getEvolution() == kOnos))
@@ -342,7 +343,7 @@ void CombatNavMethod::checkForTargetDeath()
     if (!_bot.getTarget()->isValid() || (_bot.getTarget()->getEntity().getEdict()->v.health <= 0)) {
 		_bot.getEdict()->v.impulse = Config::getInstance().getImpulse(IMPULSE_CHUCKLE);
 		if (_bot.getTarget()->getInfo()->isBuilding()) {
-			_log.Debug("Destroyed building %s, removing influencing entity", _targetName.c_str());
+			WB_LOG_INFO("Destroyed building {}, removing influencing entity", _targetName);
 			HiveMind::entityDestroyed(_bot.getTarget()->getEntity().getEdict());
 			Bot* pBot = gpBotManager->getBot(_bot.getEdict());
 			if (pBot != NULL) {
@@ -354,7 +355,7 @@ void CombatNavMethod::checkForTargetDeath()
 				}
 			}
 		} else {
-			_log.Debug("Ate a %s", _bot.getTarget()->getInfo()->getClassname().c_str());
+			WB_LOG_INFO("Ate a {}", _bot.getTarget()->getInfo()->getClassname());
 		}
 		
 		setTarget(NULL);

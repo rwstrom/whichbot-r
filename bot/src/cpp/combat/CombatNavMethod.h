@@ -37,7 +37,6 @@
 #include "navigation/BotMovement.h"
 #include "navigation/WaypointNavMethod.h"
 #include "sensory/BotSensor.h"
-#include "framework/Log.h"
 #include "engine/PathManager.h"
 
 typedef struct
@@ -113,7 +112,6 @@ protected:
 
 private:
 
-	static Log _log;
 };
 
 

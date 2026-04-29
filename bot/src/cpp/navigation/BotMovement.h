@@ -35,7 +35,7 @@
 #include "BotTypedefs.h"
 class Bot;
 #include "extern/halflifesdk/util.h"
-#include "framework/Log.h"
+
 
 // Adapted from hullu's Unstuck Pro metamod.
 extern bool moveOutsideEntity(edict_t* pEntity);
@@ -211,7 +211,6 @@ protected:
 private:
 
 	void drawViewDebugBeam () const;
-    static Log _log;
 };
 
 #endif // __NAVIGATION_BOTMOVEMENT_H

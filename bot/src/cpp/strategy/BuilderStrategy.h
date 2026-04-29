@@ -35,7 +35,6 @@
 #include "BotTypedefs.h"
 #include "Strategy.h"
 #include "Bot.h"
-#include "framework/Log.h"
 #include "worldstate/HiveManager.h"
 
 enum eBuildPlan
@@ -106,7 +105,6 @@ protected:
 
 private:
 
-	static Log _log;
 };
 
 

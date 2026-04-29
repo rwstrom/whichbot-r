@@ -39,7 +39,7 @@
 #include "worldstate/HiveManager.h"
 #include "worldstate/WorldStateUtil.h"
 #include "extern/metamod/meta_api.h"
-
+#include "framework/Log.h"
 
 static double DISTANCE_SCALING_FACTOR = 0.03;
 static double TIME_SCALING_FACTOR = 0.008;
@@ -336,7 +336,7 @@ void BuilderStrategy::selectBuildPlan()
 
 	switch (hiveCount) {
 	case 0:
-        _log.Debug("No hives! Selecting hive build plan.");
+        WB_LOG_INFO("No hives! Selecting hive build plan.");
 		_plan = kBuildHive;
 		break;
 		
@@ -405,22 +405,22 @@ void BuilderStrategy::selectBuildPlan()
 
 	switch (_plan) {
 	case kBuildResTower:
-		_log.Debug("Selected res tower build plan");
+		WB_LOG_INFO("Selected res tower build plan");
 		break;
 	case kBuildHive:
-		_log.Debug("Selected hive build plan");
+		WB_LOG_INFO("Selected hive build plan");
 		break;
 	case kBuildDefenseChamber:
-		_log.Debug("Selected defense chamber build plan");
+		WB_LOG_INFO("Selected defense chamber build plan");
 		break;
 	case kBuildMovementChamber:
-		_log.Debug("Selected movement chamber build build plan");
+		WB_LOG_INFO("Selected movement chamber build build plan");
 		break;
 	case kBuildSensoryChamber:
-		_log.Debug("Selected sensory chamber build build plan");
+		WB_LOG_INFO("Selected sensory chamber build build plan");
 		break;
 	case kBuildOffenseChamber:
-		_log.Debug("Selected offense chamber build plan");
+		WB_LOG_INFO("Selected offense chamber build plan");
 		break;
 	default:
 		break;
@@ -473,7 +473,7 @@ void BuilderStrategy::rewardHiveLocations(std::vector<Reward>& rewards, tHiveFil
 	}
 
     if (numRewardsGiven == 0) {
-        _log.Debug("Wanted to reward hive locations, but no empty hives found!");
+        WB_LOG_INFO("Wanted to reward hive locations, but no empty hives found!");
         _plan = kNoBuildPlan;
     }
 }
@@ -484,7 +484,7 @@ void BuilderStrategy::checkForBuildStart(tNodeId wptId, int targetRes, eEntityTy
 	if (locationIsBuildable(wptId)) {
 		_targetRes = targetRes;
 		if (_bot.getResources() < _targetRes) {
-			_log.Debug("Reached buildable wpt %d, waiting for more res", wptId);
+			WB_LOG_INFO("Reached buildable wpt {}, waiting for more res", wptId);
             if (_bot.getNavigationEngine() != NULL) {
                 _bot.getNavigationEngine()->pause();
             }
@@ -495,7 +495,7 @@ void BuilderStrategy::checkForBuildStart(tNodeId wptId, int targetRes, eEntityTy
 			// bot can't actually build but thinks it can and continuously switches in and out of build mode
 			if (gpGlobals->time > _bot.getProperty(Bot::kLastBuildTime) + MIN_BUILD_WAIT) {
                 
-                _log.Debug("Reached buildable wpt %d, switching to build mode", wptId);
+                WB_LOG_INFO("Reached buildable wpt {}, switching to build mode", wptId);
                 _bot.setProperty(Bot::kLastBuildTime);
                 if (_bot.getNavigationEngine() != NULL) {
                     _bot.getNavigationEngine()->setNextMethod(new BuildNavMethod(_bot, entityType));
@@ -512,12 +512,12 @@ void BuilderStrategy::checkBuildStatus()
 {
     if (_bot.getNavigationEngine() != NULL) {
         if (_bot.getResources() >= _targetRes) {
-            _log.Debug("Resources have reached target, switching to build mode");
+            WB_LOG_INFO("Resources have reached target, switching to build mode");
             _bot.getNavigationEngine()->resume();
             _waitStartTime = -1;
             
         } else if (gpGlobals->time > _waitStartTime + RES_WAIT_TIMEOUT) {
-            _log.Debug("Moving around to keep our feet warm");
+            WB_LOG_INFO("Moving around to keep our feet warm");
             _bot.getNavigationEngine()->resume();
             _waitStartTime = -1;
         }
@@ -551,7 +551,7 @@ void BuilderStrategy::addReward(std::vector<Reward>& rewards, tNodeId wptId, flo
 			
 			Reward reward(wptId, scaledRewardVal, TranslationManager::getTranslation(getBuildPlanName()));
 			rewards.push_back(reward);
-			//_log.Debug("Rewarding waypoint %d with reward %f", wptId, scaledRewardVal);
+			//WB_LOG_INFO("Rewarding waypoint %d with reward %f", wptId, scaledRewardVal);
 			
 			_buildableLocations.push_back(wptId);
 			//WaypointDebugger::drawDebugBeam(_bot.getEdict()->v.origin, gpBotManager->getWaypointManager().getOrigin(wptId), 255, 0, 0);
@@ -642,4 +642,3 @@ bool BuilderStrategy::otherChamberTooClose([[maybe_unused]] tNodeId wptId)
 }
 
 
-Log BuilderStrategy::_log("strategy/BuilderStrategy");

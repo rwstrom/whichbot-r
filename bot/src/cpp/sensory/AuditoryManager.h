@@ -33,7 +33,6 @@
 #define __SENSORY_AUDITORYMANAGER_H
 
 #include "BotTypedefs.h"
-#include "framework/Log.h"
 #include "AuditoryTrace.h"
 
 class AuditoryManager
@@ -80,7 +79,6 @@ private:
 
     static AuditoryManager _singleton;
 
-    static Log _log;
 };
 
 #endif // __SENSORY_AUDITORYMANAGER_H

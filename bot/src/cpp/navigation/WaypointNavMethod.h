@@ -35,7 +35,6 @@
 #include "BotTypedefs.h"
 #include "NavigationMethod.h"
 #include "BotMovement.h"
-#include "framework/Log.h"
 #include "extern/halflifesdk/util.h"
 #include "Bot.h"
 
@@ -122,7 +121,6 @@ protected:
 	bool _waitAtWp;
 private:
 
-	static Log _log; 
 };
 
 #endif // __WAYPOINT_NAV_METHOD_H

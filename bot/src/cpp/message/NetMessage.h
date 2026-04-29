@@ -35,7 +35,7 @@
 #include "BotTypedefs.h"
 #include "NetMessageElement.h"
 #include "Bot.h"
-#include "framework/Log.h"
+
 
 class NetMessage  
 {
@@ -85,7 +85,6 @@ protected:
     int _msgType;
     std::vector<NetMessageElement*> _elements;
 
-    static Log _log;
 };
 
 #endif //  __MESSAGE_NETMESSAGE_H

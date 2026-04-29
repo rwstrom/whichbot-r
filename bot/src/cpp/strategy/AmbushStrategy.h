@@ -35,7 +35,6 @@
 #include "BotTypedefs.h"
 #include "Bot.h"
 #include "strategy/Strategy.h"
-#include "framework/Log.h"
 
 class AmbushStrategy : public Strategy
 {
@@ -69,7 +68,6 @@ protected:
 
 private:
 
-    static Log _log;
 };
 
 #endif // __STRATEGY_AMBUSHSTRATEGY_H

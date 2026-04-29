@@ -35,7 +35,7 @@
 #include "NavigationMethod.h"
 #include "BotTypedefs.h"
 #include "extern/halflifesdk/extdll.h"
-#include "framework/Log.h"
+
 class Bot;
  
 class NavigationEngine  
@@ -68,7 +68,6 @@ protected:
     float _lastMovedTime;
 	bool _paused;
 
-    static Log _log;
 };
 
 #endif // __NAVIGATION_NAVIGATIONENGINE_H

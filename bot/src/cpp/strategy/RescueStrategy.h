@@ -36,7 +36,6 @@
 #include "strategy/Strategy.h"
 #include "engine/PathManager.h"
 #include "extern/halflifesdk/extdll.h"
-#include "framework/Log.h"
 using namespace wb_pathematics;
 
 class RescueStrategy : public Strategy
@@ -63,7 +62,6 @@ protected:
 
 private:
 
-	static Log _log;
 };
 
 #endif // __STRATEGY_RESCUESTRATEGY_H

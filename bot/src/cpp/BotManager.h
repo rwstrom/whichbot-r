@@ -36,7 +36,6 @@
 #include "Bot.h"
 #include "BotManager.h"
 #include "config/Config.h"
-#include "framework/Log.h"
 #include "message/ClientCommandDispatcher.h"
 #include "message/NetMessageDispatcher.h"
 #include "navigation/WaypointManager.h"
@@ -151,7 +150,6 @@ protected:
 
 private:
 
-    static Log s_log;
 };
 
 extern BotManager* gpBotManager;

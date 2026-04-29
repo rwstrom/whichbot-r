@@ -39,9 +39,8 @@
 #include "strategy/HiveMind.h"
 #include "strategy/RescueStrategy.h"
 #include "worldstate/AreaManager.h"
+#include "framework/Log.h"
 
-
-Log RescueStrategy::_log("strategy/RescueStrategy.cpp");
 
 static tReward getConfiguredReward(const char* entityClassName);
 
@@ -69,7 +68,7 @@ void RescueStrategy::getRewards(std::vector<Reward>& rewards, [[maybe_unused]] t
 
 		} else {
 			const char* className = _currentRescueTarget.getClassname();
-			_log.Debug("Rescue target [%s] hasn't been attacked in a while.  Selecting new rescue target if any", className);
+			WB_LOG_INFO("Rescue target [{}] hasn't been attacked in a while.  Selecting new rescue target if any", className);
 		}
 	}
 
@@ -106,7 +105,7 @@ void RescueStrategy::rewardBot(std::vector<Reward>& rewards)
 		&& _bot.getPathManager().nodeIdValid(rescueWaypointId)) {
 
 		const char* className = _currentRescueTarget.getClassname();
-		_log.Debug("Attempting to rescue %s at waypoint %d (%s)", className, rescueWaypointId,
+		WB_LOG_INFO("Attempting to rescue {} at waypoint {} ({})", className, rescueWaypointId,
 			   TranslationManager::getTranslation(
 			       AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(rescueWaypointId))).c_str());
 

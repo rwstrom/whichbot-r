@@ -31,12 +31,12 @@
 
 #include "NavigationEngine.h"
 #include "BotManager.h"
+#include "framework/Log.h"
 
 const float MOVEMENT_DIFFERENCE = 100.0;
 // let's kill ourselves after 90 seconds if we didn't move
 const float MOVEMENT_TIMEOUT = 90.0;
 
-Log NavigationEngine::_log("NavigationEngine.cpp");
 
 NavigationEngine::NavigationEngine(Bot& bot) :
 	_method(NULL),
@@ -130,7 +130,7 @@ void NavigationEngine::checkForMovement()
             float timeout = _paused ? 5 * MOVEMENT_TIMEOUT : MOVEMENT_TIMEOUT;
             if (gpGlobals->time - _lastMovedTime > timeout) {
                 // time to take this one off the ventilator, no sign of life here
-                _log.Debug("Didn't move for timeout period, suiciding");
+                WB_LOG_INFO("Didn't move for timeout period, suiciding");
                 _bot.kill();
 				_lastMovedTime = gpGlobals->time;
             }

@@ -36,7 +36,7 @@
 #include "Bot.h"
 #include "strategy/Strategy.h"
 #include "sensory/BotSensor.h"
-#include "framework/Log.h"
+
 
 
 /// CombatStrategy is a strategy that attracts the bot to the nearest waypoint to its combat target, if set.
@@ -67,7 +67,6 @@ protected:
 
 private:
 
-	static Log _log;
 };
 
 #endif

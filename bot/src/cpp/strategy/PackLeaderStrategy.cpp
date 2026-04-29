@@ -39,9 +39,8 @@
 #include "strategy/PackFollowerStrategy.h"
 #include "strategy/PackLeaderStrategy.h"
 #include "strategy/FleeStrategy.h"
+#include "framework/Log.h"
 
-
-Log PackLeaderStrategy::_log("strategy/PackLeaderStrategy.cpp");
 static float CFG_PAUSE_PERIOD = 30.0f;
 static float CFG_PAUSE_LENGTH = 5.0f;
 
@@ -108,7 +107,7 @@ void PackLeaderStrategy::visitedWaypoint(tNodeId wptId, [[maybe_unused]] tEvolut
     case PackInfo::kNotSlaved:
 	    if ((gpGlobals->time > _lastPauseTime + CFG_PAUSE_PERIOD) && !_wolfPack.areAllFollowersCloseBy()) {
             if ((_leader.getNavigationEngine() != NULL) && !FleeStrategy::botIsScared(_leader)) {
-    		    _log.Debug("Hmm, can't see my followers.  Waiting at %d for laggards to catch up.", wptId);
+    		    WB_LOG_INFO("Hmm, can't see my followers.  Waiting at {} for laggards to catch up.", wptId);
                 _leader.getNavigationEngine()->pause();
     		    _lastPauseTime = gpGlobals->time;
             }
@@ -155,7 +154,7 @@ void PackLeaderStrategy::waitedAtWaypoint([[maybe_unused]] tNodeId wptId, [[mayb
     }
 
     if (_leader.getNavigationEngine() != NULL && resume) {
-		_log.Debug("Resuming normal navigation.");
+		WB_LOG_INFO("Resuming normal navigation.");
         _leader.getNavigationEngine()->resume();
     }
 }

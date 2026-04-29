@@ -43,12 +43,11 @@
 #include "BotManager.h"
 #include "worldstate/HiveManager.h"
 #include "worldstate/WorldStateUtil.h"
-
+#include "framework/Log.h"
 
 const float RANDOM_VISIT_TIME_VARIANCE = 300;
 std::vector<float> HiveMind::_visitTimes;
 EntityRegistry HiveMind::_entities;
-Log HiveMind::_log("strategy/HiveMind");
 PackManager HiveMind::_wolfPackMgr;
 tEvolution HiveMind::_lifeformOverride = kInvalidEvolution;
 

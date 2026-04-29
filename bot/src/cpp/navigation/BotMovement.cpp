@@ -41,8 +41,7 @@
 #include "worldstate/WorldStateUtil.h"
 #include "strategy/FleeStrategy.h"
 #include "worldstate/HiveManager.h"
-
-Log BotMovement::_log("BotMovement.cpp");
+#include "framework/Log.h"
 
 const float JUMP_DISTANCE = 50.0;
 const float LATERAL_LOOKAHEAD_DISTANCE = 70.0;
@@ -308,13 +307,13 @@ bool BotMovement::canWeFeelTheTarget(const Vector& targetVector, tEvolution evol
 	Vector vecToHitOrigin = calculateVector(_bot.getEdict()->v.origin, targetPitchRad, targetYawRad, length);
 	Vector vecToTarget = vecToHitOrigin - targetVector;
 
-	//_log.Debug("hit origin to target length = %f", vecToTarget.Length());
+	//WB_LOG_INFO("hit origin to target length = %f", vecToTarget.Length());
 
 	if (vecToTarget.Length() < _minTargetRadius) {
-		//_log.Debug("We can head towards target again.");
+		//WB_LOG_INFO("We can head towards target again.");
 		return true;
 	} else {
-		//_log.Debug("Still can't feel our target");
+		//WB_LOG_INFO("Still can't feel our target");
 		return false;
 	}
 }
@@ -371,7 +370,7 @@ void BotMovement::moveToTarget (const Vector& targetVector, tEvolution evolution
 	float relativeTargetPitchDeg = targetPitchDeg - _bot.getEdict()->v.idealpitch;
 	//float relativeTargetYawDeg = targetYawDeg - _bot.getEdict()->v.ideal_yaw;
 
-	//_log.Debug("relativeTargetPitchDeg=%f, relativeTargetYawDeg=%f", relativeTargetPitchDeg, relativeTargetYawDeg);
+	//WB_LOG_INFO("relativeTargetPitchDeg=%f, relativeTargetYawDeg=%f", relativeTargetPitchDeg, relativeTargetYawDeg);
 
 	// Whisker lengths should be a function of the creature's dimensions (origin height may do)
 	float lrWhiskerLength = creatureHeight * 2;
@@ -408,7 +407,7 @@ void BotMovement::moveToTarget (const Vector& targetVector, tEvolution evolution
 			correctionYawDeg = 90.0f;
 		} else {
 			if (!isTargetOverhead(relativeTargetPitchDeg)) {
-				//_log.Debug("left=%f, right=%f", leftWhiskerTr.flFraction, rightWhiskerTr.flFraction);
+				//WB_LOG_INFO("left=%f, right=%f", leftWhiskerTr.flFraction, rightWhiskerTr.flFraction);
 				if (leftWhiskerTr.flFraction != 1.0) {
 					correctionYawDeg = ((leftWhiskerTr.flFraction - 0.5)/0.5);
 				}
@@ -462,8 +461,8 @@ void BotMovement::moveToTarget (const Vector& targetVector, tEvolution evolution
 		}
 	}
 
-	//_log.Debug("whisker:  correctionYawDeg=%f, correctionPitchDeg=%f", correctionYawDeg, correctionPitchDeg);
-	// _log.Debug("before:  idealpitch=%f, ideal_yaw=%f", _bot.getEdict()->v.idealpitch, _bot.getEdict()->v.ideal_yaw);
+	//WB_LOG_INFO("whisker:  correctionYawDeg=%f, correctionPitchDeg=%f", correctionYawDeg, correctionPitchDeg);
+	// WB_LOG_INFO("before:  idealpitch=%f, ideal_yaw=%f", _bot.getEdict()->v.idealpitch, _bot.getEdict()->v.ideal_yaw);
 
 	float fabsCorrectionYawDeg = fabs(correctionYawDeg);
 	float fabsCorrectionPitchDeg = fabs(correctionPitchDeg);
@@ -504,7 +503,7 @@ void BotMovement::moveToTarget (const Vector& targetVector, tEvolution evolution
         }
 	}
 
-	// _log.Debug("after:  idealpitch=%f, ideal_yaw=%f", _bot.getEdict()->v.idealpitch, _bot.getEdict()->v.ideal_yaw);
+	// WB_LOG_INFO("after:  idealpitch=%f, ideal_yaw=%f", _bot.getEdict()->v.idealpitch, _bot.getEdict()->v.ideal_yaw);
 }
 
 
@@ -649,7 +648,7 @@ void BotMovement::reactToCollision (TraceResult& tr)
         // hmm, something there.  if it's an alien building, let's try to hop over it.
         const char* classname = STRING(tr.pHit->v.classname);
         
-		// _log.Debug("We've run into a %s with the %s whisker.", classname, whiskerName);
+		// WB_LOG_INFO("We've run into a %s with the %s whisker.", classname, whiskerName);
         
 		EntityInfo* info = Config::getInstance().getEntityInfo(classname);
         if (info != NULL) {
@@ -779,7 +778,7 @@ void BotMovement::move(tEvolution evolution)
 		moveDirectlyTowardsTarget(_targetVector, evolution);
 		if (!_bot.isCharging()) //Don't stop when charging 
 			_speed.z = 0;
-		// _log.Debug("Arrived at target vector, minTargetRadius=%f, distance to target=%f", _minTargetRadius, getDistanceToTarget(_targetVector, evolution));
+		// WB_LOG_INFO("Arrived at target vector, minTargetRadius=%f, distance to target=%f", _minTargetRadius, getDistanceToTarget(_targetVector, evolution));
 		_arrivedAtTargetVector = true;
 
 	} else {
@@ -821,7 +820,7 @@ void BotMovement::move(tEvolution evolution)
 
 	// Finally, carry out our move instructions this frame.
 	// Apparently vertical movement doesn't do anything, we just look up and go forwards to move vertically.
-	// _log.Debug("speed=%f", _speed.z);
+	// WB_LOG_INFO("speed=%f", _speed.z);
 	if (_shouldUseMeleeAttack) {
 		_bot.getEdict()->v.button |= IN_ATTACK;
 	}

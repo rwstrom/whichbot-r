@@ -38,7 +38,6 @@
 #include "worldstate/WorldStateUtil.h"
 #include "extern/metamod/meta_api.h" //tmc - for MDLL_Use
 
-Log WaypointNavMethod::_log("WaypointNavMethod.cpp");
 
 const float WAYPOINT_HEIGHT_OFFSET = -10.0;
 const float LAST_USED_SWITCH_TIME = 2.5;
@@ -220,13 +219,13 @@ void WaypointNavMethod::navigateLost()
 {
     _nextWptId = getNearestWaypointId();
     if (_bot.getPathManager().nodeIdValid(_nextWptId)) {
-        //_log.Debug("Nearest visible waypoint is %d", _nextWptId);
+        //WB_LOG_INFO("Nearest visible waypoint is {}", _nextWptId);
         _lastWptTime = gpGlobals->time;
         _mode = SEEKING_NEAREST;
         setNextWaypointTarget();
         
     } else {
-        _log.Debug("No nearby visible waypoint found");
+        WB_LOG_INFO("No nearby visible waypoint found");
         if (_bot.getMovement() != NULL) {
             _bot.getMovement()->setRandomTarget();
         }
@@ -274,7 +273,7 @@ void WaypointNavMethod::foundRouteWaypoint()
         }
 
     } else {
-        _log.Debug("Strange - we found the route waypoint, but next wpt id was invalid");
+        WB_LOG_INFO("Strange - we found the route waypoint, but next wpt id was invalid");
     }
 
     if ((flags & W_FL_DOOR) && (gpGlobals->time > (_useButtonTime + LAST_USED_SWITCH_TIME))) {
@@ -288,7 +287,7 @@ void WaypointNavMethod::foundRouteWaypoint()
 
 	} else if ((_evolution != kSkulk) && (flags & W_FL_LIFT) && liftIsNear() && (gpGlobals->time > (_useButtonTime + LAST_USED_SWITCH_TIME))) {
 		// we have to hit the switch to move the damn lift again
-		_log.Debug("On lift.  Hitting switch to move lift...");
+		WB_LOG_INFO("On lift.  Hitting switch to move lift...");
 		_nextWptId = gpBotManager->getWaypointManager().findFlaggedWaypoint(prevWaypointId(), W_FL_LIFT_SWITCH);
 	}
 
@@ -306,19 +305,19 @@ void WaypointNavMethod::seekNearestWaypoint()
 
         if (hitWaypoint) {
             // we hit it
-            //_log.Debug("Hit nearest waypoint");
+            //WB_LOG_INFO("Hit nearest waypoint");
             foundRouteWaypoint();
             _mode = _waitAtWp ? WAIT_AT_WAYPOINT : SEEKING_REWARDS;
         } else if (_bot.getMovement()->getDistanceToTarget(_bot.getEvolution()) > LONG_DISTANCE) {
             _mode = LOST;
-            _log.Debug("Nearest waypoint %d (%s) is a suspiciously long way away, resetting", _nextWptId, TranslationManager::getTranslation(AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(_nextWptId))).c_str());
+            WB_LOG_INFO("Nearest waypoint {} ({}) is a suspiciously long way away, resetting", _nextWptId, TranslationManager::getTranslation(AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(_nextWptId))).c_str());
             
         } else {
             if (!checkStuck()) {
                 setNextWaypointTarget();
                 
             } else {
-                _log.Debug("Got stuck finding nearest waypoint, resetting...");
+                WB_LOG_INFO("Got stuck finding nearest waypoint, resetting...");
                 _mode = LOST;
             }
         }
@@ -350,7 +349,7 @@ void WaypointNavMethod::unableToFindNextWaypoint()
 {
     if (_wptHistory.size() > 0) {
         if (_mode != RETRACING_STEPS) {
-            _log.Debug("Suspect we're stuck, trying to go to %d (%s).  Going back to earliest waypoint",
+            WB_LOG_INFO("Suspect we're stuck, trying to go to {} ({}).  Going back to earliest waypoint",
                 _nextWptId,  TranslationManager::getTranslation(AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(_nextWptId))).c_str());
             updateUnreachedWaypointTravelTime();
             Edge* thisWay = _bot.getPathManager().getTerrain()->getEdge(prevWaypointId(), _nextWptId);
@@ -366,12 +365,12 @@ void WaypointNavMethod::unableToFindNextWaypoint()
             
         } else {
             _wptHistory.clear();
-            _log.Debug("Giving up on next waypoint while retracing steps.");
+            WB_LOG_INFO("Giving up on next waypoint while retracing steps.");
             giveUpOnNextWaypoint();
         }
         
     } else {
-        _log.Debug("Stuck, and no history.  Time to reboot...");
+        WB_LOG_INFO("Stuck, and no history.  Time to reboot...");
         giveUpOnNextWaypoint();
     }
 }
@@ -398,7 +397,7 @@ bool WaypointNavMethod::checkStuck()
         } else {
             // Gorges can actually get stuck inside entities thanks to a  bug, so we'll try teleporting them
             // a tad. :)
-            _log.Debug("We're stuck.  Trying special gorge unstuck teleport...");
+            WB_LOG_INFO("We're stuck.  Trying special gorge unstuck teleport...");
                 moveOutsideEntity(_bot.getEdict());
         }
 
@@ -415,13 +414,13 @@ void WaypointNavMethod::seekRewards()
 
     if (_bot.getPathManager().getTerrain() != NULL) {
         if (!_bot.getPathManager().nodeIdValid(_nextWptId)) {
-            _log.Debug("Uh-oh, can't find next waypoint id");
+            WB_LOG_INFO("Uh-oh, can't find next waypoint id");
             _mode = LOST;
             return;
         }
 
         if (_bot.getMovement()->getDistanceToTarget(_bot.getEvolution()) > LONG_DISTANCE) {
-            _log.Debug("Strange, next waypoint %d (%s) is a long way away.  Resetting to LOST", _nextWptId, TranslationManager::getTranslation(AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(_nextWptId))).c_str());
+            WB_LOG_INFO("Strange, next waypoint {} ({}) is a long way away.  Resetting to LOST", _nextWptId, TranslationManager::getTranslation(AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(_nextWptId))).c_str());
             _mode = LOST;
             return;
         }
@@ -512,10 +511,10 @@ void WaypointNavMethod::calculateNextWaypoint()
         const std::string& areaName = AreaManager::getAreaName(
             gpBotManager->getWaypointManager().getOrigin(_nextWptId));
         const std::string& locationName = TranslationManager::getTranslation(areaName);
-        //_log.Debug("Next waypoint is %d in %s", _nextWptId, locationName.c_str());
+        //WB_LOG_INFO("Next waypoint is %d in {}", _nextWptId, locationName.c_str());
                         
     } else {
-        _log.Debug("Can't get a valid next wpt from path manager.  Giving up for now...");
+        WB_LOG_INFO("Can't get a valid next wpt from path manager.  Giving up for now...");
         giveUpOnNextWaypoint();
     }
 }
@@ -523,7 +522,7 @@ void WaypointNavMethod::calculateNextWaypoint()
 
 void WaypointNavMethod::giveUpOnNextWaypoint()
 {
-    _log.Debug("Giving up on next waypoint %d", _nextWptId);
+    WB_LOG_INFO("Giving up on next waypoint {}", _nextWptId);
     // TODO - use alternate route instead of just randomly giving up
     _mode = LOST;
 
@@ -623,7 +622,7 @@ bool WaypointNavMethod::tryToUseEntity(const char* entityClassname)
             
             float minDistance = 75;
             if (distance < minDistance) {
-                _log.Debug("Using button");
+                WB_LOG_INFO("Using button");
                 //_bot.getEdict()->v.button |= IN_USE;
 				//Have the game engine push the button for us incase we missed.
 				//Some ppl considered this a cheat but I got tired of seeing them
@@ -680,7 +679,7 @@ void WaypointNavMethod::retraceSteps()
         bool hitWaypoint = didWeHitWaypoint(vecToWpt);
                 
         if (hitWaypoint) {
-            //_log.Debug("Reached next waypoint on route, %d", _nextWptId);
+            //WB_LOG_INFO("Reached next waypoint on route, %d", _nextWptId);
             _lastWptTime = gpGlobals->time;
             _wptHistory.pop_front();
             _bot.getPathManager().setRootNode(_nextWptId);
@@ -698,7 +697,7 @@ void WaypointNavMethod::retraceSteps()
         }
 
     } else {
-        _log.Debug("Invalid waypoint in retrace steps %d, going to lost mode", _nextWptId);
+        WB_LOG_INFO("Invalid waypoint in retrace steps {}, going to lost mode", _nextWptId);
         _mode = LOST;
     }
 }
@@ -726,7 +725,7 @@ void WaypointNavMethod::updateWaypointTravelTime(int prevWptId, int nextWptId, f
                     thisWay->setCost(newCost);
                     otherWay->setCost(newCost);
 
-                    // _log.Debug("Updated waypoint travel cost from %d to %d to %f from %f",
+                    // WB_LOG_INFO("Updated waypoint travel cost from %d to %d to %f from %f",
                     //            prevWptId, nextWptId, newCost, currentCost);
 
                     if (newCost > currentCost) {
@@ -749,7 +748,7 @@ void WaypointNavMethod::updateUnreachedWaypointTravelTime()
 
             float newTravelTime = prevTravelTime + WAYPOINT_NOT_REACHED_TIME_PENALTY;
 
-            _log.Debug("Updating unreached wpt travel time to %f from %f", newTravelTime, prevTravelTime);
+            WB_LOG_INFO("Updating unreached wpt travel time to {} from {}", newTravelTime, prevTravelTime);
             updateWaypointTravelTime(prevWptId, _nextWptId, newTravelTime);
         }
     }
@@ -775,7 +774,7 @@ void WaypointNavMethod::waitAtWaypoint()
 void WaypointNavMethod::waitForLift()
 {
 	if (!liftIsNear() && (gpGlobals->time < _lastWptTime + LIFT_TIMEOUT)) {
-		_log.Debug("Waiting for lift...");
+		WB_LOG_INFO("Waiting for lift...");
 		_bot.getMovement()->stop(_evolution);
 
 	} else {
@@ -798,7 +797,7 @@ bool WaypointNavMethod::liftIsNear()
 		return fabs(_lastLiftEntity.getOrigin()->z - _bot.getEdict()->v.origin.z) < LIFT_NEAR;
 	}
 	// default to true if we don't find the lift
-	_log.Debug("No lift found near lift flagged waypoints!");
+	WB_LOG_INFO("No lift found near lift flagged waypoints!");
 	return true;
 }
 

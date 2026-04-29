@@ -35,7 +35,6 @@
 #include "BotTypedefs.h"
 #include "extern/halflifesdk/extdll.h"
 #include "Bot.h"
-#include "framework/Log.h"
 
 class PackInfo  
 {
@@ -107,7 +106,6 @@ protected:
     EntityReference _playerMaster;
 	Bot* _pLeader;
 
-	static Log _log;
 };
 
 #endif // __STRATEGY_PACKINFO_H

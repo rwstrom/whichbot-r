@@ -31,8 +31,7 @@
 
 #include "BotManager.h"
 #include "strategy/PackInfo.h"
-
-Log PackInfo::_log("strategy/PackInfo.cpp");
+#include "framework/Log.h"
 
 PackInfo::PackInfo(int packId) :
     _packId(packId),

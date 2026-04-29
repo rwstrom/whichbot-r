@@ -33,7 +33,6 @@
 #define __MESSAGE_NETMESSAGEELEMENT_H
 
 #include "BotTypedefs.h"
-#include "framework/Log.h"
 
 typedef enum {
     kByte,
@@ -62,7 +61,6 @@ public:
 
 private:
 
-	static Log _log;
 };
 
 #endif // __MESSAGE_NETMESSAGEELEMENT_H

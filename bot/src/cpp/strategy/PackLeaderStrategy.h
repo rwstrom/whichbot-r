@@ -36,7 +36,6 @@
 #include "strategy/PackInfo.h"
 #include "strategy/Strategy.h"
 #include "extern/halflifesdk/extdll.h"
-#include "framework/Log.h"
 
 class PackLeaderStrategy : public Strategy
 {
@@ -67,7 +66,6 @@ protected:
 
 private:
 
-	static Log _log;
 };
 
 #endif // __STRATEGY_PACKLEADERSTRATEGY_H

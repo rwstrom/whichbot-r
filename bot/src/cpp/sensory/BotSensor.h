@@ -36,7 +36,6 @@
 #include "navigation/NavigationEngine.h"
 #include "config/EntityInfo.h"
 #include "extern/halflifesdk/extdll.h"
-#include "framework/Log.h"
 #include "worldstate/EntityReference.h"
 #include "sensory/Target.h"
 class Bot;
@@ -93,7 +92,6 @@ protected:
 
 private:
 
-	static Log _log;
 };
 
 #endif // __SENSORY_BOTSENSOR_H

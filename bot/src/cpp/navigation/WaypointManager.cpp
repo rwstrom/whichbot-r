@@ -37,11 +37,11 @@
 #include "extern/metamod/meta_api.h"
 #include "Bot.h"
 #include "worldstate/WorldStateUtil.h"
+#include "framework/Log.h"
 
 const float DEFAULT_REWARD_FACTOR = 1.0;
 const int WAYPOINT_VERSION = 4;
 
-Log WaypointManager::_log("WaypointManager.cpp");
 const Vector NOWHERE(-16000, -16000, -16000);
 const Vector3D NOWHERE3D(-16000, -16000, -16000);
 
@@ -215,7 +215,7 @@ void WaypointManager::loadWaypoints(FILE* pFile, int numWaypoints, const std::st
         int amountRead = fread(&waypoint, sizeof(waypoint), 1, pFile);
         
         if (amountRead != 1) {
-            _log.Debug("Couldn't read waypoint %d from file %s", ii, waypointFilename.c_str());
+            WB_LOG_INFO("Couldn't read waypoint {} from file {}", ii, waypointFilename);
             break;
         }
         
@@ -233,7 +233,7 @@ void WaypointManager::loadEdges(FILE* pFile, int numWaypoints, const std::string
         short numEdges = 0;
         int amountRead = fread(&numEdges, sizeof(numEdges), 1, pFile);
         if (amountRead != 1) {
-            _log.Debug("Couldn't read numEdges for waypoint %d from file %s", ii, waypointFilename.c_str());
+            WB_LOG_INFO("Couldn't read numEdges for waypoint {} from file {}", ii, waypointFilename);
             break;
         }
         
@@ -328,7 +328,7 @@ void WaypointManager::deleteAsymmetricLinks()
         for (std::vector<Edge*>::iterator edge = edgesToDelete.begin(); edge != edgesToDelete.end(); edge++) {
             tNodeId startId = (*edge)->getStartId();
             tNodeId endId = (*edge)->getEndId();
-            _log.Debug("Edge from %d to %d doesn't have a reverse link.  Deleting it.", startId, endId);
+            WB_LOG_INFO("Edge from {} to {} doesn't have a reverse link.  Deleting it.", startId, endId);
             _terrain[evolution]->deleteEdge((*edge)->getStartId(), (*edge)->getEndId());
             numDeletedEdges++;
             delete (*edge);

@@ -29,7 +29,7 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
+#include "framework/Log.h"
 #include "extern/halflifesdk/extdll.h"
 #include "linkage/engine_intercepts.h"
 #include "extern/metamod/meta_api.h"
@@ -42,7 +42,7 @@
 #include <sstream>
 
 Bot* pCurrentThinkingBot = NULL;
-Log _log("engine_intercepts.cpp");
+
 
 void interceptMessageBegin([[maybe_unused]] int msg_dest, int msg_type, [[maybe_unused]] const float* pOrigin, edict_t* pEdict)
 {
@@ -320,7 +320,7 @@ const char* interceptGetAuthId(edict_t* pEdict)
 
 void interceptSetClientMaxspeed(const edict_t* pEdict, float newMaxSpeed)
 {
-    _log.Debug("edict %x maxspeed %f", pEdict, newMaxSpeed);
+    WB_LOG_INFO("edict {} maxspeed {}", static_cast<const void*>(pEdict), newMaxSpeed);
     RETURN_META(MRES_IGNORED);
 }
 

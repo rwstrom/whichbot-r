@@ -127,7 +127,7 @@ void WaypointDebugger::drawDebugBeam(int wptId, int red, int green, int blue)
                         start = getWptOrigin(wptId) - Vector(0, 0, 34);
                         end = start + Vector(0, 0, 68);
                     }
-					//_log.Debug("Drawing waypoint beam for %d", wptId);
+					//WB_LOG_INFO("Drawing waypoint beam for %d", wptId);
 					drawBeam(pPlayer, start, end, 30, 0, red, green, blue, 250, 5);
                 }
             }
