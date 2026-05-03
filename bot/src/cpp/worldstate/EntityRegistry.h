@@ -70,13 +70,13 @@ public:
 
 	void addEntry(edict_t* pEdict, HiveMindEntityInfo* pExtraData);
 
-	Entry* getEntry(edict_t* pEdict);
+	Entry* getEntry(edict_t* pEdict)const;
 
-	tEntrySet* getEntries(const std::string& classname);
+	tEntrySet* getEntries(const std::string& classname)const;
 
 	void removeEntry(edict_t* pEdict);
 
-	int size();
+	int size()const;
 
 	void clear();
 

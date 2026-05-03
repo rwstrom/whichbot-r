@@ -75,9 +75,9 @@ void AmbushStrategy::initializeAmbushWaypoints()
 void AmbushStrategy::getRewards(std::vector<Reward>& rewards, [[maybe_unused]] tEvolution evolution)
 {
     if (isAmbushModeActive()) {
-        for (std::vector<tNodeId>::iterator ii = _ambushWaypoints.begin(); ii != _ambushWaypoints.end(); ii++) {
+		for (auto& wptId : _ambushWaypoints) {
 			// Experiment: reward all the ambush waypoints, we'll just not stop there if there's noone around
-	        Reward reward(*ii, _ambushReward, TranslationManager::getTranslation("ambush"));
+	        Reward reward(wptId, _ambushReward, TranslationManager::getTranslation("ambush"));
 		    rewards.push_back(reward);
         }
     }
@@ -92,7 +92,7 @@ void AmbushStrategy::visitedWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution 
 			WB_LOG_INFO("Visited ambush waypoint {}", wptId);
             // we're at an ambush waypoint
             if (shouldAmbushHere(wptId)) {
-                WB_LOG_INFO("Bot ambushing at waypoint {}", wptId);
+                WB_LOG_INFO("{} ambushing at waypoint {}",(gpCurrentThinkingBot ? gpCurrentThinkingBot->getName()->c_str() : "Unknown"), wptId);
                 _bot.getNavigationEngine()->pause();
 				_bot.setProperty(Bot::kAmbushStartTime);
             }

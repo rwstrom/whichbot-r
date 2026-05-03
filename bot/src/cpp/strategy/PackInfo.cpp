@@ -77,8 +77,8 @@ void PackInfo::removeBot(Bot& bot)
 void PackInfo::assignNewLeader()
 {
 	tEvolution maxEvolution = kSkulk;
-    for (std::vector<Bot*>::iterator ii = _bots.begin(); ii != _bots.end(); ii++) {
-		Bot* pBot = (*ii);
+
+	for (auto pBot : _bots) {
 		if (pBot->getEvolution() >= maxEvolution) {
 			maxEvolution = pBot->getEvolution();
 			_pLeader = pBot;
@@ -97,9 +97,8 @@ void PackInfo::setLeader(Bot& bot)
 
 bool PackInfo::isMember (Bot& bot)
 {
-	for (std::vector<Bot*>::iterator ii = _bots.begin(); ii != _bots.end(); ++ii)
+	for (const auto packBot : _bots)
 	{
-		Bot* packBot = *ii;
 		if (packBot == &bot) {
 			return true;
 		}
@@ -121,9 +120,8 @@ bool PackInfo::areAllFollowersCloseBy ()
 	Bot* leader = getLeader();
 	assert(leader != NULL);
 
-	for (std::vector<Bot*>::iterator ii = _bots.begin(); ii != _bots.end(); ++ii)
+	for (const auto bot : _bots)
 	{
-		Bot* bot = *ii;
 		if (bot != leader) {
 			Vector v = leader->getEdict()->v.origin - bot->getEdict()->v.origin;
 			if ((!leader->getSensor()->entityIsVisible(bot->getEdict())) && (v.Length() > MAX_ALLOWABLE_FOLLOWER_DISTANCE)) {
@@ -170,9 +168,8 @@ tDistanceEstimate PackInfo::getDistanceToLaggard ()
 	edict_t* pLeaderEntity = leader->getEdict();
 	tNodeId nearestLeaderWaypointId = gpBotManager->getWaypointManager().getNearestWaypoint(leader->getEvolution(), pLeaderEntity->v.origin, pLeaderEntity);
 	if ((nearestLeaderWaypointId >= 0) && (nearestLeaderWaypointId < gpBotManager->getWaypointManager().getNumWaypoints())) {
-		for (std::vector<Bot*>::iterator ii = _bots.begin(); ii != _bots.end(); ++ii)
+		for (const auto laggard : _bots)
 		{
-			Bot* laggard = *ii;
 			if (laggard != leader) {
 				// Potential laggard
 				PathManager& laggardPathMgr = laggard->getPathManager();
@@ -215,9 +212,8 @@ tNodeId PackInfo::getLaggardNearestWaypointId ()
 	edict_t* pLeaderEntity = leader->getEdict();
 	tNodeId nearestLeaderWaypointId = gpBotManager->getWaypointManager().getNearestWaypoint(leader->getEvolution(), pLeaderEntity->v.origin, pLeaderEntity);
     if ((nearestLeaderWaypointId >= 0) && (nearestLeaderWaypointId < gpBotManager->getWaypointManager().getNumWaypoints())) {
-		for (std::vector<Bot*>::iterator ii = _bots.begin(); ii != _bots.end(); ++ii)
+		for (const auto laggard : _bots)
 		{
-			Bot* laggard = *ii;
 			if (laggard != getLeader()) {
 				// Potential laggard
 				PathManager& laggardPathMgr = laggard->getPathManager();

@@ -60,8 +60,8 @@ void AttackStrategy::getRewards(std::vector<Reward>& rewards, tEvolution evoluti
 		Config& config = Config::getInstance();
 		std::vector<EntityReference> entities = HiveMind::getEntitiesSeen();
 		
-		for (std::vector<EntityReference>::iterator ii = entities.begin(); ii != entities.end(); ii++) {
-			EntityReference entity = *ii;
+		for (auto& entity : entities) {
+			//EntityReference entity = *ii;
 			if (!entity.isNull() && (entity.getHealth() > 0)) {
 				EntityInfo* pInfo = config.getEntityInfo(entity.getClassname());
 				

@@ -56,7 +56,7 @@ constexpr std::string_view getFileName(const std::source_location& path)
 }
 enum class LogLevel { Info, Warn, Error, Debug, All };
 
-inline constinit std::array<bool, static_cast<size_t>(LogLevel::All)+1> enabled{{false,false,false,false,false}};
+inline constinit std::array<bool, static_cast<size_t>(LogLevel::All)+1> enabled{{false,false,false,true,false}};
 inline  std::unordered_set<std::string> disabledFiles{{}};
 inline constinit bool toFile = false;
 

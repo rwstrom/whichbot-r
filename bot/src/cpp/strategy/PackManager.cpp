@@ -81,9 +81,10 @@ PackInfo* PackManager::getPackInfo(Bot& bot, bool shouldAddBotToPack)
         pInfo = _wolfPacks[packId - 1];
 
     } else {
-        for (std::vector<PackInfo*>::iterator ii = _wolfPacks.begin(); ii != _wolfPacks.end(); ii++) {
-            if ((*ii)->isMember(bot)) {
-                pInfo = *ii;
+        for (auto pack : _wolfPacks) {
+            if (pack->isMember(bot)) {
+                pInfo = pack;
+				break;
             }
         }
     }
@@ -197,19 +198,19 @@ void PackManager::setFollowerStrategies(Bot& bot)
 void PackManager::enslavePacksToPlayer(edict_t* pPlayerEdict)
 {
     if (pPlayerEdict != NULL) {
-        for (std::vector<PackInfo*>::iterator ii = _wolfPacks.begin(); ii != _wolfPacks.end(); ii++) {
-            (*ii)->engagePlayerSlaveMode(pPlayerEdict);
-            Bot* pLeader = (*ii)->getLeader();
+        for (auto pack : _wolfPacks) {
+            pack->engagePlayerSlaveMode(pPlayerEdict);
+            Bot* pLeader = pack->getLeader();
             if (pLeader != NULL) {
                 pLeader->sayToTeam(TranslationManager::getTranslation("following"));
             }
         }
 
     } else {
-        for (std::vector<PackInfo*>::iterator ii = _wolfPacks.begin(); ii != _wolfPacks.end(); ii++) {
-            bool wasSlavedToPlayer = (*ii)->getSlaveMode() == PackInfo::kSlavedToPlayer;
-            (*ii)->disengageBotSlaveMode();
-			Bot* pLeader = (*ii)->getLeader();
+        for (auto pack : _wolfPacks) {
+            bool wasSlavedToPlayer = pack->getSlaveMode() == PackInfo::kSlavedToPlayer;
+            pack->disengageBotSlaveMode();
+			Bot* pLeader = pack->getLeader();
             if (pLeader != NULL && wasSlavedToPlayer) {
                 pLeader->sayToTeam(TranslationManager::getTranslation("resuming"));
             }

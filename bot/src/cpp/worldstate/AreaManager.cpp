@@ -52,9 +52,9 @@ std::string unknownAreaName("[unknown]");
 const std::string& AreaManager::getAreaName(const Vector& location)
 {
 	// ahh, the efficient joy of a linear scan.  TODO - some better way to do this
-	for (std::vector<AreaInfo*>::iterator ii = _areas.begin(); ii != _areas.end(); ii++) {
-		if (vecBetween(location, (*ii)->getBottomLeft(), (*ii)->getTopRight())) {
-			return (*ii)->getName();
+	for (const auto area : _areas) {
+		if (vecBetween(location, area->getBottomLeft(), area->getTopRight())) {
+			return area->getName();
 		}
 	}
 	return unknownAreaName;
@@ -62,9 +62,8 @@ const std::string& AreaManager::getAreaName(const Vector& location)
 
 bool AreaManager::exists(const std::string& areaName)
 {
-	// ahh, the efficient joy of a linear scan.  TODO - some better way to do this
-	for (std::vector<AreaInfo*>::iterator ii = _areas.begin(); ii != _areas.end(); ii++) {
-		if ((*ii)->getName() == areaName) {
+	for (const auto area : _areas) {
+		if (area->getName() == areaName) {
 			return true;
 		}
 	}

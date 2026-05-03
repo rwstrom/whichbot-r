@@ -61,8 +61,8 @@ HiveInfo* HiveManager::getHive (const int hiveId)
 int HiveManager::getActiveHiveCount ()
 {
     int numHives = 0;
-    for (std::vector<HiveInfo*>::iterator ii = _hives.begin(); ii != _hives.end(); ii++) {
-        float hiveHealth = (*ii)->getHealth();
+    for (const auto hive : _hives) {
+        float hiveHealth = hive->getHealth();
         if (hiveHealth == FULL_HIVE_HEALTH) {
             numHives++;
         }
@@ -72,8 +72,8 @@ int HiveManager::getActiveHiveCount ()
 
 void HiveManager::reset ()
 {
-    for (std::vector<HiveInfo*>::iterator ii = _hives.begin(); ii != _hives.end(); ++ii) {
-		delete *ii;
+    for (auto hive : _hives) {
+		delete hive;
     }
 
 	_hives.clear();

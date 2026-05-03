@@ -163,19 +163,20 @@ GetPot* Config::parseConfigFile (std::string configFileName)
 		WB_LOG_DEBUG("Parsing configuration file {}", configFileName.c_str());
 		std::vector<std::string> sections = configFile->get_section_names();
         int numSectionsFound = 0;
-		for (std::vector<std::string>::iterator ii = sections.begin(); ii != sections.end(); ++ii)
+		//for (std::vector<std::string>::iterator ii = sections.begin(); ii != sections.end(); ++ii)
+		for(auto& section: sections)
 		{
             numSectionsFound++;
-			if ((*ii).compare(0, entitySection.length(), entitySection) == 0) {
-				std::string entityName = getEntityName(*ii);
+			if (section.compare(0, entitySection.length(), entitySection) == 0) {
+				std::string entityName = getEntityName(section);
 				if (entityName.length() > 0) {
 					// Setup the variable names that we're interested in.
-					std::string typeVarName = *ii + "type";
-					std::string teamVarName = *ii + "team";
-					std::string classNameVarName = *ii + "class_name";
-					std::string defaultInfluenceVarName = *ii + "default_influence";
-					std::string isBuildingVarName = *ii + "is_building";
-					std::string attackValueVarName = *ii + "attack_value";
+					std::string typeVarName = section + "type";
+					std::string teamVarName = section + "team";
+					std::string classNameVarName = section + "class_name";
+					std::string defaultInfluenceVarName = section + "default_influence";
+					std::string isBuildingVarName = section + "is_building";
+					std::string attackValueVarName = section + "attack_value";
 
 					// Get the values from the file.
 					eEntityType entityType = (eEntityType)(*configFile)(typeVarName.c_str(), kInvalidEntity);

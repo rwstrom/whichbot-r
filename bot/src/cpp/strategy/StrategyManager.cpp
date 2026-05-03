@@ -63,12 +63,12 @@ void StrategyManager::clear()
 std::vector<Reward> StrategyManager::getRewards(tEvolution evolution)
 {
     std::vector<Reward> rewards;
-    for (std::vector<StrategyEntry*>::iterator ii = _strategies.begin(); ii != _strategies.end(); ii++) {
-        Strategy* strat = (*ii)->strategy;
+    for (auto entry : _strategies) {
+        Strategy* strat = entry->strategy;
         size_t positionBefore = rewards.size();
         strat->getRewards(rewards, evolution);
         for (size_t jj = positionBefore; jj < rewards.size(); jj++) {
-            rewards[jj].applyWeight((*ii)->weight);
+            rewards[jj].applyWeight(entry->weight);
         }
     }
     return rewards;
@@ -97,9 +97,9 @@ void StrategyManager::waitedAtWaypoint(tEvolution evolution, tNodeId nodeId)
 
 float StrategyManager::getStrategyWeight(Strategy& strat)
 {
-	for (std::vector<StrategyEntry*>::iterator ii = _strategies.begin(); ii != _strategies.end(); ii++) {
-		if (&strat == (*ii)->strategy) {
-			return (*ii)->weight;
+	for (const auto entry : _strategies) {
+		if (&strat == entry->strategy) {
+			return entry->weight;
 		}
 	}
 

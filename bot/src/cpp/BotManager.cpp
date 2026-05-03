@@ -380,12 +380,11 @@ void BotManager::enableTeamBalance(bool enable)
 
 void BotManager::terrainUpdated(tEvolution forEvolution, int /*startWptId*/, int /*endWptId*/, float costDiff)
 {
-    for (std::vector<Bot*>::iterator ii = _bots.begin(); ii != _bots.end(); ii++) {
-        Bot* thisBot = *ii;
-        assert(thisBot != NULL);
+    for (auto bot : _bots) {
+        assert(bot != NULL);
 
-        if ((thisBot != NULL) && (thisBot->getEvolution() == forEvolution)) {
-            thisBot->getPathManager().addCorrectionToApply(costDiff);
+        if ((bot != NULL) && (bot->getEvolution() == forEvolution)) {
+            bot->getPathManager().addCorrectionToApply(costDiff);
         }
     }
 }

@@ -80,17 +80,17 @@ void EntityRegistry::addEntry(edict_t* pEdict, HiveMindEntityInfo* pExtraData)
 
 
 
-EntityRegistry::Entry* EntityRegistry::getEntry(edict_t* pEdict)
+EntityRegistry::Entry* EntityRegistry::getEntry(edict_t* pEdict)const
 {
-	std::map<edict_t*, Entry*>::iterator found = _entriesByEdict.find(pEdict);
+	std::map<edict_t*, Entry*>::const_iterator found = _entriesByEdict.find(pEdict);
 	return found != _entriesByEdict.end() ? found->second : NULL;
 }
 
 
 
-EntityRegistry::tEntrySet* EntityRegistry::getEntries(const std::string& classname)
+EntityRegistry::tEntrySet* EntityRegistry::getEntries(const std::string& classname)const
 {
-	std::map<std::string, tEntrySet*>::iterator found = _entriesByName.find(classname);
+	std::map<std::string, tEntrySet*>::const_iterator found = _entriesByName.find(classname);
 	return found != _entriesByName.end() ? found->second : NULL;
 }
 
@@ -115,7 +115,7 @@ void EntityRegistry::removeEntry(edict_t* pEdict)
 }
 
 
-int EntityRegistry::size()
+int EntityRegistry::size()const
 {
 	return _entriesByEdict.size();
 }
@@ -124,10 +124,10 @@ int EntityRegistry::size()
 std::vector<EntityReference> EntityRegistry::getAllEntities()
 {
 	std::vector<EntityReference> allEntities;
-	for (std::map<edict_t*, Entry*>::iterator ii = _entriesByEdict.begin(); ii != _entriesByEdict.end(); ii++) {
-		Entry* pEntry = ii->second;
+	for (auto entry : _entriesByEdict) {
+		Entry* pEntry = entry.second;
 		if (!pEntry->entity.isNull()) {
-			allEntities.push_back(pEntry->entity);
+			allEntities.emplace_back(pEntry->entity);
 		}
 	}
 	return allEntities;
