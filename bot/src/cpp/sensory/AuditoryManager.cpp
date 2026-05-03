@@ -212,8 +212,9 @@ void AuditoryManager::removeOldEntries()
     std::vector<edict_t*> toRemove;
     for (tTraceMap::iterator ii = _traces.begin(); ii != _traces.end(); ii++) {
         AuditoryTrace* pTrace = ii->second;
-        if (pTrace->getEdict() == NULL || pTrace->getLastTimeHeard() > gpGlobals->time + TRACE_TIMEOUT) {
+        if (pTrace->getEdict() == NULL || pTrace->getLastTimeHeard() + TRACE_TIMEOUT < gpGlobals->time)  {
             toRemove.push_back(ii->first);
+            WB_LOG_DEBUG("{} Removing trace for player {} because it is old",(gpCurrentThinkingBot ? gpCurrentThinkingBot->getName()->c_str() : "Unknown"), STRING(ii->first->v.netname));
         }
     }
 
