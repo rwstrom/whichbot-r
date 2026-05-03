@@ -40,19 +40,25 @@
 #include <source_location>
 #include <string>
 #include <string_view>
+#include <unordered_set>
+
+#include "extern/halflifesdk/extdll.h"
+#include "extern/metamod/meta_api.h"
 
 namespace wb_log
 {
-constexpr std::string getFileName(const std::source_location& path)
+constexpr std::string_view getFileName(const std::source_location& path)
 {
-    std::string fname(path.file_name());
+    std::string_view fname(path.file_name());
     auto last = fname.find_last_of("/");
     if(last == std::string::npos) return fname;
     return fname.substr(last+1);
 }
 enum class LogLevel { Info, Warn, Error, Debug, All };
 
-std::array<bool, static_cast<size_t>(LogLevel::All)+1> enabled{{true,true,true,false,false}};
+inline constinit std::array<bool, static_cast<size_t>(LogLevel::All)+1> enabled{{false,false,false,false,false}};
+inline  std::unordered_set<std::string> disabledFiles{{}};
+inline constinit bool toFile = false;
 
 template <typename... Args>
 void log_impl(LogLevel level, 
@@ -60,19 +66,30 @@ void log_impl(LogLevel level,
               std::format_string<Args...> fmt, 
               Args&&... args) 
 {
+    if(!enabled[static_cast<size_t>(level)]) return;
+    auto fname = getFileName(loc);
+    if(disabledFiles.contains(std::string(fname))) return;
     std::string_view level_str;
     switch (level) {
         case LogLevel::Info:  level_str = "INFO";  break;
         case LogLevel::Warn:  level_str = "WARN";  break;
         case LogLevel::Error: level_str = "ERROR"; break;
         case LogLevel::Debug: level_str = "DEBUG"; break;
+        default: level_str = "UNKNOWN"; break;
     }
-
-    std::println("[{}] {}:{}: {}", 
+    std::string msg = std::format("[{}] {}:{}: {}", 
                  level_str, 
-                 getFileName(loc), 
+                 fname, 
                  loc.line(), 
                  std::format(fmt, std::forward<Args>(args)...));
+    //std::println("{}",msg);
+    LOG_MESSAGE(PLID, "%s ",msg.c_str()); 
+    if(toFile) {
+        FILE* fp = fopen("whichbot.log","a");
+        fprintf(fp, "%s\n", msg.c_str());
+        fclose(fp);
+    }
+                 
 }
 };// End namespace wb
 #define WB_LOG_INFO(fmt, ...)  wb_log::log_impl(wb_log::LogLevel::Info,  std::source_location::current(), fmt, ##__VA_ARGS__)

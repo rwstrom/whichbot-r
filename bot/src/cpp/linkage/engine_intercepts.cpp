@@ -120,7 +120,7 @@ void interceptStartFrame()
 int interceptClientConnect(edict_t* pClientEdict, [[maybe_unused]] const char* pszName, [[maybe_unused]] const char* pszAddress, [[maybe_unused]] char szRejectReason[128])
 {
     CLIENT_PRINTF(pClientEdict, print_console, "\n");
-    CLIENT_PRINTF(pClientEdict, print_console, "WhichBot MetaMod plugin (version ");
+    CLIENT_PRINTF(pClientEdict, print_console, "WhichBot-r MetaMod plugin (version ");
     CLIENT_PRINTF(pClientEdict, print_console, WHICHBOT_VERSION_STR);
     CLIENT_PRINTF(pClientEdict, print_console, ")\n");
     CLIENT_PRINTF(pClientEdict, print_console, "See https://github.com/rwstrom/whichbot-r for more details.\n");
@@ -320,7 +320,7 @@ const char* interceptGetAuthId(edict_t* pEdict)
 
 void interceptSetClientMaxspeed(const edict_t* pEdict, float newMaxSpeed)
 {
-    WB_LOG_INFO("edict {} maxspeed {}", static_cast<const void*>(pEdict), newMaxSpeed);
+    WB_LOG_DEBUG("edict {} maxspeed {}", static_cast<const void*>(pEdict), newMaxSpeed);
     RETURN_META(MRES_IGNORED);
 }
 

@@ -438,6 +438,103 @@ void handleWaypointCrouch([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std
     toggleWaypointFlag(W_FL_CROUCH);
 }
 
+void handleEnableLogMessage([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
+{
+    if (args.size() == 2) {
+        std::string levelStr = args[1];
+        if (levelStr == "info") {
+            wb_log::enabled[static_cast<size_t>(wb_log::LogLevel::Info)] = true;
+            LOG_CONSOLE(PLID, "Info log messages enabled");
+
+        } else if (levelStr == "warn") {
+            wb_log::enabled[static_cast<size_t>(wb_log::LogLevel::Warn)] = true;
+            LOG_CONSOLE(PLID, "Warning log messages enabled");
+
+        } else if (levelStr == "error") {
+            wb_log::enabled[static_cast<size_t>(wb_log::LogLevel::Error)] = true;
+            LOG_CONSOLE(PLID, "Error log messages enabled");
+
+        } else if (levelStr == "debug") {
+            wb_log::enabled[static_cast<size_t>(wb_log::LogLevel::Debug)] = true;
+            LOG_CONSOLE(PLID, "Debug log messages enabled");
+        } else if(levelStr == "all") {
+            for (auto& level: wb_log::enabled) {
+                level = true;
+            }
+            LOG_CONSOLE(PLID, "All log messages enabled");  
+        } else {
+            LOG_ERROR(PLID, "Unknown log level %s. Valid levels are: info, warn, error, debug", levelStr.c_str());
+            LOG_CONSOLE(PLID, "Unknown log level %s. Valid levels are: info, warn, error, debug", levelStr.c_str());
+        }
+    }
+}
+
+void handleDisableLogMessage([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
+{
+    if (args.size() == 2) {
+        std::string levelStr = args[1];
+        if (levelStr == "info") {
+            wb_log::enabled[static_cast<size_t>(wb_log::LogLevel::Info)] = false;
+            LOG_CONSOLE(PLID, "Info log messages disabled");
+
+        } else if (levelStr == "warn") {
+            wb_log::enabled[static_cast<size_t>(wb_log::LogLevel::Warn)] = false;
+            LOG_CONSOLE(PLID, "Warning log messages disabled");
+
+        } else if (levelStr == "error") {
+            wb_log::enabled[static_cast<size_t>(wb_log::LogLevel::Error)] = false;
+            LOG_CONSOLE(PLID, "Error log messages disabled");
+
+        } else if (levelStr == "debug") {
+            wb_log::enabled[static_cast<size_t>(wb_log::LogLevel::Debug)] = false;
+            LOG_CONSOLE(PLID, "Debug log messages disabled");
+        }else if(levelStr == "all") {
+            for (auto& level: wb_log::enabled) {
+                level = false;
+            }
+            LOG_CONSOLE(PLID, "All log messages disabled");
+        } else {
+            LOG_ERROR(PLID, "Unknown log level %s. Valid levels are: info, warn, error, debug", levelStr.c_str());
+            LOG_CONSOLE(PLID, "Unknown log level %s. Valid levels are: info, warn, error, debug", levelStr.c_str());
+        }
+    }
+}
+
+void handleHideMessageFrom([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
+{
+    if (args.size() == 2) {
+        std::string fileName = args[1];
+        wb_log::disabledFiles.insert(fileName);
+        LOG_CONSOLE(PLID, "Messages from %s will now be hidden in the log", fileName.c_str());
+    }
+}
+
+void handleShowMessageFrom([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
+{
+    if (args.size() == 2) {
+        std::string fileName = args[1];
+        if(fileName == "all") {
+            wb_log::disabledFiles.clear();
+            LOG_CONSOLE(PLID, "Messages from all files will now be shown in the log");
+            return;
+        }
+        wb_log::disabledFiles.erase(fileName);
+        LOG_CONSOLE(PLID, "Messages from %s will now be shown in the log", fileName.c_str());
+    }
+}
+
+void handleEnableLogToFile([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
+{
+    wb_log::toFile = true;
+    LOG_CONSOLE(PLID, "Log to file enabled");
+}
+
+void handleDisableLogToFile([[maybe_unused]] edict_t* pEdict, [[maybe_unused]] std::vector<std::string>& args)
+{
+    wb_log::toFile = false;
+    LOG_CONSOLE(PLID, "Log to file disabled");
+}
+
 void ClientCommandDispatcher::registerHandlers()
 {
 	if (_handlers.size() == 0) {
@@ -477,5 +574,11 @@ void ClientCommandDispatcher::registerHandlers()
         registerHandler("boost", handleBoost);
         registerHandler("evolve", handleEvolveOverride);
 		registerHandler("wpcrouch",handleWaypointCrouch);
+        registerHandler("enableloglevel", handleEnableLogMessage);
+        registerHandler("disableloglevel", handleDisableLogMessage);
+        registerHandler("hidemsgfrom", handleHideMessageFrom);
+        registerHandler("showmsgfrom", handleShowMessageFrom);
+        registerHandler("logtofile",handleEnableLogToFile);
+        registerHandler("nologtofile",handleDisableLogToFile);
     }
 }
