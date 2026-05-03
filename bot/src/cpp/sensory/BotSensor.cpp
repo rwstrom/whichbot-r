@@ -41,7 +41,7 @@
 #include "sensory/AuditoryManager.h"
 #include "framework/Log.h"
 
-const float LISTEN_RANGE = 1000.0;
+static constexpr float LISTEN_RANGE = 1000.0;
 
 
 float BotSensor::_lastGlobalScanTime = 0.0f;

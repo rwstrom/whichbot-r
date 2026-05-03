@@ -31,4 +31,4 @@
 
 #include "HiveInfo.h"
 
-const int FULL_HIVE_HEALTH = 6;
+constexpr int FULL_HIVE_HEALTH = 6;

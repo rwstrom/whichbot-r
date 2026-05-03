@@ -62,9 +62,9 @@ void handleNetAreaInfoMsg(const NetMessage& msg)
 }
 
 
-const int DEFENSE_UPGRADE = 1;
-const int MOVEMENT_UPGRADE = 3;
-const int SENSORY_UPGRADE = 4;
+static constexpr int DEFENSE_UPGRADE = 1;
+static constexpr int MOVEMENT_UPGRADE = 3;
+static constexpr int SENSORY_UPGRADE = 4;
 void handleTraitsAvailableMsg(const NetMessage& msg)
 {
     if (msg.size() >= 2) {
@@ -138,10 +138,10 @@ Hive 3
 [18]kByte=0x64
 
 ****/
-const int START_OF_HIVE_DATA_OFFSET = 1;
+static constexpr int START_OF_HIVE_DATA_OFFSET = 1;
 //const int HIVE_DATA_SIZE = 6;
-const int HIVE_POSITION_OFFSET = 1;
-const int HIVE_HEALTH_OFFSET = 4;
+static constexpr int HIVE_POSITION_OFFSET = 1;
+static constexpr int HIVE_HEALTH_OFFSET = 4;
 void parseInitialHiveStatusData (const NetMessage& msg)
 {
 	//  The 3.3 version at https://github.com/ENSL/NS uses the preamble byte for each hive,
@@ -285,9 +285,9 @@ edict_t* getHiveEntity (Vector& position)
 }
 
 
-const int HIVE_INFO_MSG_TRAITS = 128;
-const int HIVE_INFO_MSG_STATUS = 3;
-const int CO_HIVE_INFO_MSG_STATUS = 1;
+static constexpr int HIVE_INFO_MSG_TRAITS = 128;
+static constexpr int HIVE_INFO_MSG_STATUS = 3;
+static constexpr int CO_HIVE_INFO_MSG_STATUS = 1;
 
 void handleHiveInfoMsg(const NetMessage& msg)
 {

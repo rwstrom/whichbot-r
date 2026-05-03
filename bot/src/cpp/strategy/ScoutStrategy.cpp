@@ -38,8 +38,8 @@
 #include "config/TranslationManager.h"
 #include "extern/metamod/meta_api.h"
 
-const float REWARD_TIMEOUT = 360.0f;
-const double DISTANCE_SCALING_FACTOR = 0.0003;
+constexpr float REWARD_TIMEOUT = 360.0f;
+constexpr double DISTANCE_SCALING_FACTOR = 0.0003;
 
 
 ScoutStrategy::ScoutStrategy(Bot& bot) :

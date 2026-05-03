@@ -48,7 +48,7 @@ typedef enum
 
 extern const char* lifeformNames[];
 
-const int MAX_PACKS = 8;
+constexpr int MAX_PACKS = 8;
 
 typedef enum
 {
@@ -64,16 +64,16 @@ typedef enum
 	kPack8Role
 } tBotRole;
 
-const int MARINE_NODE_MASK = 1;
-const int ALIEN_NODE_MASK = 2;
-const int OCCUPIED_NODE_MASK = MARINE_NODE_MASK | ALIEN_NODE_MASK;
+constexpr int MARINE_NODE_MASK = 1;
+constexpr int ALIEN_NODE_MASK = 2;
+constexpr int OCCUPIED_NODE_MASK = MARINE_NODE_MASK | ALIEN_NODE_MASK;
 
 // Distance from origin to bottom of creature
-static const float g_CreatureOriginHeights[] = {20, 20, 20, 30,   40};
+static constexpr float g_CreatureOriginHeights[] = {20, 20, 20, 30,   40};
 
-static const float g_CreatureMaxArmour[] =     {10, 30, 40, 100, 500};
+static constexpr float g_CreatureMaxArmour[] =     {10, 30, 40, 100, 500};
 // TODO: these may be out of date in 2.01, gotta check
-static const float g_CreatureArmourUpgrade[] = {20, 25, 50,  50, 100};
+static constexpr float g_CreatureArmourUpgrade[] = {20, 25, 50,  50, 100};
 
 #define MIN_WALK_EVOLUTION (kLerk)
 #define MAX_WALK_EVOLUTION (kOnos)
@@ -143,10 +143,10 @@ static const char* EVOLUTION_IMPULSES[] =
 #define MOVEMENT_TRAIT_BITMASK (UPGRADE_CELERITY | UPGRADE_ADRENALINE | UPGRADE_SILENCE)
 #define SENSORY_TRAIT_BITMASK (UPGRADE_CLOAK | UPGRADE_SCENT_OF_FEAR | UPGRADE_FOCUS)
 
-const float MAX_JUMP_HEIGHT = 60.0; // world units
-const float ERROR_MARGIN = 10.0;
-const float MAX_HEIGHT_WALKABLE = MAX_JUMP_HEIGHT + ERROR_MARGIN;
-const float CHECK_WALKABLE_RESOLUTION = 2.0; // world units
+constexpr float MAX_JUMP_HEIGHT = 60.0; // world units
+constexpr float ERROR_MARGIN = 10.0;
+constexpr float MAX_HEIGHT_WALKABLE = MAX_JUMP_HEIGHT + ERROR_MARGIN;
+constexpr float CHECK_WALKABLE_RESOLUTION = 2.0; // world units
 
 // bitmask weapon types
 #define ANTI_BUILDING 1

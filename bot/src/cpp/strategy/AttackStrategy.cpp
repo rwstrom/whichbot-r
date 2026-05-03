@@ -40,7 +40,7 @@
 #include "BotManager.h"
 #include "sensory/AuditoryManager.h"
 
-const double DISTANCE_SCALING_FACTOR = 0.0003;
+static constexpr double DISTANCE_SCALING_FACTOR = 0.0003;
 
 AttackStrategy::AttackStrategy(Bot& bot) :
 	_bot(bot)

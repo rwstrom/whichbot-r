@@ -48,11 +48,11 @@
 #include "framework/Log.h"
 
 
-const float DEFAULT_REWARD_FACTOR = 1.0;
+constexpr float DEFAULT_REWARD_FACTOR = 1.0;
 
 // Sometimes it doesn't seem to change weapon, for some reason (maybe timeouts
 // stopped us from switching)
-const float WEAPON_CHANGE_TIME = 0.3;
+constexpr float WEAPON_CHANGE_TIME = 0.3;
 
 bool pathValidator(void* pRock, int upstreamNodeId, int thisNodeId)
 {

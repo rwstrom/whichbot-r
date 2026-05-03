@@ -39,11 +39,11 @@
 #include "worldstate/WorldStateUtil.h"
 #include "framework/Log.h"
 
-const float CLOSE_ENOUGH_TO_BUILD = 80.0;
-const float CLOSE_ENOUGH_TO_MOVE_TO = 500.0;
-const float CLOSE_ENOUGH_TO_HIVE = 1000.0;
-const float BUILDABLE_CHECK_UPDATE = 0.2;
-const Vector NOT_FOUND(-100000, -100000, -10000);
+static constexpr float CLOSE_ENOUGH_TO_BUILD = 80.0;
+static constexpr float CLOSE_ENOUGH_TO_MOVE_TO = 500.0;
+static constexpr float CLOSE_ENOUGH_TO_HIVE = 1000.0;
+static constexpr float BUILDABLE_CHECK_UPDATE = 0.2;
+static const Vector NOT_FOUND(-100000, -100000, -10000);
 
 
 BuildNavMethod::BuildNavMethod(Bot& bot, eEntityType entityTypeToBuild) :

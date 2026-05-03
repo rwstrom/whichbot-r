@@ -43,19 +43,19 @@
 #include "worldstate/WorldStateUtil.h"
 #include "framework/Log.h"
 
-const float MIN_MINE_RANGE = 256.0;
+static constexpr float MIN_MINE_RANGE = 256.0;
 
 // Distance we have to be within in order to hit something.
 // We set it a little low because the movement engine measures the x/y distance
-const float NEAR_TARGET_DISTANCE = 30.0 ;
+static constexpr float NEAR_TARGET_DISTANCE = 30.0 ;
 
 // If we're in active cloak (ie near a sens chamber) we don't attack over this range
-const float MAX_CLOAK_ATTACK_RANGE = 80.0;
+static constexpr float MAX_CLOAK_ATTACK_RANGE = 80.0;
 
 // If a new high priority target is in this range, we'll attack it
-const float MELEE_RANGE = 100.0;
+static constexpr float MELEE_RANGE = 100.0;
 
-const float AIM_TIME = 0.1;
+static constexpr float AIM_TIME = 0.1;
 
 
 
@@ -119,7 +119,7 @@ public:
 };
 
 
-const float TARGET_TIMEOUT = 5.0;
+static constexpr float TARGET_TIMEOUT = 5.0;
 
 
 bool CombatNavMethod::targetExists()

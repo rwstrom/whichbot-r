@@ -45,7 +45,7 @@
 #include "worldstate/WorldStateUtil.h"
 #include "framework/Log.h"
 
-const float RANDOM_VISIT_TIME_VARIANCE = 300;
+static constexpr float RANDOM_VISIT_TIME_VARIANCE = 300;
 std::vector<float> HiveMind::_visitTimes;
 EntityRegistry HiveMind::_entities;
 PackManager HiveMind::_wolfPackMgr;

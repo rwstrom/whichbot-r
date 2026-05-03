@@ -43,20 +43,20 @@
 #include "worldstate/HiveManager.h"
 #include "framework/Log.h"
 
-const float JUMP_DISTANCE = 50.0;
-const float LATERAL_LOOKAHEAD_DISTANCE = 70.0;
-const float STRAFE_SPEED = 350.0;
-const float WHISKER_LENGTH = 75.0;
-const float MAX_WHISKER_DEVIATION = 90;
-const float LADDER_SEARCH_RANGE = 50;
-const float MIN_FLAP_SPEED = 350.0;
-const float FLAP_TIME = 0.05;
-const float MIN_FLYING_ENERGY = 60;
-const float MIN_BLINK_ENERGY = 60;
-const float BLINK_ENERGY_COST = 50;
+static constexpr float JUMP_DISTANCE = 50.0;
+static constexpr float LATERAL_LOOKAHEAD_DISTANCE = 70.0;
+static constexpr float STRAFE_SPEED = 350.0;
+static constexpr float WHISKER_LENGTH = 75.0;
+static constexpr float MAX_WHISKER_DEVIATION = 90;
+static constexpr float LADDER_SEARCH_RANGE = 50;
+static constexpr float MIN_FLAP_SPEED = 350.0;
+static constexpr float FLAP_TIME = 0.05;
+static constexpr float MIN_FLYING_ENERGY = 60;
+static constexpr float MIN_BLINK_ENERGY = 60;
+static constexpr float BLINK_ENERGY_COST = 50;
 
 // HIT_BOUNDARY * WHISKER_LENGTH is the cutoff for deciding if we "hit" something
-const float HIT_BOUNDARY = 0.25; 
+static constexpr float HIT_BOUNDARY = 0.25; 
 
 // Distance from origin to one side of creature.
 // static const float creatureOriginWidths[] = {10, 15, 15, 10, 40};
@@ -64,7 +64,7 @@ const float HIT_BOUNDARY = 0.25;
 // Distance from origin to head
 // static const float creatureOriginLengths[] = {40, 40, 40, 10, 100};
 
-const float DEFAULT_MIN_TARGET_RADIUS = 40.0;
+static constexpr float DEFAULT_MIN_TARGET_RADIUS = 40.0;
 const Vector INVALID_VECTOR (-9999,-9999,-9999);
 
 BotMovement::BotMovement(Bot& bot) :
@@ -1121,8 +1121,8 @@ bool moveOutsideEntity(edict_t* pEntity)
 }
 
 
-const float BLINK_VELOCITY = 750.0;
-const float BLINK_PITCH_ANGLE = -10.0;
+static constexpr float BLINK_VELOCITY = 750.0;
+static constexpr float BLINK_PITCH_ANGLE = -10.0;
 
 void BotMovement::doBlink()
 {

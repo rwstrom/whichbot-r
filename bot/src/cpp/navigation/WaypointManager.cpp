@@ -39,14 +39,14 @@
 #include "worldstate/WorldStateUtil.h"
 #include "framework/Log.h"
 
-const float DEFAULT_REWARD_FACTOR = 1.0;
-const int WAYPOINT_VERSION = 4;
+static constexpr float DEFAULT_REWARD_FACTOR = 1.0;
+static constexpr int WAYPOINT_VERSION = 4;
 
 const Vector NOWHERE(-16000, -16000, -16000);
 const Vector3D NOWHERE3D(-16000, -16000, -16000);
 
 // skulk, lerk, gorge, fade, onos
-const float evolutionSpeeds[] = { 250.0, 250.0, 150.0, 200.0, 150.0 };
+static constexpr float evolutionSpeeds[] = { 250.0, 250.0, 150.0, 200.0, 150.0 };
 
 WaypointManager::WaypointManager() :
     _terrain(),
