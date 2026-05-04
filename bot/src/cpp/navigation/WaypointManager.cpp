@@ -303,15 +303,15 @@ void WaypointManager::deleteAsymmetricLinks()
     for (int evolution = 0; evolution < NUM_EVOLUTIONS; evolution++) {
         std::vector<Edge*> edgesToDelete;
 
-        for (int startNodeId = 0; startNodeId < _terrain[evolution]->getNumNodes(); startNodeId++) {
+        for (auto startNodeId = 0; startNodeId < _terrain[evolution]->getNumNodes(); startNodeId++) {
             std::vector<Edge>& edges = _terrain[evolution]->getEdges(startNodeId);
             
-            for (std::vector<Edge>::iterator edge = edges.begin(); edge != edges.end(); edge++) {
-                std::vector<Edge>& endpointEdges = _terrain[evolution]->getEdges(edge->getEndId());
+            for (auto& edge : edges) {
+                std::vector<Edge>& endpointEdges = _terrain[evolution]->getEdges(edge.getEndId());
                 
                 bool reverseFound = false;
-                for (std::vector<Edge>::iterator reverseEdge = endpointEdges.begin(); reverseEdge != endpointEdges.end(); reverseEdge++) {
-                    if (edge->getStartId() == reverseEdge->getEndId()) {
+                for (auto& reverseEdge : endpointEdges) {
+                    if (edge.getStartId() == reverseEdge.getEndId()) {
                         numNormalEdges++;
                         reverseFound = true;
                         break;
@@ -320,7 +320,7 @@ void WaypointManager::deleteAsymmetricLinks()
                 
                 if (!reverseFound) {
                     //_terrain[evolution]->addEdge(edge->getEndId(), edge->getStartId(), edge->getCost());
-                    edgesToDelete.push_back(new Edge(edge->getStartId(), edge->getEndId(), edge->getCost()));
+                    edgesToDelete.push_back(new Edge(edge.getStartId(), edge.getEndId(), edge.getCost()));
                 }
             }
         }
@@ -328,7 +328,7 @@ void WaypointManager::deleteAsymmetricLinks()
         for (std::vector<Edge*>::iterator edge = edgesToDelete.begin(); edge != edgesToDelete.end(); edge++) {
             tNodeId startId = (*edge)->getStartId();
             tNodeId endId = (*edge)->getEndId();
-            WB_LOG_INFO("Edge from {} to {} doesn't have a reverse link.  Deleting it.", startId, endId);
+            WB_LOG_WARN("Edge from {} to {} doesn't have a reverse link.  Deleting it.", startId, endId);
             _terrain[evolution]->deleteEdge((*edge)->getStartId(), (*edge)->getEndId());
             numDeletedEdges++;
             delete (*edge);
