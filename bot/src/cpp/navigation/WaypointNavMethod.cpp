@@ -39,19 +39,19 @@
 #include "extern/metamod/meta_api.h" //tmc - for MDLL_Use
 
 
-static constexpr float WAYPOINT_HEIGHT_OFFSET = -10.0;
-static constexpr float LAST_USED_SWITCH_TIME = 2.5;
-static constexpr float MAX_TIME_TO_TRAVERSE_WAYPOINTS = 10.0;
-static constexpr float MAX_TIME_TO_TRAVERSE_GOAL = 60.0;
-static constexpr float NEAR_WPT_DISTANCE = 40.0;
-static constexpr float ONOS_NEAR_WPT_DISTANCE = 80.0;
-static constexpr float REOPTIMISE_FACTOR = 3.0;
-static constexpr float LONG_DISTANCE = 1000.0;
-static constexpr float WAYPOINT_LENGTH_ADJUSTMENT_RATE = 0.1;
-static constexpr float WAYPOINT_NOT_REACHED_TIME_PENALTY = 60.0;
-static constexpr float IMPASSABLE_THRESHOLD = 40.0;
-static constexpr float LIFT_NEAR = 50.0;
-static constexpr float LIFT_TIMEOUT = 15.0;
+static constexpr const float WAYPOINT_HEIGHT_OFFSET = -10.0;
+static constexpr const float LAST_USED_SWITCH_TIME = 2.5;
+static constexpr const float MAX_TIME_TO_TRAVERSE_WAYPOINTS = 10.0;
+static constexpr const float MAX_TIME_TO_TRAVERSE_GOAL = 60.0;
+static constexpr const float NEAR_WPT_DISTANCE = 40.0;
+static constexpr const float ONOS_NEAR_WPT_DISTANCE = 80.0;
+static constexpr const float REOPTIMISE_FACTOR = 3.0;
+static constexpr const float LONG_DISTANCE = 1000.0;
+static constexpr const float WAYPOINT_LENGTH_ADJUSTMENT_RATE = 0.1;
+static constexpr const float WAYPOINT_NOT_REACHED_TIME_PENALTY = 60.0;
+static constexpr const float IMPASSABLE_THRESHOLD = 40.0;
+static constexpr const float LIFT_NEAR = 50.0;
+static constexpr const float LIFT_TIMEOUT = 15.0;
 
 WaypointNavMethod::WaypointNavMethod(Bot& bot, bool initialSpawn) :
 	_bot(bot),
@@ -559,10 +559,10 @@ int InFieldOfView(float view_angle, Vector dest)
 }
 
 
-const int SEARCH_RADIUS = 200;
-const char* BUTTON_CLASSNAME = "func_button";
-const char* ROTATOR_BUTTON_CLASSNAME = "func_rot_button";
-const char* DOOR_CLASSNAME = "func_door";
+static constexpr const int SEARCH_RADIUS = 200;
+static constexpr const char* BUTTON_CLASSNAME = "func_button";
+static constexpr const char* ROTATOR_BUTTON_CLASSNAME = "func_rot_button";
+static constexpr const char* DOOR_CLASSNAME = "func_door";
 
 void WaypointNavMethod::findSwitch()
 {
