@@ -67,7 +67,7 @@ void EntityRegistry::addEntry(edict_t* pEdict, HiveMindEntityInfo* pExtraData)
 
 		_entriesByEdict[pEdict] = pEntry;
 
-		std::map<std::string, tEntrySet*>::iterator found = _entriesByName.find(pEntry->classname);
+		//std::map<std::string, tEntrySet*>::iterator found = _entriesByName.find(pEntry->classname);
 		tEntrySet* pSet = getEntries(pEntry->classname);
 		if (pSet == NULL) {
 			pSet = new tEntrySet;
