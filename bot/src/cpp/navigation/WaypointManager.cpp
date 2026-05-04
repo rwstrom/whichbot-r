@@ -233,7 +233,7 @@ void WaypointManager::loadEdges(FILE* pFile, int numWaypoints, const std::string
         short numEdges = 0;
         int amountRead = fread(&numEdges, sizeof(numEdges), 1, pFile);
         if (amountRead != 1) {
-            WB_LOG_INFO("Couldn't read numEdges for waypoint {} from file {}", ii, waypointFilename);
+            WB_LOG_ERROR("Couldn't read numEdges for waypoint {} from file {}", ii, waypointFilename);
             break;
         }
         
@@ -241,7 +241,7 @@ void WaypointManager::loadEdges(FILE* pFile, int numWaypoints, const std::string
         assert(numEdges <= 50);
         for (int jj = 0; jj < numEdges; jj++) {
             short endpointId;
-            int amountRead = fread(&endpointId, sizeof(endpointId), 1, pFile);
+            amountRead = fread(&endpointId, sizeof(endpointId), 1, pFile);
             // TODO - get rid of this assert
             assert(amountRead == 1);
             
