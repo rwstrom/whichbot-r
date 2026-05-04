@@ -142,14 +142,21 @@ static constexpr int START_OF_HIVE_DATA_OFFSET = 1;
 //const int HIVE_DATA_SIZE = 6;
 static constexpr int HIVE_POSITION_OFFSET = 1;
 static constexpr int HIVE_HEALTH_OFFSET = 4;
+
+bool isNS33Version()
+{
+	static cvar_t* nsversion = CVAR_GET_POINTER("sv_nsversion");
+	return (nsversion != NULL);
+}
+
 void parseInitialHiveStatusData (const NetMessage& msg)
 {
 	//  The 3.3 version at https://github.com/ENSL/NS uses the preamble byte for each hive,
 	// resulting in a HIVE_DATA_SIZE of 7 instead of 6 bytes as in the 
 	// last version released by unknown worlds.
 	// 3.3 sets a sv_version cvar that we use to differentiate between the two. 
-	static cvar_t* nsversion = CVAR_GET_POINTER("sv_nsversion");
-	static const int HIVE_DATA_SIZE = nsversion ? 7:6;
+	
+	static const int HIVE_DATA_SIZE = isNS33Version()? 7:6;
 
 	int numHives = gpBotManager->inCombatMode() ? 1 : 3;
 	assert(numHives >= 1);
@@ -237,8 +244,10 @@ void parseHiveStatusUpdateData (const NetMessage& msg, [[maybe_unused]] int expe
 			break;
 		case 4:	//Hive health message 0-100 percent
 				//Note: empty hives reported as 100%
+				// ns 3.3 version has and extra byte for build time, which we skip over here.
 			hiveId++;
 			ii++;
+			if(isNS33Version()) ++ii; // Skip extra byte in 3.3 version of message
 			break;
 		case 6:
 			//First byte of message has high bit set if under attack
@@ -262,7 +271,8 @@ void parseHiveStatusUpdateData (const NetMessage& msg, [[maybe_unused]] int expe
 			}
 		default:
 			ii++;
-			WB_LOG_DEBUG("WARNING:Unknown Hive message type {}.",msgType);
+			WB_LOG_WARN("WARNING:Unknown Hive message type {}.",msgType);
+			WB_LOG_DEBUG("{}", msg.toString());
 			break;
 		}
 	}
