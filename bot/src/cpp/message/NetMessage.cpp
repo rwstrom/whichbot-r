@@ -180,7 +180,7 @@ float NetMessage::getFloatAt(int ii) const
 		WB_LOG_WARN("Wrong type requested in NetMessage::getFloatAt");
 		return 0;
 	}
-    return *(short*)_elements[ii]->rock;
+    return *(float*)_elements[ii]->rock;
 }
 
 
