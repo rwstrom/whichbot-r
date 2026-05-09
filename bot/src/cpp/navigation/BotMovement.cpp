@@ -696,31 +696,6 @@ void BotMovement::checkForPassives(tEvolution evolution)
         }
 
     } else if (evolution == kGorge ) {
-		//tmc - Random Webbing.
-		//I know there's got to be a better way to do this.
-		// Don't do this to often since it messes with navigation
-
-		bool threeHives = gpBotManager->inCombatMode() ? _bot.hasTrait(Config::getInstance().getImpulse(IMPULSE_HIVE3)):(HiveManager::getActiveHiveCount()==3);
-		if (threeHives && _bot.getEnergy() > 97)
-		{
-			static int startWeb = 1;
-			static float lastWeb = gpGlobals->time;
-			if ((startWeb == -1 && lastWeb + 0.5 < gpGlobals->time) || lastWeb + 30.0 < gpGlobals->time)
-			{
-				float p = RANDOM_FLOAT(-60.0,60.0);
-				float y = RANDOM_FLOAT(-60.0,60.0);
-				float l = RANDOM_FLOAT(10.0,150.0);
-			
-				_targetVector = calculateVector(_bot.getEdict()->v.origin,p,y,l);
-				startWeb = -startWeb;
-			
-				_bot.selectWeapon(WEAPON_WEBSPINNER);
-				_bot.fireWeapon();
-				lastWeb = gpGlobals->time;
-			}
-		
-		}
-		
 		
         if (_bot.isInjured() && _bot.selectWeapon(WEAPON_HEALINGSPRAY)) {
         	_bot.fireWeapon();
