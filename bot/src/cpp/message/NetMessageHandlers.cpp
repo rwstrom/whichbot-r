@@ -36,14 +36,6 @@
 #include "strategy/HiveMind.h"
 #include "BotManager.h"
 
-
-
-
-void parseInitialHiveStatusData (const NetMessage& msg);
-void parseHiveStatusUpdateData (const NetMessage& msg, int expectedHiveCount);
-int getHiveIdFromStatusUpdateData (const NetMessage& msg, int expectedHiveCount);
-
-//-------------------------------------------------------------------------
 void handleNetAreaInfoMsg(const NetMessage& msg)
 {
     if (msg.size() == 6) {
@@ -59,50 +51,6 @@ void handleNetAreaInfoMsg(const NetMessage& msg)
     		}
         }
     }
-}
-
-
-static constexpr int DEFENSE_UPGRADE = 1;
-static constexpr int MOVEMENT_UPGRADE = 3;
-static constexpr int SENSORY_UPGRADE = 4;
-void handleTraitsAvailableMsg(const NetMessage& msg)
-{
-    if (msg.size() >= 2) {
-    	byte numUpgradesAvail = msg.getByteAt(1);
-        HiveManager::resetTraits();
-
-    	for (int ii = 0; ii < numUpgradesAvail; ii++) {
-	    	byte traitId = msg.getByteAt(2 + ii);
-		    WB_LOG_DEBUG("Trait {} available", traitId);
-
-            HiveManager::addTraitLevel(traitId);
-	    }
-    }
-}
-
-
-void handleHiveStatusMsg(const NetMessage& msg)
-{
-	int maxHives = msg.getByteAt(0);
-	if (maxHives == 1 || maxHives == 3)
-	{
-		if (msg.getByteAt(1) == 7)
-		{
-			parseInitialHiveStatusData(msg);
-			WB_LOG_DEBUG("Handling initial hive status message");
-		}
-		else
-		{
-			parseHiveStatusUpdateData(msg,maxHives);
-			WB_LOG_DEBUG("Handling hive status message");
-		}
-	}
-	else
-	{
-		WB_LOG_ERROR("WARNING: Unexpected hive count in hive status message");
-	}
-	
-	//netMsgLog.Debug(msg.toString().c_str());
 }
 
 
@@ -138,146 +86,12 @@ Hive 3
 [18]kByte=0x64
 
 ****/
-static constexpr int START_OF_HIVE_DATA_OFFSET = 1;
-//const int HIVE_DATA_SIZE = 6;
-static constexpr int HIVE_POSITION_OFFSET = 1;
-static constexpr int HIVE_HEALTH_OFFSET = 4;
 
 bool isNS33Version()
 {
 	static cvar_t* nsversion = CVAR_GET_POINTER("sv_nsversion");
 	return (nsversion != NULL);
 }
-
-void parseInitialHiveStatusData (const NetMessage& msg)
-{
-	//  The 3.3 version at https://github.com/ENSL/NS uses the preamble byte for each hive,
-	// resulting in a HIVE_DATA_SIZE of 7 instead of 6 bytes as in the 
-	// last version released by unknown worlds.
-	// 3.3 sets a sv_version cvar that we use to differentiate between the two. 
-	
-	static const int HIVE_DATA_SIZE = isNS33Version()? 7:6;
-
-	int numHives = gpBotManager->inCombatMode() ? 1 : 3;
-	assert(numHives >= 1);
-
-    if (numHives >= 1) {
-        // Only do this once for all of the bots.
-        if (HiveManager::getHiveCount() == 0) {
-            for (int ii=0; ii < numHives; ++ii) {
-                int hiveDataOffset = (ii * HIVE_DATA_SIZE) + START_OF_HIVE_DATA_OFFSET;
-                int vectorOffset = hiveDataOffset + HIVE_POSITION_OFFSET;
-                int healthOffset = hiveDataOffset + HIVE_HEALTH_OFFSET;
-                
-                Vector position = msg.getVectorAt(vectorOffset);
-                byte health = msg.getByteAt(healthOffset);
-				edict_t* pEntity = getHiveEntity(position);
-				assert(pEntity != NULL);
-
-                HiveInfo info(ii, pEntity);
-                info.updateHealth(health);
-                HiveManager::addHive(info);
-                WB_LOG_DEBUG("parseInitialHiveStatusData:  Added hiveId={}", ii);
-				if (health > 0) {
-					WB_LOG_DEBUG("parseInitialHiveStatusData:  Initial alien hive is {}", ii);
-				}
-                // TODO:  The rest of the hive data is being dropped on the floor for the time being.
-            }
-        }
-    }
-}
-
-
-void parseHiveStatusUpdateData (const NetMessage& msg, [[maybe_unused]] int expectedHiveCount)
-{
-	int sz = msg.size();
-	int hiveId = 0;
-	byte msgType = 0;
-	byte hiveState =0;
-	HiveInfo* pInfo;
-
-	for (int ii=1;ii<sz-1;ii++)
-	{
-		msgType = msg.getByteAt(ii);
-		
-		switch(msgType)
-		{
-		case 0:	//no update this hive
-			hiveId++;
-			break;
-		case 2:	//Hive State update message
-				//First 3 bits are Gestation stage
-				//The others indicate type of chamber associated
-				//with this hive.
-				//possible gestation state values(&7):
-				//0 = dead
-				//1 - 5 = Gestating
-				//6 = completed
-				//upgrade values(&0xF8):
-				//dc == 14, sc == 22, mc == 30 
-
-			ii++;
-			hiveState = msg.getByteAt(ii)&7;
-			pInfo = HiveManager::getHive(hiveId);
-			if (pInfo != NULL)
-			{
-				
-				pInfo->updateHealth(hiveState);
-						
-				if (hiveState == 0)
-				{
-					
-					WB_LOG_DEBUG("Hive {} is dead.",hiveId);
-				}
-				else if (hiveState < 6)
-				{
-					
-					WB_LOG_DEBUG("Hive {} Gestating.",hiveId);
-				}
-				else
-				{
-					
-					WB_LOG_DEBUG("Hive {} Complete.",hiveId);
-				}
-			}
-			hiveId++;
-			break;
-		case 4:	//Hive health message 0-100 percent
-				//Note: empty hives reported as 100%
-				// ns 3.3 version has and extra byte for build time, which we skip over here.
-			hiveId++;
-			ii++;
-			if(isNS33Version()) ++ii; // Skip extra byte in 3.3 version of message
-			break;
-		case 6:
-			//First byte of message has high bit set if under attack
-			// low 3 bits indicate hive gestate state.
-			// Dont know what the other values are used for.
-			//Second byte is hives current health %
-			{
-				pInfo = HiveManager::getHive(hiveId);
-				ii++;
-				if (pInfo)
-				{
-					hiveState = msg.getByteAt(ii);
-					if ((hiveState & 0x80))
-						HiveMind::entityUnderAttack(pInfo->getEntity().getEdict());
-					pInfo->updateHealth((hiveState & 0x07));
-				}
-
-				ii++;
-				hiveId++;
-				break;
-			}
-		default:
-			ii++;
-			WB_LOG_WARN("WARNING:Unknown Hive message type {}.",msgType);
-			WB_LOG_DEBUG("{}", msg.toString());
-			break;
-		}
-	}
-}
-
 
 edict_t* getHiveEntity (Vector& position)
 {
@@ -292,30 +106,6 @@ edict_t* getHiveEntity (Vector& position)
 	}
 	WB_LOG_ERROR("ERROR: no hive found at given position");
 	return NULL;
-}
-
-
-static constexpr int HIVE_INFO_MSG_TRAITS = 128;
-static constexpr int HIVE_INFO_MSG_STATUS = 3;
-static constexpr int CO_HIVE_INFO_MSG_STATUS = 1;
-
-void handleHiveInfoMsg(const NetMessage& msg)
-{
-	byte hiveInfoType = msg.getByteAt(0);
-	switch (hiveInfoType) {
-	case HIVE_INFO_MSG_TRAITS:
-		handleTraitsAvailableMsg(msg);
-		break;
-
-	case CO_HIVE_INFO_MSG_STATUS:
-	case HIVE_INFO_MSG_STATUS:
-		handleHiveStatusMsg(msg);
-		break;
-
-	default:
-		WB_LOG_DEBUG("WARNING:Unknown hive info type message {}", hiveInfoType);
-		break;
-	}
 }
 
 
@@ -385,11 +175,137 @@ void handleGameStatusMsg(const NetMessage &msg)
 		gpBotManager->startGame();
 	}
 }
+enum AlienInfo_ChangeFlags
+{
+	NO_CHANGE = 0,
+	COORDS_CHANGED = 1,
+	STATUS_CHANGED = 2,
+	HEALTH_CHANGED = 4
+};
 
+static constexpr int DEFENSE_UPGRADE = 1;
+static constexpr int MOVEMENT_UPGRADE = 3;
+static constexpr int SENSORY_UPGRADE = 4;
+
+void handleAlienInfoMsg(const NetMessage& msg)
+{
+	int status,upgradeType,msgIdx = 0;
+	byte msgType = msg.getByteAt(msgIdx++);
+	bool isHiveInfo = (msgType & 0x80) == 0;
+	//WB_LOG_DEBUG("handleHiveMsg: {}", msg.toString());
+	if(isHiveInfo)
+	{
+		Vector position;
+		int numHives = msgType & 0x7F;
+		AlienInfo_ChangeFlags changes;
+		bool hiveUnderAttack = false;
+		
+		for(int hiveIdx = 0; hiveIdx < numHives; ++hiveIdx)
+		{
+			hiveUnderAttack = false;
+			changes = static_cast<AlienInfo_ChangeFlags>(msg.getByteAt(msgIdx++));
+			if((changes & COORDS_CHANGED) != 0)
+			{
+				if(HiveManager::getHive(hiveIdx)== NULL)
+				{
+
+					position.x = msg.getFloatAt(msgIdx++);
+					position.y = msg.getFloatAt(msgIdx++);
+					position.z = msg.getFloatAt(msgIdx++);
+		
+					WB_LOG_DEBUG("Hive {} position: {}, {}, {}", hiveIdx, position.x, position.y, position.z);
+					edict_t* pHiveEntity = getHiveEntity(position);
+					if(pHiveEntity != NULL)
+					{
+						HiveInfo info(hiveIdx, pHiveEntity);
+						HiveManager::addHive(info);
+						WB_LOG_DEBUG("Added hive {}", hiveIdx);
+					}else
+					{
+						WB_LOG_ERROR("Couldn't find hive entity for hive {} at position {}, {}, {}", hiveIdx, position.x, position.y, position.z);
+					}
+				}else
+				{
+					WB_LOG_DEBUG("Received coordinates for existing hive {}", hiveIdx);
+					msgIdx += 3; // Skip over the position data since we already have an entity for this hive and don't want to mess with it.  We may want to change this later if we find that the hive entities can move around or if we want to update our stored positions based on the message data.
+				}
+			}
+			if(changes & STATUS_CHANGED)
+			{
+				HiveInfo* pInfo = HiveManager::getHive(hiveIdx);
+				status = msg.getByteAt(msgIdx++);
+				hiveUnderAttack = (status & 0x80) != 0;
+				upgradeType = (status >> 3) & 0x03;
+				status &= 0x07;
+				
+				if (pInfo != NULL)
+				{
+					if (hiveUnderAttack)
+						HiveMind::entityUnderAttack(pInfo->getEntity().getEdict());
+					pInfo->updateHealth(status); // Note: this is not actuallly health, but the hive state (0-6) which is being stored in the health field for now.  We may want to change this later.
+					WB_LOG_DEBUG("Hive {} health updated to {}", hiveIdx, status);
+				}else
+				{
+					WB_LOG_ERROR("Received hive status update for unknown hive {}", hiveIdx);
+				}
+				if(upgradeType)
+				{
+					switch(upgradeType)
+					{
+					case 0:
+						WB_LOG_DEBUG("No tech available from hive {}", hiveIdx);
+						break;
+					case 1:
+						WB_LOG_DEBUG("Defense tech available from hive {}", hiveIdx);
+						break;
+					case 2:
+						WB_LOG_DEBUG("Sensory tech available from hive {}", hiveIdx);
+						break;
+					case 3:
+						WB_LOG_DEBUG("Movement tech available from hive {}", hiveIdx);
+						break;
+					default:
+						WB_LOG_ERROR("Unknown tech type {} for hive {}", upgradeType, hiveIdx);	
+					}
+				}
+			}
+			if( changes & HEALTH_CHANGED )
+			{
+				// Note: empty hives are reported as 100% health, so we can't rely on this to detect hive deaths.
+				// We don't currently use the health_changed info.
+				msgIdx++; // health percentage byte
+				if(isNS33Version()) msgIdx++; // build time byte in 3.3 version of message
+			}
+		}
+	}else
+	{
+		int numUpgrades = msg.getByteAt(msgIdx++);
+		HiveManager::resetTraits();
+		for(int upgradeIdx = 0; upgradeIdx < numUpgrades; ++upgradeIdx)
+		{			
+			int traitId = msg.getByteAt(msgIdx++);
+			HiveManager::addTraitLevel(traitId);
+			switch(traitId)
+			{
+			case DEFENSE_UPGRADE:
+				WB_LOG_DEBUG("Defense upgrades available");
+				break;
+			case MOVEMENT_UPGRADE:
+				WB_LOG_DEBUG("Movement upgrades available");
+				break;
+			case SENSORY_UPGRADE:
+				WB_LOG_DEBUG("Sensory upgrades available");
+				break;
+			default:	
+				WB_LOG_ERROR("Unknown trait {} available", traitId);
+			}
+		}
+	}
+}
 void NetMessageDispatcher::registerHandlers()
 {
     if (_handlers.size() == 0) {
-        registerHandler(handleHiveInfoMsg, "AlienInfo");
+        registerHandler(handleAlienInfoMsg, "AlienInfo");
 		/* Disabling damage handler because it causes crashing.*/
 		registerHandler(handleDamage, "Damage");
         registerHandler(handleNetAreaInfoMsg, "SetupMap");

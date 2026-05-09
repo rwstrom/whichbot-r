@@ -36,7 +36,7 @@
 // Impl
 //////////////////////////////////////////////////////////////////////
 
-std::vector<HiveInfo*> HiveManager::_hives;
+std::vector<HiveInfo*> HiveManager::_hives{NULL};
 std::map<int, int> HiveManager::_traits;
 
 // NOTE:  If the order of the hives in the initial hive list sent by the server
@@ -74,6 +74,7 @@ void HiveManager::reset ()
 {
     for (auto hive : _hives) {
 		delete hive;
+		hive = NULL;
     }
 
 	_hives.clear();
