@@ -174,7 +174,7 @@ enginefuncs_t meta_engfuncs =
 	NULL,						// pfnGetGameDir()
 	NULL,						// pfnCvar_RegisterVariable()
 	NULL,						// pfnFadeClientVolume()
-	interceptSetClientMaxspeed,	// pfnSetClientMaxspeed()
+	NULL, //interceptSetClientMaxspeed,	// pfnSetClientMaxspeed()
 	NULL,						// pfnCreateFakeClient()
 	NULL,						// pfnRunPlayerMove()
 	NULL,						// pfnNumberOfEntities()
@@ -230,7 +230,7 @@ enginefuncs_t meta_engfuncs =
 	NULL,						// pfnVoice_SetClientListening()
 
 	// Added for HL 1109 (no SDK update):
-	interceptGetAuthId,			// pfnGetPlayerAuthId()
+	NULL, //interceptGetAuthId,			// pfnGetPlayerAuthId()
 
  	// Added 2003/11/10 (no SDK update):
 	NULL,						// pfnSequenceGet()
