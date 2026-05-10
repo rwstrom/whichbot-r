@@ -266,7 +266,13 @@ void CombatNavMethod::attack()
 
 
         } else if (_aimStartTime == 0.0) {
-            evade(range);
+            //FIXME: find a better way to determine if enamy is reloading, This only works if player pressed reload button in the last frame, but it's better than nothing.
+            // also we should also check if the player is facing us, but that would require a bit more math to figure out the player's facing direction from their angles.
+            if((_bot.getTarget()->getEntity().getEdict()->v.button & IN_RELOAD) == 0 || (_bot.getTarget()->getEntity().getEdict()->v.oldbuttons & IN_RELOAD) == 0)
+            {    
+                // if we're not already aiming, try to strafe to make it harder for our target to hit us
+                evade(range);
+            }
         }
 
         // Experimental.  If we're a gorge, don't get too close.
