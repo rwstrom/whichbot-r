@@ -78,9 +78,8 @@ std::vector<Reward> StrategyManager::getRewards(tEvolution evolution)
 void StrategyManager::visitedWaypoint(tEvolution evolution, tNodeId nodeId)
 {
     HiveMind::visitedWaypoint(nodeId);
-    for (std::vector<StrategyEntry*>::iterator ii = _strategies.begin(); ii != _strategies.end(); ii++) {
-        Strategy* strat = (*ii)->strategy;
-        strat->visitedWaypoint(nodeId, evolution);
+    for (auto entry : _strategies) {
+        entry->strategy->visitedWaypoint(nodeId, evolution);
     }
 }
 
@@ -88,9 +87,8 @@ void StrategyManager::waitedAtWaypoint(tEvolution evolution, tNodeId nodeId)
 {
     HiveMind::waitedAtWaypoint(nodeId, evolution);
 
-    for (std::vector<StrategyEntry*>::iterator ii = _strategies.begin(); ii != _strategies.end(); ii++) {
-        Strategy* strat = (*ii)->strategy;
-        strat->waitedAtWaypoint(nodeId, evolution);
+    for (auto entry : _strategies) {
+        entry->strategy->waitedAtWaypoint(nodeId, evolution);
     }
 }
 
