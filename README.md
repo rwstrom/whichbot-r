@@ -52,12 +52,14 @@ Copy the folder `bot/conf` into  `{hlds install directory}/ns/addons/whichbot`
 
 Copy the files from `bot/data/waypoints` into ` {hlds install directory}/ns/addons/whichbot/data`
 
-## Basic usage from server console:
+## Basic usage:
 
-**Add a bot**
+**To add a bot:**
 
 `wb add`
 
-**Remove a bot**
+**To remove a bot:**
 
 `wb remove`
+
+The configuration file can be found in addons/whichbot/conf/whichbot.txt
