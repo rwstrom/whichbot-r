@@ -349,7 +349,7 @@ void WaypointNavMethod::unableToFindNextWaypoint()
 {
     if (_wptHistory.size() > 0) {
         if (_mode != RETRACING_STEPS) {
-            WB_LOG_INFO("Suspect we're stuck, trying to go to {} ({}).  Going back to earliest waypoint",
+            WB_LOG_INFO("{}:Suspect we're stuck, trying to go to {} ({}).  Going back to earliest waypoint", *_bot.getName(),
                 _nextWptId,  TranslationManager::getTranslation(AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(_nextWptId))).c_str());
             updateUnreachedWaypointTravelTime();
             Edge* thisWay = _bot.getPathManager().getTerrain()->getEdge(prevWaypointId(), _nextWptId);
@@ -365,12 +365,12 @@ void WaypointNavMethod::unableToFindNextWaypoint()
             
         } else {
             _wptHistory.clear();
-            WB_LOG_INFO("Giving up on next waypoint while retracing steps.");
+            WB_LOG_INFO("{}:Giving up on next waypoint while retracing steps.", *_bot.getName());
             giveUpOnNextWaypoint();
         }
         
     } else {
-        WB_LOG_INFO("Stuck, and no history.  Time to reboot...");
+        WB_LOG_INFO("{}:Stuck, and no history.  Time to reboot...", *_bot.getName());
         giveUpOnNextWaypoint();
     }
 }
@@ -397,7 +397,7 @@ bool WaypointNavMethod::checkStuck()
         } else {
             // Gorges can actually get stuck inside entities thanks to a  bug, so we'll try teleporting them
             // a tad. :)
-            WB_LOG_INFO("We're stuck.  Trying special gorge unstuck teleport...");
+            WB_LOG_INFO("{}: I'm stuck.  Trying special gorge unstuck teleport...", *_bot.getName());
                 moveOutsideEntity(_bot.getEdict());
         }
 

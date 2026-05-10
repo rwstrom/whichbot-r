@@ -842,7 +842,7 @@ void Bot::handleDamage(byte armourDamage, byte healthDamage, [[maybe_unused]] co
 	* Disable this call by commenting out registerHandle call in NetMessageHandlers.
 	*/
 
-	WB_LOG_INFO("Handling damage [armour={}, health={}]", armourDamage, healthDamage);
+	WB_LOG_INFO("{}: Handling damage [armour={}, health={}]", *(getName()), armourDamage, healthDamage);
 	// ok, let's see if we can find the damage dealer
 	if(_entity.getEdict()->v.dmg_inflictor && _entity.getEdict()->v.dmg_inflictor->v.owner)
 	{
