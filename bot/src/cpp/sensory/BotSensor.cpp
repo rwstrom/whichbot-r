@@ -188,7 +188,7 @@ void BotSensor::forceScanEntity(edict_t* pEntity)
 			if (pInfo->isBuilding() && looksBuildable(pEntity)) {
 				Target target(pEntity, pInfo);
 				_buildables.push_back(target);
-				WB_LOG_INFO("Saw buildable target {}", pInfo->getClassname());
+				WB_LOG_DEBUG("{}: Saw buildable target {}", *_bot.getName(), pInfo->getClassname());
 
 			} else if (_bot.getEvolution() == kGorge && !pInfo->isBuilding() && 
 				((pEntity->v.health < pEntity->v.max_health) || 
@@ -196,7 +196,7 @@ void BotSensor::forceScanEntity(edict_t* pEntity)
 			{
 				Target target(pEntity, pInfo);
 				_targets.push_back(target);
-				WB_LOG_INFO("Saw healable target");
+				WB_LOG_DEBUG("{}: Saw healable target", *_bot.getName());
 				_healableSeen = true;
 			}
 		}
