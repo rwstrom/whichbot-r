@@ -264,7 +264,7 @@ void WaypointNavMethod::foundRouteWaypoint()
             gpBotManager->getWaypointManager().isLadder(_nextWptId) &&
             gpBotManager->getWaypointManager().isLadder(prevWptId))
         {
-            Vector vecBetweenWaypoints(getWptOrigin(_nextWptId) - getWptOrigin(prevWaypointId()));
+            Vector vecBetweenWaypoints(getWptOrigin(_nextWptId) - getWptOrigin(prevWptId));
 
             if (vecBetweenWaypoints.z < 0) {
                 // jump off ladders at the bottom
@@ -511,7 +511,7 @@ void WaypointNavMethod::calculateNextWaypoint()
         const std::string& areaName = AreaManager::getAreaName(
             gpBotManager->getWaypointManager().getOrigin(_nextWptId));
         const std::string& locationName = TranslationManager::getTranslation(areaName);
-        //WB_LOG_INFO("Next waypoint is %d in {}", _nextWptId, locationName.c_str());
+        //WB_LOG_INFO("Next waypoint is {} in {}", _nextWptId, locationName.c_str());
                         
     } else {
         WB_LOG_INFO("Can't get a valid next wpt from path manager.  Giving up for now...");
@@ -576,6 +576,7 @@ void WaypointNavMethod::findSwitch()
 
     // if we couldn't see it from where we are now, let's try going back to the waypoint to see if we have better luck next time
     if (!entityFound && _bot.getPathManager().nodeIdValid(prevWaypointId())) {
+        WB_LOG_DEBUG("{}: Couldn't find switch entity, trying to move back to previous waypoint to see if we can get a better view", *_bot.getName());
         setNextWaypointTarget();
     }
 
@@ -589,7 +590,11 @@ bool WaypointNavMethod::tryToUseEntity(const char* entityClassname)
 	Vector targetOrigin;
 	if (_nextWptId >= 0) {
 		targetOrigin = getWptOrigin(_nextWptId);
-
+        if((gpBotManager->getWaypointManager().getFlags(_nextWptId) & W_FL_DOOR) == 0)
+        {
+            WB_LOG_DEBUG("next waypoint is not a door, using bot origin as target for finding switch");
+            targetOrigin = _bot.getEdict()->v.origin;
+        }
 	} else {
 		targetOrigin = _bot.getEdict()->v.origin;
 	}
@@ -598,7 +603,7 @@ bool WaypointNavMethod::tryToUseEntity(const char* entityClassname)
         return false;
     }
 
-    Vector entity_origin = pEntity->v.absmin + (pEntity->v.size * 0.5);
+    Vector entity_origin = (pEntity->v.absmin + pEntity->v.absmax) * 0.5;
             
     Vector vecStart = _bot.getEdict()->v.origin + _bot.getEdict()->v.view_ofs;
     Vector vecToEntity = entity_origin - vecStart;
@@ -612,22 +617,26 @@ bool WaypointNavMethod::tryToUseEntity(const char* entityClassname)
 	WorldStateUtil::checkVector(entity_origin);
     // trace a line from bot's centre to func_ entity...
     UTIL_TraceLine(vecStart, entity_origin, dont_ignore_monsters,
-                   _bot.getEdict()->v.pContainingEntity, &tr);
-    //WaypointDebugger::drawDebugBeam(vecStart, entity_origin, 255, 0, 0);            
+                   _bot.getEdict(), &tr);
+    WaypointDebugger::drawDebugBeam(vecStart, entity_origin, 255, 0, 0);            
         
     if ((_useButtonTime + LAST_USED_SWITCH_TIME) < gpGlobals->time) {
         // check if flag not set and facing it...
-        int angleToEntity = InFieldOfView(_bot.getEdict()->v.v_angle.y, vecToEntity);
+        float botYaw = _bot.getEdict()->v.v_angle.y;
+        if (botYaw < 0) {
+            botYaw += 360.0f;
+        }
+        int angleToEntity = InFieldOfView(botYaw, entity_origin - _bot.getEdict()->v.origin);
         if (angleToEntity <= 10) {
             
             float minDistance = 75;
             if (distance < minDistance) {
                 WB_LOG_INFO("Using button");
-                //_bot.getEdict()->v.button |= IN_USE;
+                _bot.getEdict()->v.button |= IN_USE;
 				//Have the game engine push the button for us incase we missed.
 				//Some ppl considered this a cheat but I got tired of seeing them
 				//get stuck behind doors all the time. tmc
-				MDLL_Use(pEntity,_bot.getEdict());
+				//MDLL_Use(pEntity,_bot.getEdict());
                 _useButtonTime = gpGlobals->time;
                 _bot.getMovement()->stop(_evolution);
                 if ((_evolution != kSkulk) && 

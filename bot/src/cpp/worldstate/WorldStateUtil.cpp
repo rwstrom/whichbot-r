@@ -71,7 +71,7 @@ edict_t* WorldStateUtil::findClosestSwitchEntity(const char* classname, const Ve
             edict_t* pEdict = pEntity->edict();
 
 			if (!FNullEnt(pEdict)) {
-                Vector entityOrigin = pEdict->v.absmin + (pEdict->v.size * 0.5);
+                Vector entityOrigin = (pEdict->v.absmin + pEdict->v.absmax) * 0.5;
 
 				float range = (entityOrigin - fromPos).Length();
               
