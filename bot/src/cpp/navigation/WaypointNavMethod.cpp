@@ -269,6 +269,7 @@ void WaypointNavMethod::foundRouteWaypoint()
             if (vecBetweenWaypoints.z < 0) {
                 // jump off ladders at the bottom
                 _bot.getEdict()->v.button |= IN_JUMP;
+                WB_LOG_INFO("{} Jumping off ladder at bottom", *_bot.getName());
             }
         }
 
@@ -310,14 +311,14 @@ void WaypointNavMethod::seekNearestWaypoint()
             _mode = _waitAtWp ? WAIT_AT_WAYPOINT : SEEKING_REWARDS;
         } else if (_bot.getMovement()->getDistanceToTarget(_bot.getEvolution()) > LONG_DISTANCE) {
             _mode = LOST;
-            WB_LOG_INFO("Nearest waypoint {} ({}) is a suspiciously long way away, resetting", _nextWptId, TranslationManager::getTranslation(AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(_nextWptId))).c_str());
+            WB_LOG_INFO("{}: Nearest waypoint {} ({}) is a suspiciously long way away, resetting", *_bot.getName(), _nextWptId, TranslationManager::getTranslation(AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(_nextWptId))).c_str());
             
         } else {
             if (!checkStuck()) {
                 setNextWaypointTarget();
                 
             } else {
-                WB_LOG_INFO("Got stuck finding nearest waypoint, resetting...");
+                WB_LOG_INFO("{}: Got stuck finding nearest waypoint, resetting...", *_bot.getName());
                 _mode = LOST;
             }
         }
@@ -335,10 +336,11 @@ void WaypointNavMethod::setNextWaypointTarget()
     Vector target(getWptOrigin(_nextWptId) + verticalOffset);
 
     if (amWalking && isLadderPath(prevWptId, _nextWptId)) {
-        _bot.getMovement()->setLadderTarget(target, 
-                                              getWptOrigin(_nextWptId).z > _bot.getEdict()->v.origin.z,
-                                              getMinTargetDistance() * 0.75);
-        
+        _bot.getMovement()->setLadderTarget(
+            target,
+            getWptOrigin(_nextWptId).z > _bot.getEdict()->v.origin.z,
+            getMinTargetDistance() * 0.75
+        );
     } else {
         _bot.getMovement()->setTarget(target, getMinTargetDistance());
     }
@@ -587,8 +589,8 @@ void WaypointNavMethod::findSwitch()
 
 bool WaypointNavMethod::tryToUseEntity(const char* entityClassname)
 {
-	Vector targetOrigin;
-	if (_nextWptId >= 0) {
+	Vector targetOrigin = _bot.getEdict()->v.origin;;
+	/*if (_nextWptId >= 0) {
 		targetOrigin = getWptOrigin(_nextWptId);
         if((gpBotManager->getWaypointManager().getFlags(_nextWptId) & W_FL_DOOR) == 0)
         {
@@ -597,7 +599,7 @@ bool WaypointNavMethod::tryToUseEntity(const char* entityClassname)
         }
 	} else {
 		targetOrigin = _bot.getEdict()->v.origin;
-	}
+	}*/
     edict_t* pEntity = WorldStateUtil::findClosestSwitchEntity(entityClassname, targetOrigin);
     if (pEntity == NULL) {
         return false;
@@ -611,7 +613,7 @@ bool WaypointNavMethod::tryToUseEntity(const char* entityClassname)
     if (distance > SEARCH_RADIUS) {
         return false;
     }
-
+/*
     TraceResult tr;
 	WorldStateUtil::checkVector(vecStart);
 	WorldStateUtil::checkVector(entity_origin);
@@ -619,7 +621,7 @@ bool WaypointNavMethod::tryToUseEntity(const char* entityClassname)
     UTIL_TraceLine(vecStart, entity_origin, dont_ignore_monsters,
                    _bot.getEdict(), &tr);
     WaypointDebugger::drawDebugBeam(vecStart, entity_origin, 255, 0, 0);            
-        
+*/        
     if ((_useButtonTime + LAST_USED_SWITCH_TIME) < gpGlobals->time) {
         // check if flag not set and facing it...
         float botYaw = _bot.getEdict()->v.v_angle.y;
