@@ -7,7 +7,7 @@
 #include "extern/metamod/meta_api.h"
 #include <float.h>
 extern "C" void* player(entvars_t* pev);
-
+#include "framework/Log.h"
 
 int WorldStateUtil::countEntities(const char* classname)
 {
@@ -46,10 +46,14 @@ edict_t* WorldStateUtil::findClosestEntity(const char* classname, const Vector& 
             edict_t* pEdict = pEntity->edict();
 
             if (!FNullEnt(pEdict)) {
-				float range = (pEdict->v.origin - fromPos).Length();
+				// use the center of the entity for distance calculations since some brush entities don't use origin as their center.
+				float range = (((pEdict->v.absmax + pEdict->v.absmin) * 0.5) - fromPos).Length();
+				//float range = (pEdict->v.absmin - fromPos).Length();
+				//WB_LOG_DEBUG("Found entity of type {} , range to origin {}, range to center {}", classname, range, range2);
   				if (range < minRange) {
 					minRange = range;
 					pClosestEdict = pEdict;
+					//WB_LOG_DEBUG("Found closer entity of type {} at range {}", classname, range2);
 				}
 			}
         }
