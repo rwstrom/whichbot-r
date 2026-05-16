@@ -351,9 +351,9 @@ float BotMovement::getRelativeHitAngleDeg (const Vector& vec)
 
 void BotMovement::moveToTarget (const Vector& targetVector, tEvolution evolution)
 {
-	float piOver2 = M_PI/2;
-	float piOver4 = M_PI/4;
-	float piOver6 = M_PI/6;
+	static constexpr float piOver2 = M_PI/2;
+	static constexpr float piOver4 = M_PI/4;
+	static constexpr float piOver6 = M_PI/6;
 
 	// Our approximate creature height;
 	float creatureHeight = g_CreatureOriginHeights[evolution] * 2;
@@ -753,7 +753,7 @@ void BotMovement::move(tEvolution evolution)
 		moveDirectlyTowardsTarget(_targetVector, evolution);
 		if (!_bot.isCharging()) //Don't stop when charging 
 			_speed.z = 0;
-		// WB_LOG_INFO("Arrived at target vector, minTargetRadius=%f, distance to target=%f", _minTargetRadius, getDistanceToTarget(_targetVector, evolution));
+		WB_LOG_INFO("{} Arrived at target vector, minTargetRadius={}, distance to target={}", _bot.getEdict()->v.netname, _minTargetRadius, getDistanceToTarget(_targetVector, evolution));
 		_arrivedAtTargetVector = true;
 
 	} else {
@@ -793,9 +793,7 @@ void BotMovement::move(tEvolution evolution)
 	_lastTargetVector = _targetVector;
  	_lastBotOrigin = _bot.getEdict()->v.origin;
 
-	// Finally, carry out our move instructions this frame.
-	// Apparently vertical movement doesn't do anything, we just look up and go forwards to move vertically.
-	// WB_LOG_INFO("speed=%f", _speed.z);
+
 	if (_shouldUseMeleeAttack) {
 		_bot.getEdict()->v.button |= IN_ATTACK;
 	}
@@ -808,27 +806,21 @@ void BotMovement::move(tEvolution evolution)
 	//If we're cloaked , don't give ourselves away by moving too fast.
 	if (_bot.isCloaked() && !_bot.isCharging())
 	{
-		
 		if (_speed.z > 150.0) _speed.z = 150.0;
 	}
-	if (WorldStateUtil::isOnLadder(_bot.getEdict()))
-	{
-		if ((_bot.getEdict()->v.button & IN_BACK)!=0)
-			_speed.z = - _bot.getEdict()->v.maxspeed;
-		else{
-			_speed.z= _bot.getEdict()->v.maxspeed;
-			_bot.getEdict()->v.button |= IN_FORWARD;
-		}
-	}
+	// Ladder logic is now handled in backPedal() to avoid duplication
+	// Finally, carry out our move instructions this frame.
+	// Apparently vertical movement doesn't do anything, we just look up and go forwards to move vertically.
+	// WB_LOG_INFO("speed=%f", _speed.z);
 	//_bot.getEdict()->v.flags |= FL_FAKECLIENT;
 	g_engfuncs.pfnRunPlayerMove(_bot.getEdict(),
-                                _bot.getEdict()->v.v_angle.toConstFloatArray(),
-                                _speed.z,
-                                _speed.x,
-                                0.0,
-                                _bot.getEdict()->v.button,
-                                _bot.getEdict()->v.impulse,
-                                getMillisecondDelay());
+								_bot.getEdict()->v.v_angle.toConstFloatArray(),
+								_speed.z,
+								_speed.x,
+								0.0,
+								_bot.getEdict()->v.button,
+								_bot.getEdict()->v.impulse,
+								getMillisecondDelay());
 	
 	_bot.getEdict()->v.impulse = 0;
 	_bot.getEdict()->v.button = 0;
@@ -839,10 +831,17 @@ void BotMovement::move(tEvolution evolution)
 // Make the bot back pedal to try to free himself.
 bool BotMovement::backPedal ()
 {
-    // don't backpedal on ladders, it doesn't help
-    if (WorldStateUtil::isOnLadder(_bot.getEdict())) {
-        return false;
-    }
+	// Handle ladder movement logic here to avoid duplication in move()
+	/*if (WorldStateUtil::isOnLadder(_bot.getEdict())) {
+		WB_LOG_DEBUG("On ladder, handling ladder movement logic in backPedal()");
+		if ((_bot.getEdict()->v.button & IN_BACK) != 0) {
+			_speed.z = -_bot.getEdict()->v.maxspeed;
+		} else {
+			_speed.z = _bot.getEdict()->v.maxspeed;
+			_bot.getEdict()->v.button |= IN_FORWARD;
+		}
+		return false; // Don't backpedal logic on ladders, just handle ladder movement
+	}*/
 
 	if (_backPedalStartTime > 0.0) {
 		if ((gpGlobals->time - _backPedalStartTime) >= 1.0) {
