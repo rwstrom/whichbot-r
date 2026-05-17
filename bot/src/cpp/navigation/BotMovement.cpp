@@ -110,8 +110,12 @@ BotMovement::~BotMovement()
 byte BotMovement::getMillisecondDelay()
 {
 	byte msecVal =  1;
-
+	
 	if (_lastFrameTime != 0) {
+		if (gpGlobals->time ==  _lastFrameTime) {
+			WB_LOG_DEBUG("Bot {}: Two calls to getMillisecondDelay in the same frame, this shouldn't happen!", *_bot.getName());
+			return _msecval; // just return the last value, but this is a warning	
+		}
 		float timeDiffMs = 1000 * (gpGlobals->time - _lastFrameTime);
 		if (timeDiffMs <= 255) {
 			msecVal = (byte)timeDiffMs;
@@ -813,6 +817,18 @@ void BotMovement::move(tEvolution evolution)
 	// Apparently vertical movement doesn't do anything, we just look up and go forwards to move vertically.
 	// WB_LOG_INFO("speed=%f", _speed.z);
 	//_bot.getEdict()->v.flags |= FL_FAKECLIENT;
+
+	// FIXME: This is very hacky, but this helps the bot get up ladders.  We should really rewrite the movement code to be more modular and not have special cases like this. 
+	if(WorldStateUtil::isOnLadder(_bot.getEdict())) {
+		//WB_LOG_DEBUG("On ladder");
+		if(_bot.getEdict()->v.absmin.z < _targetVector.z)
+		{
+			_bot.getEdict()->v.angles.x = 20;
+			_bot.getEdict()->v.v_angle.x = -60;
+			_speed.z = _bot.getEdict()->v.maxspeed;
+			_bot.getEdict()->v.button |= IN_FORWARD;
+		}
+	}
 	g_engfuncs.pfnRunPlayerMove(_bot.getEdict(),
 								_bot.getEdict()->v.v_angle.toConstFloatArray(),
 								_speed.z,
@@ -918,7 +934,7 @@ void BotMovement::nullMove()
 	_bot.getEdict()->v.angles.x = _bot.getEdict()->v.angles.y = _bot.getEdict()->v.angles.z = 0;
 	_bot.getEdict()->v.v_angle.x = _bot.getEdict()->v.v_angle.y = _bot.getEdict()->v.v_angle.z = 0;
 	_bot.getEdict()->v.button = 0;
-	WorldStateUtil::checkAnglesForEdict(_bot.getEdict());
+	//WorldStateUtil::checkAnglesForEdict(_bot.getEdict());
 	//_bot.getEdict()->v.flags |= FL_FAKECLIENT;
 	g_engfuncs.pfnRunPlayerMove(_bot.getEdict(), _bot.getEdict()->v.v_angle.toConstFloatArray(), 
                                 0, 0, 0.0, 0, 0, getMillisecondDelay());
