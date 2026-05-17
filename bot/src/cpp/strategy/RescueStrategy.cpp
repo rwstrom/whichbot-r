@@ -105,7 +105,7 @@ void RescueStrategy::rewardBot(std::vector<Reward>& rewards)
 		&& _bot.getPathManager().nodeIdValid(rescueWaypointId)) {
 
 		const char* className = _currentRescueTarget.getClassname();
-		WB_LOG_INFO("Attempting to rescue {} at waypoint {} ({})", className, rescueWaypointId,
+		WB_LOG_INFO("{}: Attempting to rescue {} at waypoint {}", *_bot.getName(), className, rescueWaypointId,
 			   TranslationManager::getTranslation(
 			       AreaManager::getAreaName(gpBotManager->getWaypointManager().getOrigin(rescueWaypointId))).c_str());
 
