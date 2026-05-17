@@ -29,6 +29,7 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include<functional>
+#include <array>
 
 #include "BotManager.h"
 #include "extern/halflifesdk/extdll.h"
@@ -118,7 +119,7 @@ void BotManager::newLevel()
 
 	
    
-    gLightningSpriteTexture = PRECACHE_MODEL("sprites/lgtning.spr");
+    gLightningSpriteTexture = PRECACHE_MODEL(const_cast<char*>("sprites/lgtning.spr"));
 
     _lastBotAddedTime = gpGlobals->time;
 	if (_lastTeamBalanceCheckTime >= 0) {

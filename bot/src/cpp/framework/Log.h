@@ -34,7 +34,7 @@
 
 #ifndef __FRAMEWORK_LOG_H
 #define __FRAMEWORK_LOG_H
-
+#include <array>
 #include <format>
 #include <print>
 #include <source_location>
@@ -49,8 +49,14 @@ namespace wb_log
 {
 constexpr std::string_view getFileName(const std::source_location& path)
 {
+#if defined(_WIN32)
+    constexpr std::string_view path_seperator ("\\");
+#else
+    constexpr std::string_view path_seperator = '/';
+#endif
+
     std::string_view fname(path.file_name());
-    auto last = fname.find_last_of("/");
+    auto last = fname.find_last_of(path_seperator);
     if(last == std::string::npos) return fname;
     return fname.substr(last+1);
 }

@@ -901,7 +901,7 @@ int UTIL_IsMasterTriggered(string_t sMaster, CBaseEntity *pActivator)
 				return pMaster->IsTriggered( pActivator );
 		}
 
-		ALERT(at_console, "Master was null or not a master!\n");
+		ALERT(at_console, const_cast<char*>("Master was null or not a master!\n"));
 	}
 
 	// if this isn't a master entity, just say yes.
@@ -1060,7 +1060,7 @@ void UTIL_PrecacheOther( const char *szClassname )
 	pent = CREATE_NAMED_ENTITY( MAKE_STRING( szClassname ) );
 	if ( FNullEnt( pent ) )
 	{
-		ALERT ( at_console, "NULL Ent in UTIL_PrecacheOther\n" );
+		ALERT ( at_console, const_cast<char*>("NULL Ent in UTIL_PrecacheOther\n" ));
 		return;
 	}
 	
@@ -1084,7 +1084,7 @@ void UTIL_LogPrintf( char *fmt, ... )
 	va_end   ( argptr );
 
 	// Print to server console
-	ALERT( at_logged, "%s", string );
+	ALERT( at_logged, const_cast<char*>("%s"), string );
 }
 
 //=========================================================

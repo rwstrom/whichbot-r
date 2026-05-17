@@ -110,11 +110,11 @@ C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable,
 		int *interfaceVersion)
 {
 	if(!pFunctionTable) {
-		UTIL_LogPrintf("GetEntityAPI2 called with null pFunctionTable");
+		UTIL_LogPrintf(const_cast<char*>("GetEntityAPI2 called with null pFunctionTable"));
 		return(FALSE);
 	}
 	else if(*interfaceVersion != INTERFACE_VERSION) {
-		UTIL_LogPrintf("GetEntityAPI2 version mismatch; requested=%d ours=%d", *interfaceVersion, INTERFACE_VERSION);
+		UTIL_LogPrintf(const_cast<char*>("GetEntityAPI2 version mismatch; requested=%d ours=%d"), *interfaceVersion, INTERFACE_VERSION);
 		//! Tell metamod what version we had, so it can figure out who is out of date.
 		*interfaceVersion = INTERFACE_VERSION;
 		return(FALSE);
