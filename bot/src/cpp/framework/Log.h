@@ -52,7 +52,7 @@ constexpr std::string_view getFileName(const std::source_location& path)
 #if defined(_WIN32)
     constexpr std::string_view path_seperator ("\\");
 #else
-    constexpr std::string_view path_seperator = '/';
+    constexpr std::string_view path_seperator = "/";
 #endif
 
     std::string_view fname(path.file_name());
