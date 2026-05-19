@@ -67,14 +67,15 @@ tNodeId NodeIdBag::removeRandomNodeId()
 
     if (_numNodesSet == 1) {
         returnVal = _lowestNodeId;
-
+        _nodes[returnVal] = false;
     } else {
 
         int maxVal = _highestNodeId - _lowestNodeId;
         int randomId = _lowestNodeId + (int)((1.0 * (maxVal-1) * rand()) / RAND_MAX);
-
+        //int randomId = rand() % _nodes.size();
         // if that node id isn't in the bag, keep looking upwards till we find a node id
         // that is in the bag.  skip over if we get to the max value (highestnodeid).
+
         while (!_nodes[randomId]) {
             randomId++;
             if (randomId > _highestNodeId) {
@@ -82,9 +83,28 @@ tNodeId NodeIdBag::removeRandomNodeId()
             }
         }
 
+        _nodes[randomId] = false;
         returnVal = randomId;
+        if(returnVal == _lowestNodeId) {
+            // if we just removed the lowest node id, we need to find the next lowest node id
+            for (int ii = returnVal+1; ii <= _highestNodeId; ii++) {
+                if (_nodes[ii]) {
+                    _lowestNodeId = ii;
+                    break;
+                }
+            }
+        }
+        if(returnVal == _highestNodeId) {
+            // if we just removed the highest node id, we need to find the next highest node id
+            for (int ii = returnVal-1; ii >= _lowestNodeId; ii--) {
+                if (_nodes[ii]) {
+                    _highestNodeId = ii;
+                    break;
+                }
+            }
+        }
     }
-
+    
     _numNodesSet--;
     return returnVal;
 }
@@ -101,7 +121,9 @@ void NodeIdBag::addNodeId(tNodeId nodeId)
     } else if (nodeId < _lowestNodeId) {
         _lowestNodeId = nodeId;
     }
-
+    if(_nodes[nodeId]){
+        return; // node id already in bag, so just return
+    }
     _nodes[nodeId] = true;
     _numNodesSet++;
 }
