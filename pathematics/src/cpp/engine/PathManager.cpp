@@ -263,6 +263,12 @@ void PathManager::trickleRewards(const std::vector<Reward>& rewards)
 }
 
 
+// Propagates the reward value from the specified node up towards the root node,
+// accumulating rewards along the path. This function updates the cumulative reward
+// for each node on the path to the root, ensuring that each node's cumulative reward
+// reflects its own reward plus the cumulative rewards of all upstream nodes that are
+// further from the root. The propagation stops if the root is reached, if a node has
+// no valid distance estimate, or if a cycle is detected.
 void PathManager::trickleRewards(tNodeId forNodeId)
 {
     assert(forNodeId >= 0);
@@ -275,7 +281,7 @@ void PathManager::trickleRewards(tNodeId forNodeId)
     if (_terrain != NULL && _terrain->nodeIdValid(forNodeId)) {
         tNodeId currentNodeId = forNodeId;
         tDistanceEstimate ourDistance = 0;
-        tNodeId nextNodeId = 0;
+        tNodeId nextNodeId = INVALID_NODE_ID;
         int count = 0;
         tReward cumulativeReward = 0;
         
@@ -304,7 +310,7 @@ void PathManager::trickleRewards(tNodeId forNodeId)
             for (tTerrainEdgeVector::iterator ii = edges.begin(); ii < edges.end(); ii++) {
                 tNodeId endpointId = ii->getEndId();
                 PathData& data = _tree[endpointId];
-		tDistanceEstimate dataDistance = data.getDistance();
+		        tDistanceEstimate dataDistance = data.getDistance();
                 if (dataDistance >= ourDistance) {
 	                cumulativeReward += data.getCumulativeReward();
                     

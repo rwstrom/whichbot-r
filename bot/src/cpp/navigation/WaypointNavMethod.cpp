@@ -334,12 +334,15 @@ void WaypointNavMethod::setNextWaypointTarget()
 
     Vector verticalOffset(0, 0, WAYPOINT_HEIGHT_OFFSET);
     Vector target(getWptOrigin(_nextWptId) + verticalOffset);
-
+    bool goingUp = _bot.getPathManager().nodeIdValid(prevWptId) ? getWptOrigin(prevWptId).z < getWptOrigin(_nextWptId).z : _bot.getEdict()->v.origin.z < getWptOrigin(_nextWptId).z;
+    if(goingUp) {
+        target.z += 20.0; // give a little extra vertical clearance when going up, since we don't want to get stuck on the bottom of the waypoint
+    }
     if (amWalking && isLadderPath(prevWptId, _nextWptId)) {
         _bot.getMovement()->setLadderTarget(
             target,
-            getWptOrigin(_nextWptId).z > _bot.getEdict()->v.origin.z,
-            getMinTargetDistance() * 0.75
+            goingUp,//_bot.getEdict()->v.origin.z,
+            getMinTargetDistance() * 0.2
         );
     } else {
         _bot.getMovement()->setTarget(target, getMinTargetDistance());
