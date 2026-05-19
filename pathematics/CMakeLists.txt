@@ -3,6 +3,7 @@ project(Pathematics CXX)
 set(CMAKE_CXX_STANDSRD 23)
 
 add_library(pathematics)
+set_property(TARGET pathematics PROPERTY CXX_STANDARD 23)
 
 if(MSVC)
     target_compile_options(pathematics PRIVATE /W4 )
@@ -28,6 +29,8 @@ target_sources(pathematics PRIVATE
                 src/cpp/model/TerrainData.cpp
                 )
  #test      
-#add_executable(test src/cpp/test/PathematicsTest.cpp)
-#target_include_directories(test PRIVATE src/cpp)
-#target_link_libraries(test pathematics)
+add_executable(test src/cpp/test/PathematicsTest.cpp)
+target_include_directories(test PRIVATE src/cpp)
+target_link_libraries(test PRIVATE pathematics stdc++)
+target_link_options(test PRIVATE -m32 )
+set_property(TARGET test PROPERTY CXX_STANDARD 23)
