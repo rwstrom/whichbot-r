@@ -31,10 +31,10 @@
 
 #include "model/TerrainData.h"
 #include "engine/PathManager.h"
+#include <print>
 
 using namespace wb_pathematics;
 
-#include <stdio.h>
 
 static int id = 0;
 void addNode(tTerrainGraph& graph, float x, float y, float z)
@@ -87,6 +87,7 @@ tDistanceEstimate getDistance(PathManager& pathMgr, tNodeId nodeId)
 
 void runBasicTest()
 {
+    std::println("Running basic test...");
     std::unique_ptr<tTerrainGraph> terrain(createGraph());
 
     PathManager pathMgr(1.0);
@@ -133,6 +134,7 @@ void runBasicTest()
     pathMgr.setRootNode(4);
     pathMgr.trickleRewards(rewards);
     printf("Optimal next node: %d\n", pathMgr.getOptimalNextNodeId());
+    std::println("");
 
 }
 
@@ -193,6 +195,8 @@ void printDistances(PathManager& pathMgr, int size)
 
 void runConvergenceTest()
 {
+    std::println("Running convergence test...");
+
     int size = 10;
     tTerrainGraph terrain;
     buildNodeGrid(terrain, size);
@@ -207,6 +211,7 @@ void runConvergenceTest()
     pathMgr.reoptimiseTree(15);
 
     printDistances(pathMgr, size);
+    std::println("");
 }
 
 
@@ -225,6 +230,8 @@ bool pathValidatorFn(void* /*rock*/, int upstreamNodeId, int thisNodeId)
 
 void runOneWayPathTest()
 {
+    std::println("Running one-way path test...");
+
     tTerrainGraph* pGraph = new tTerrainGraph();
 
     addNode(*pGraph, 0, 0, 0); // node 0
@@ -271,13 +278,14 @@ void runOneWayPathTest()
 
 	// This should be 4, as that is the only path back to 0 (1->2 is one-way)
 	assert(pathMgr.getOptimalNextNodeId() == 4);
+    std::println("");
 }
 
 
 int main(/*int argc, char** argv*/)
 {
 
-    //runBasicTest();
+    runBasicTest();
 
     runConvergenceTest();
 
