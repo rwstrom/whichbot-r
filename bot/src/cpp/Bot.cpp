@@ -81,7 +81,7 @@ Bot::Bot(int botIdx) :
 	//empty
 	//setProperty(kLastLifeTime, 100);
 	// path validators disabled till they work properly
-	//_pathMgr.setPathValidatorFn(pathValidator, &gpBotManager->getWaypointManager());
+	_pathMgr.setPathValidatorFn(pathValidator, &gpBotManager->getWaypointManager());
 }
 
 
