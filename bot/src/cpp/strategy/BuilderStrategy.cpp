@@ -599,11 +599,11 @@ bool BuilderStrategy::locationIsBuildable(tNodeId wptId)
 			}
 
 			// Let's not block ladders
+			// TODO: visiblily check. If we can't see the ladder, it's probably not a problem if we build here.
 			edict_t* pLadder = WorldStateUtil::findClosestEntity("func_ladder", _bot.getEdict()->v.origin);
 			if (!FNullEnt(pLadder)) {
 				auto ladderOrigin2D = ((pLadder->v.absmin + pLadder->v.absmax) * 0.5).Make2D();
 				float range = (_bot.getEdict()->v.origin.Make2D() - ladderOrigin2D).Length();
-				WB_LOG_DEBUG("Distance to nearest ladder is {}", range);
 				return (range > 150);
 
 			} else {
