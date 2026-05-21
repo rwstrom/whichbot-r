@@ -226,7 +226,7 @@ void handleAlienInfoMsg(const NetMessage& msg)
 					}
 				}else
 				{
-					WB_LOG_DEBUG("Received coordinates for existing hive {}", hiveIdx);
+					//WB_LOG_DEBUG("Received coordinates for existing hive {}", hiveIdx);
 					msgIdx += 3; // Skip over the position data since we already have an entity for this hive and don't want to mess with it.  We may want to change this later if we find that the hive entities can move around or if we want to update our stored positions based on the message data.
 				}
 			}

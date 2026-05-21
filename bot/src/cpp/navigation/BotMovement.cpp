@@ -757,7 +757,7 @@ void BotMovement::move(tEvolution evolution)
 		moveDirectlyTowardsTarget(_targetVector, evolution);
 		if (!_bot.isCharging()) //Don't stop when charging 
 			_speed.z = 0;
-		WB_LOG_INFO("{} Arrived at target vector, minTargetRadius={}, distance to target={}", _bot.getEdict()->v.netname, _minTargetRadius, getDistanceToTarget(_targetVector, evolution));
+		WB_LOG_INFO("{} Arrived at target vector, minTargetRadius={}, distance to target={}", *_bot.getName(), _minTargetRadius, getDistanceToTarget(_targetVector, evolution));
 		_arrivedAtTargetVector = true;
 
 	} else {
