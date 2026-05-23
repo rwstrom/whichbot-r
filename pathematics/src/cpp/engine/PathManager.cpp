@@ -247,17 +247,17 @@ void PathManager::clearRewardsAt(tNodeId atNodeId)
 void PathManager::trickleRewards(const std::vector<Reward>& rewards)
 {
     // reset all the rewards
-    for (int nodeId = 0; nodeId < _tree.size(); nodeId++) {
-		_tree[nodeId].setReward(0);
-        _tree[nodeId].setCumulativeReward(0);
+    for(auto & data: _tree) {
+        data.setReward(0);
+        data.setCumulativeReward(0);
     }
 
-    for (std::vector<Reward>::const_iterator jj = rewards.begin(); jj != rewards.end(); jj++) {
-        _tree[jj->getNodeId()].addReward(jj->getValue());
+    for(auto const & reward: rewards) {
+        _tree[reward.getNodeId()].addReward(reward.getValue());  
     }
 
-    for (std::vector<Reward>::const_iterator ii = rewards.begin(); ii != rewards.end(); ii++) {
-        trickleRewards(ii->getNodeId());
+    for(auto const & reward: rewards) {
+        trickleRewards(reward.getNodeId());
     }
 }
 
@@ -306,8 +306,8 @@ void PathManager::trickleRewards(tNodeId forNodeId)
             tDistanceEstimate lowestDistance = MAX_DISTANCE_ESTIMATE*2;
             
             // calculate our new cumulative reward from all the upstream nodes
-            for (tTerrainEdgeVector::iterator ii = edges.begin(); ii < edges.end(); ii++) {
-                tNodeId endpointId = ii->getEndId();
+            for (auto & edge : edges) {
+                tNodeId endpointId = edge.getEndId();
                 PathData& data = _tree[endpointId];
 		        tDistanceEstimate dataDistance = data.getDistance();
                 if (dataDistance >= ourDistance) {
@@ -338,8 +338,8 @@ tNodeId PathManager::getOptimalNextNodeId()
     tReward highestReward = -1000000;
     tNodeId nextNodeId = INVALID_NODE_ID;
 
-    for (tTerrainEdgeVector::iterator ii = edges.begin(); ii < edges.end(); ii++) {
-        tNodeId nodeId = ii->getEndId();
+    for (auto & edge : edges) {
+        tNodeId nodeId = edge.getEndId();
         
         PathData& data = _tree[nodeId];
         
