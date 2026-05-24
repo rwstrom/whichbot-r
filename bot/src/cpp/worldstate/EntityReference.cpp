@@ -45,14 +45,14 @@ EntityReference::EntityReference(edict_t* pEdict) :
     }
 }
 
-
+/*
 EntityReference::EntityReference(const EntityReference& other) :
     _pEdict(other._pEdict),
     _id(other._id),
     _lastTimeChecked(other._lastTimeChecked)
 {
 }
-
+*/
 
 edict_t* EntityReference::getEdict()
 {

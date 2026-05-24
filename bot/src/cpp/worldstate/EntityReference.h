@@ -45,7 +45,7 @@ public:
 
     EntityReference(edict_t* pEdict = NULL);
 
-    EntityReference(const EntityReference& other);
+    //EntityReference(const EntityReference& other);
 
     edict_t* getEdict();
 
