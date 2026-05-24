@@ -162,7 +162,7 @@ public:
 // Classify - returns the type of group (i.e, "houndeye", or "human military" so that monsters with different classnames
 // still realize that they are teammates. (overridden for monsters that form groups)
 	virtual int Classify ( void ) { return CLASS_NONE; };
-	virtual void DeathNotice ( entvars_t *pevChild ) {}// monster maker children use this to tell the monster maker that they have died.
+	virtual void DeathNotice ( [[maybe_unused]] entvars_t *pevChild ) {}// monster maker children use this to tell the monster maker that they have died.
 
 
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -173,21 +173,21 @@ public:
 	virtual void	Killed( entvars_t *pevAttacker, int iGib );
 	virtual int		BloodColor( void ) { return DONT_BLEED; }
 	virtual void	TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
-	virtual BOOL    IsTriggered( CBaseEntity *pActivator ) {return TRUE;}
+	virtual BOOL    IsTriggered([[maybe_unused]] CBaseEntity *pActivator ) {return TRUE;}
 	virtual CBaseMonster *MyMonsterPointer( void ) { return NULL;}
 	virtual CSquadMonster *MySquadMonsterPointer( void ) { return NULL;}
 	virtual	int		GetToggleState( void ) { return TS_AT_TOP; }
-	virtual void	AddPoints( int score, BOOL bAllowNegativeScore ) {}
-	virtual void	AddPointsToTeam( int score, BOOL bAllowNegativeScore ) {}
-	virtual BOOL	AddPlayerItem( CBasePlayerItem *pItem ) { return 0; }
-	virtual BOOL	RemovePlayerItem( CBasePlayerItem *pItem ) { return 0; }
-	virtual int 	GiveAmmo( int iAmount, char *szName, int iMax ) { return -1; };
+	virtual void	AddPoints([[maybe_unused]] int score, [[maybe_unused]] BOOL bAllowNegativeScore ) {}
+	virtual void	AddPointsToTeam( [[maybe_unused]] int score, [[maybe_unused]] BOOL bAllowNegativeScore ) {}
+	virtual BOOL	AddPlayerItem([[maybe_unused]] CBasePlayerItem *pItem ) { return 0; }
+	virtual BOOL	RemovePlayerItem([[maybe_unused]] CBasePlayerItem *pItem ) { return 0; }
+	virtual int 	GiveAmmo([[maybe_unused]] int iAmount,[[maybe_unused]] char *szName, [[maybe_unused]] int iMax ) { return -1; };
 	virtual float	GetDelay( void ) { return 0; }
 	virtual int		IsMoving( void ) { return pev->velocity != g_vecZero; }
 	virtual void	OverrideReset( void ) {}
 	virtual int		DamageDecal( int bitsDamageType );
 	// This is ONLY used by the node graph to test movement through a door
-	virtual void	SetToggleState( int state ) {}
+	virtual void	SetToggleState([[maybe_unused]] int state ) {}
 	virtual void    StartSneaking( void ) {}
 	virtual void    StopSneaking( void ) {}
 	virtual BOOL	OnControls( entvars_t *pev ) { return FALSE; }
@@ -338,12 +338,12 @@ public:
 	virtual Vector Center( ) { return (pev->absmax + pev->absmin) * 0.5; }; // center point of entity
 	virtual Vector EyePosition( ) { return pev->origin + pev->view_ofs; };			// position of eyes
 	virtual Vector EarPosition( ) { return pev->origin + pev->view_ofs; };			// position of ears
-	virtual Vector BodyTarget( const Vector &posSrc ) { return Center( ); };		// position to shoot at
+	virtual Vector BodyTarget( [[maybe_unused]] const Vector &posSrc ) { return Center( ); };		// position to shoot at
 
 	virtual int Illumination( ) { return GETENTITYILLUM( ENT( pev ) ); };
 
 	virtual	BOOL FVisible ( CBaseEntity *pEntity );
-	virtual	BOOL FVisible ( const Vector &vecOrigin );
+	virtual	BOOL FVisible ( [[maybe_unused]] const Vector &vecOrigin );
 
 	//We use this variables to store each ammo count.
 	int ammo_9mm;
@@ -479,7 +479,7 @@ public:
 	int  LookupSequence ( const char *label );
 	void ResetSequenceInfo ( );
 	void DispatchAnimEvents ( float flFutureInterval = 0.1 ); // Handle events that have happend since last time called up until X seconds into the future
-	virtual void HandleAnimEvent( MonsterEvent_t *pEvent ) { return; };
+	virtual void HandleAnimEvent([[maybe_unused]] MonsterEvent_t *pEvent ) { return; };
 	float SetBoneController ( int iController, float flValue );
 	void InitBoneControllers ( void );
 	float SetBlending ( int iBlender, float flValue );

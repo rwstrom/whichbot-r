@@ -114,7 +114,7 @@ void HiveMind::visitedWaypoint(tNodeId wptId)
 }
 
 
-void HiveMind::waitedAtWaypoint(tNodeId wptId, tEvolution evolution)
+void HiveMind::waitedAtWaypoint(tNodeId wptId, [[maybe_unused]] tEvolution evolution)
 {
 	// Currently we're dropping evolution on the floor.  May be useful later for an
 	// ambush strategy.
