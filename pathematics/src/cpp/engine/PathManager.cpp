@@ -86,7 +86,6 @@ void PathManager::setRootNode(tNodeId newRootNodeId)
         
         if (mustRebuildTree) {
             rebuildTree();
-            
         } else {
             // we apply the root-change heuristic whereby we assume we can get to all nodes via going back to the
             // root and using the same distance estimates
