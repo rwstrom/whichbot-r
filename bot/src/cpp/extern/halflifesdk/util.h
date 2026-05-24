@@ -17,8 +17,9 @@
 #define __HALFLIFESDK_UTIL_H
 
 #include <string.h>
+#if defined(_WIN32)
 #pragma warning (disable: 4786)
-
+#endif
 //
 // Misc utility code
 //
