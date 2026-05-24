@@ -237,7 +237,7 @@ void WaypointDebugger::nodeAdded(tNodeId nodeId)
 }
 
 
-void WaypointDebugger::nodeDeleted(tNodeId nodeId)
+void WaypointDebugger::nodeDeleted([[maybe_unused]] tNodeId nodeId)
 {
     if (_pathMgr != NULL ) {
         _pathMgr->rebuildTree();
