@@ -39,8 +39,12 @@
 #include "extern/halflifesdk/util.h"
 #include "BotManager.h"
 #include "sensory/AuditoryManager.h"
+#include "worldstate/HiveManager.h"
+#include "framework/Log.h"
+#include "worldstate/AreaManager.h"
 
 static constexpr double DISTANCE_SCALING_FACTOR = 0.0003;
+static constexpr float TOO_CLOSE_TO_HIVE_DISTANCE = 1000.0;
 
 AttackStrategy::AttackStrategy(Bot& bot) :
 	_bot(bot)
@@ -67,7 +71,11 @@ void AttackStrategy::getRewards(std::vector<Reward>& rewards, tEvolution evoluti
 				
 				if ((pInfo != NULL) && (pInfo->getTeam() == MARINE_TEAM)) {
 					tReward rewardVal = pInfo->getDefaultInfluence();
-					
+					float distanceToHive = HiveManager::distanceToNearestHive(entity.getEdict()->v.origin);
+					if (distanceToHive < TOO_CLOSE_TO_HIVE_DISTANCE) {
+						rewardVal *= 100.0f;
+						//WB_LOG_DEBUG("AttackStrategy: increasing reward because {} is too close to hive in  {}", pInfo->getClassname(), AreaManager::getAreaName(entity.getEdict()->v.origin));
+					}
 					if (rewardVal != 0.0) {
 						tNodeId nearestWaypointId = HiveMind::getSeenWaypoint(entity.getEdict());
 		                addReward(rewards, nearestWaypointId, rewardVal, std::string("Seek ") + TranslationManager::getTranslation(entity.getClassname()));
