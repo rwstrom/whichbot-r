@@ -106,7 +106,9 @@ void PackLeaderStrategy::visitedWaypoint(tNodeId wptId, [[maybe_unused]] tEvolut
     switch (_wolfPack.getSlaveMode()) {
     case PackInfo::kNotSlaved:
 	    if ((gpGlobals->time > _lastPauseTime + CFG_PAUSE_PERIOD) && !_wolfPack.areAllFollowersCloseBy()) {
-            if ((_leader.getNavigationEngine() != NULL) && !FleeStrategy::botIsScared(_leader)) {
+            if ((_leader.getNavigationEngine() != NULL) && 
+            !FleeStrategy::botIsScared(_leader) &&
+            (_leader.getSensor() != NULL && !_leader.getSensor()->threatSeen()) ){
     		    WB_LOG_INFO("Hmm, can't see my followers.  Waiting at {} for laggards to catch up.", wptId);
                 _leader.getNavigationEngine()->pause();
     		    _lastPauseTime = gpGlobals->time;
